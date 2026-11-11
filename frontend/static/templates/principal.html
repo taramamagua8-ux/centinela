@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="pagina-inicio">
+
+    <!-- Barra superior -->
+    <header class="barra-superior">
+        <input type="checkbox" id="toggle-menu" class="toggle-menu">
+
+        <label for="toggle-menu" class="btn-hamburguesa" aria-label="Abrir menú">
+            <span></span><span></span><span></span>
+        </label>
+
+        <!-- Menú lateral desplegable -->
+        <nav class="menu-lateral">
+            <a href="principal.html">Inicio</a>
+            <a href="descubre_mas.html">Descubre más</a>
+            <a href="videos.html">Videos</a>
+            <a href="directorio.html">Directorio</a>
+            <a href="sobre_nosotros.html">Sobre nosotros</a>
+        </nav>
+
+        <div class="logo-centro">
+            <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
+            <span>CENTINELA DIGITAL</span>
+        </div>
+
+        <div class="iconos-derecha">
+            <button type="button" class="btn-icono" aria-label="Perfil" onclick="window.location.href='cuenta.html'">Cuenta</button>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="contenido-inicio">
+
+        <section class="bloque-mensaje">
+            <div class="texto-mensaje">
+                <h1 class="titulo-inicio">
+                    Si sufres algún tipo de violencia, no calles, no temas,
+                    ¡PUEDES SER ESCUCHADO!
+                    Nosotros nos encontramos a la orden para ayudarte.
+                </h1>
+                <p class="descripcion-inicio">
+                    Centinela Digital te proporcionará ayuda identificando la violencia
+                    que estás padeciendo y lo comunicará con las instituciones correspondientes.
+                </p>
+            </div>
+
+            <div class="contenedor-imagen">
+                <img src="../img/ilustracion.png" alt="Ilustración" class="imagen-fluida">
+            </div>
+        </section>
+
+        <section class="bloque-cta">
+            <p class="texto-cta">
+                ¿Necesitas reportar algo que te haya pasado?<br>Da Click aquí
+            </p>
+            <button type="button" class="btn-reportar" onclick="window.location.href='formulario_reporte.html'">REPORTAR</button>
+        </section>
+
+    </main>
+
+</body>
+</html>

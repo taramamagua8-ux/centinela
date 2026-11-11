@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta | Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="pagina-informativa">
+    <main class="cuenta-contenedor">
+        <section class="cuenta-panel">
+            <div id="cuenta-acceso">
+                <h1>Mi cuenta</h1>
+                <p>Elige una opción para continuar con tu cuenta o consultar el seguimiento de tu reporte.</p>
+                <div class="tarjetas-opciones-cuenta">
+                    <article class="tarjeta-opcion-cuenta">
+                        <div class="icono-opcion-cuenta">↪</div>
+                        <h2>Iniciar sesión</h2>
+                        <p>Accede a tu cuenta para administrar tus datos.</p>
+                        <a class="boton-cuenta" href="login.html">Entrar</a>
+                    </article>
+                    <article class="tarjeta-opcion-cuenta">
+                        <div class="icono-opcion-cuenta">＋</div>
+                        <h2>Crear una cuenta</h2>
+                        <p>Regístrate para guardar y consultar tu información.</p>
+                        <a class="boton-cuenta" href="registro.html">Registrarme</a>
+                    </article>
+                    <article class="tarjeta-opcion-cuenta tarjeta-opcion-ancha">
+                        <div class="icono-opcion-cuenta">⌕</div>
+                        <h2>Consultar por folio</h2>
+                        <p>Consulta el avance de tu reporte con el folio recibido.</p>
+                        <a class="boton-cuenta boton-cuenta-claro" href="formulario.html">Consultar seguimiento</a>
+                    </article>
+                </div>
+            </div>
+
+            <div id="panel-cuenta-usuario" hidden>
+                <h1>Hola, <span id="nombre-cuenta"></span></h1>
+                <p class="datos-cuenta">Correo: <strong id="correo-cuenta"></strong></p>
+                <a class="boton-cuenta" href="formulario.html">Consultar seguimiento</a>
+                <form id="form-editar-cuenta" class="form-cuenta form-editar-cuenta">
+                    <h2>Editar mis datos</h2>
+                    <input name="nombre" type="text" placeholder="Nuevo nombre">
+                    <input name="correo" type="email" placeholder="Nuevo correo">
+                    <input name="contrasena" type="password" placeholder="Nueva contraseña" minlength="6">
+                    <div id="aviso-cuenta" class="aviso-cuenta" role="alert"></div>
+                    <button class="boton-cuenta" type="submit">Guardar cambios</button>
+                </form>
+                <button id="btn-cerrar-sesion" class="boton-cuenta boton-cuenta-claro" type="button">Cerrar sesión</button>
+                <button id="btn-desactivar-cuenta" class="boton-peligro" type="button">Desactivar cuenta</button>
+            </div>
+            <a class="enlace-volver-cuenta" href="principal.html">Volver al inicio</a>
+        </section>
+    </main>
+</body>
+<script src="../js/auth.js"></script>
+</html>

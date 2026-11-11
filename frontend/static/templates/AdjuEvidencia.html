@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi reporte (Testigo, anonimo)</title>
+  <link rel="stylesheet" href="../css/reporte.css">
+</head>
+<body>
+
+  <!-- Botón Volver (Arriba Izquierda) -->
+  <button type="button" class="btn-top-left" onclick="history.back()">VOLVER</button>
+
+  <div class="container">
+    <!-- Encabezado Principal -->
+    <header class="header">
+      <h1>Mi reporte (Testigo, anonimo)</h1>
+      <p class="subtitle">
+        No se solicitarán tu nombre ni tus datos de contacto. Ten en cuenta que las evidencias o los detalles que compartas podrían revelar información sobre las personas involucradas.
+      </p>
+    </header>
+
+    <!-- Tarjeta del Formulario -->
+    <main class="form-card">
+
+      <form id="reportForm" action="principal.html" method="GET" enctype="multipart/form-data">
+        
+        <!-- Pregunta 8: ¿Cuentas con evidencias? -->
+        <div class="form-group" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+          <label class="form-label">8. ¿Cuentas con evidencias? *</label>
+          <div class="radio-options" style="width: 100%; justify-content: space-around;">
+            <label class="custom-radio">
+              <input type="radio" name="cuentasEvidencias" value="SI" id="evidenciasSi" required onchange="toggleEvidencias()">
+              <span class="radio-box"></span>
+              <div class="radio-text"><strong>SI</strong></div>
+            </label>
+            <label class="custom-radio">
+              <input type="radio" name="cuentasEvidencias" value="NO" id="evidenciasNo" required onchange="toggleEvidencias()">
+              <span class="radio-box"></span>
+              <div class="radio-text"><strong>NO</strong></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Sección para Adjuntar Archivos -->
+        <div id="seccionArchivo" class="form-group" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 25px 0; transition: opacity 0.3s ease;">
+          <div id="cajaTextoArchivo" class="custom-input" style="flex: 2; display: flex; align-items: center; color: #777; background-color: #e2e2e2; padding: 10px 15px;">
+            <span id="file-chosen">ADJUNTAR EVIDENCIAS (Fotos, videos, documentos)</span>
+          </div>
+          <label id="labelSubir" for="archivoEvidencia" class="btn-subir" style="flex: 1; background-color: #d184bf; color: white; padding: 10px 20px; text-align: center; border-radius: 4px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">
+            SUBIR ARCHIVO
+          </label>
+          <input type="file" id="archivoEvidencia" name="archivoEvidencia" style="display: none;" onchange="document.getElementById('file-chosen').textContent = this.files[0] ? this.files[0].name : 'ADJUNTAR EVIDENCIAS (Fotos, videos, documentos)'">
+        </div>
+
+        <!-- Pregunta 9: ¿Hay testigos que puedan aportar información? -->
+        <div class="form-group" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+          <label class="form-label">9. ¿Hay testigos que puedan aportar información? *</label>
+          <div class="radio-options" style="width: 100%; justify-content: space-around;">
+            <label class="custom-radio">
+              <input type="radio" name="hayTestigos" value="SI" required>
+              <span class="radio-box"></span>
+              <div class="radio-text"><strong>SI</strong></div>
+            </label>
+            <label class="custom-radio">
+              <input type="radio" name="hayTestigos" value="NO" required>
+              <span class="radio-box"></span>
+              <div class="radio-text"><strong>NO</strong></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Pregunta 10: Nombre de la persona que reporta -->
+        <div class="form-group">
+          <label class="form-label" for="nombreReporta">10. Nombre de la persona que reporta *</label>
+          <div class="input-wrapper">
+            <input type="text" id="nombreReporta" name="nombreReporta" class="custom-input" placeholder="Nombre completo..." required>
+          </div>
+        </div>
+
+        <!-- Pregunta 12: Correo electrónico de contacto -->
+        <div class="form-group">
+          <label class="form-label" for="correoContacto">12. Correo electrónico de contacto</label>
+          <div class="input-wrapper">
+            <input type="email" id="correoContacto" name="correoContacto" class="custom-input" placeholder="correo@ejemplo.com">
+          </div>
+        </div>
+
+      </form>
+    </main>
+  </div>
+
+  <!-- Botón Continuar -->
+  <button type="submit" form="reportForm" class="btn-bottom-right">Continuar</button>
+
+  <!-- Script para activar/desactivar el cargador de archivos -->
+  <script>
+    function toggleEvidencias() {
+      const radioSi = document.getElementById('evidenciasSi');
+      const inputArchivo = document.getElementById('archivoEvidencia');
+      const labelSubir = document.getElementById('labelSubir');
+      const seccionArchivo = document.getElementById('seccionArchivo');
+      const cajaTexto = document.getElementById('cajaTextoArchivo');
+
+      if (radioSi.checked) {
+        // Habilitar
+        inputArchivo.disabled = false;
+        labelSubir.style.pointerEvents = 'auto';
+        labelSubir.style.opacity = '1';
+        seccionArchivo.style.opacity = '1';
+        cajaTexto.style.backgroundColor = '#e2e2e2';
+      } else {
+        // Deshabilitar y limpiar selección previa
+        inputArchivo.value = '';
+        document.getElementById('file-chosen').textContent = 'ADJUNTAR EVIDENCIAS (Fotos, videos, documentos)';
+        inputArchivo.disabled = true;
+        labelSubir.style.pointerEvents = 'none';
+        labelSubir.style.opacity = '0.5';
+        seccionArchivo.style.opacity = '0.4';
+      }
+    }
+
+    // Ejecutar al cargar la página por si hay algún estado por defecto
+    window.onload = function() {
+      toggleEvidencias();
+    };
+  </script>
+</body>
+<script src="../js/reporte_api.js"></script>
+</html>

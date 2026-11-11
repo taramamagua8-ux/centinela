@@ -1,0 +1,9 @@
+Centinela Digital
+
+Estructura del proyecto
+- backend: lógica del servidor y endpoints.
+- database: esquema de la base de datos.
+- frontend/static/css: hojas de estilos.
+- frontend/static/img: imágenes y recursos gráficos.
+- frontend/static/js: scripts del navegador.
+- frontend/static/templates: páginas HTML.

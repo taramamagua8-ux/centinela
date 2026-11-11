@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Reporte (Testigo, Anónimo)</title>
+  <link rel="stylesheet" href="../css/reporte.css">
+</head>
+<body>
+
+  <!-- Botón Volver -->
+  <button type="button" class="btn-top-left" onclick="history.back()">VOLVER</button>
+
+  <div class="container">
+    <header class="header">
+      <h1>Mi reporte (Testigo, anonimo)</h1>
+      <p class="subtitle">
+        No se solicitarán tu nombre ni tus datos de contacto. Ten en cuenta que las evidencias o los detalles que compartas podrían revelar información sobre las personas involucradas.
+      </p>
+    </header>
+
+    <main class="form-card">
+      <p class="disclaimer">
+        Los campos marcados con * serían obligatorios en esta propuesta. Los demás serían opcionales. La obligatoriedad definitiva debe ajustarse a los protocolos de tu institución.
+      </p>
+
+      <!-- Si por ahora no usas base de datos, puedes dejar el action vacío o apuntando a una ruta de prueba -->
+      <form id="reportForm" action="AdjuEvidencia.html" method="GET">
+        
+        <!-- Pregunta 1 -->
+        <div class="form-group">
+          <label class="form-label" for="tipoViolencia">1–¿Qué tipo de violencia crees que sufre?*</label>
+          <div class="input-wrapper">
+            <select id="tipoViolencia" name="tipoViolencia" class="custom-select" required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="Violencia física">Violencia física</option>
+              <option value="Violencia psicológica">Violencia psicológica</option>
+              <option value="Violencia sexual">Violencia sexual</option>
+              <option value="Violencia económica">Violencia económica</option>
+              <option value="Violencia patrimonial">Violencia patrimonial</option>
+              <option value="Agresión verbal">Agresión verbal</option>
+              <option value="Control y coerción">Control y coerción</option>
+              <option value="Amenazas e intimidación">Amenazas e intimidación</option>
+              <option value="Privación ilegítima de la libertad">Privación ilegítima de la libertad</option>
+              <option value="Negligencia y abandono">Negligencia y abandono</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div class="form-group">
+          <label class="form-label" for="fecha">2. Fecha aproximada del incidente*</label>
+          <div class="input-wrapper">
+            <input type="date" id="fecha" name="fecha" class="custom-input" required>
+          </div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div class="form-group">
+          <label class="form-label" for="lugar">3. Lugar donde ocurrió *</label>
+          <div class="input-wrapper">
+            <input type="text" id="lugar" name="lugar" class="custom-input" placeholder="Ej. Afuera de la escuela..." required>
+          </div>
+        </div>
+
+        <!-- Pregunta 4 -->
+        <div class="form-group">
+          <label class="form-label" for="ayudaInmediata">4– ¿La persona necesita ayuda inmediata para estar a salvo?</label>
+          <div class="input-wrapper">
+            <select id="ayudaInmediata" name="ayudaInmediata" class="custom-select">
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="SI">SI</option>
+              <option value="NO">NO</option>
+              <option value="No estoy segu@">No estoy segu@</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pregunta 5 -->
+        <div class="form-group">
+          <label class="form-label">5. ¿Ha ocurrido anteriormente? *</label>
+          <div class="input-wrapper radio-group-wrapper">
+            <div class="radio-options">
+              <label class="custom-radio">
+                <input type="radio" name="haOcurrido" value="SI" required>
+                <span class="radio-box"></span>
+                <div class="radio-text">
+                  <strong>SI</strong>
+                  <span>Ha ocurrido anteriormente</span>
+                </div>
+              </label>
+
+              <label class="custom-radio">
+                <input type="radio" name="haOcurrido" value="NO" required>
+                <span class="radio-box"></span>
+                <div class="radio-text">
+                  <strong>NO</strong>
+                  <span>No ha ocurrido anteriormente</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pregunta 6 -->
+        <div class="form-group">
+          <label class="form-label" for="descripcion">6. Describe lo ocurrido *</label>
+          <div class="input-wrapper">
+            <textarea id="descripcion" name="descripcion" class="custom-textarea" rows="4" placeholder="Describe brevemente lo que presenciaste..." required></textarea>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <!-- Botón Continuar flotante vinculado al formulario -->
+  <button type="submit" form="reportForm" class="btn-bottom-right">Continuar</button>
+
+</body>
+<script src="../js/reporte_api.js"></script>
+</html>

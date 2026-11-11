@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información de institución | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="../js/detalle_institucion.js" defer></script>
+
+    <style>
+        body {
+            background: white !important;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin: 0;
+        }
+
+        header {
+            padding: 18px 7%;
+            border-bottom: 1px solid #e5e5e5;
+            background: white;
+        }
+
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .marca {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            font-size: 13px;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .ruta {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 23px;
+        }
+
+        h2 {
+            font-size: 14px;
+            margin-top: 0;
+        }
+
+        p, li {
+            font-size: 12px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .encabezado-institucion {
+            padding: 25px;
+            border: 1px solid #e3e3e3;
+            border-radius: 9px;
+            margin-bottom: 20px;
+        }
+
+        .bloque {
+            border: 1px solid #e3e3e3;
+            border-radius: 9px;
+            padding: 22px;
+            margin-bottom: 15px;
+            background: white;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 16px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            color: #333;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .volver:hover {
+            background: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+
+        <div class="ruta">
+            Inicio › Directorio › Información de institución
+        </div>
+
+        <section class="encabezado-institucion">
+
+            <h1 id="nombreInstitucion">Nombre de la institución</h1>
+
+            <p id="resumenInstitucion"></p>
+
+            <p id="ubicacionInstitucion"></p>
+
+        </section>
+
+        <section class="bloque">
+
+            <h2>Descripción</h2>
+
+            <p id="descripcionInstitucion"></p>
+
+        </section>
+
+        <section class="bloque">
+
+            <h2>Servicios y áreas de atención</h2>
+
+            <ul id="serviciosInstitucion"></ul>
+
+        </section>
+
+        <section class="bloque">
+
+            <h2>Contacto</h2>
+
+            <p><strong>Teléfono:</strong> <span id="telefonoInstitucion"></span></p>
+
+            <p><strong>Horario:</strong> <span id="horarioInstitucion"></span></p>
+
+            <p><strong>Sitio oficial:</strong> <span id="sitioInstitucion"></span></p>
+
+        </section>
+
+        <a href="resultados_busqued.html" class="volver">Volver al directorio</a>
+
+    </main>
+
+</body>
+</html>

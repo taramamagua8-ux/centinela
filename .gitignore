@@ -1,0 +1,6 @@
+# Archivos locales y temporales
+__pycache__/
+*.py[cod]
+.env
+.venv/
+node_modules/

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: centinela
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 60 backend.main:app
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: CENTINELA_DB_HOST
+        sync: false
+      - key: CENTINELA_DB_PORT
+        value: "3306"
+      - key: CENTINELA_DB_USER
+        sync: false
+      - key: CENTINELA_DB_PASSWORD
+        sync: false
+      - key: CENTINELA_DB_NAME
+        value: centinela_digital

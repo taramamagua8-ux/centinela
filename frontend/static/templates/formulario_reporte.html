@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centinela Digital - Formulario de Reporte</title>
+    <link rel="stylesheet" href="../css/reporte.css">
+</head>
+<body class="pagina-seleccion-reporte">
+    <div class="pantalla-formulario">
+        <div class="tarjeta-formulario-limpia">
+            <h2>Formulario de Reporte</h2>
+            <form id="formularioReporte">
+                <div class="grupo-formulario">
+                    <label for="tipo_reporte">¿Cómo deseas realizar tu reporte?</label>
+                    <select id="tipo_reporte" required>
+                        <option value="" disabled selected>Selecciona una opción</option>
+                        <option value="testigo_anonimo">Testigo anónimo</option>
+                        <option value="victima_anonima">Víctima anónima</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-formulario">Continuar</button>
+            </form>
+        </div>
+    </div>
+    <script src="../js/formulario_reporte.js"></script>
+</body>
+</html>

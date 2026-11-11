@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión | Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="pagina-informativa">
+    <main class="cuenta-contenedor">
+        <section class="cuenta-panel cuenta-formulario">
+            <button class="enlace-volver-cuenta boton-volver-cuenta" onclick="window.location.href='cuenta.html'">← Volver</button>
+            <h1>Iniciar sesión</h1>
+            <p>Ingresa a tu cuenta para administrar tus datos y consultar tus reportes.</p>
+            <form id="form-login" class="form-cuenta">
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" name="correo" type="email" required autocomplete="email">
+                <label for="contrasena">Contraseña</label>
+                <input id="contrasena" name="contrasena" type="password" required autocomplete="current-password">
+                <div id="aviso-auth" class="aviso-cuenta" role="alert"></div>
+                <button class="boton-cuenta" type="submit">Iniciar sesión</button>
+            </form>
+            <p class="texto-cuenta-secundario">¿No tienes cuenta?</p>
+            <a class="enlace-volver-cuenta" href="registro.html">Crear una cuenta</a>
+        </section>
+    </main>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

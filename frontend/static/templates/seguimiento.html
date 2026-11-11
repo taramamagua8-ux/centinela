@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte registrado | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <style>
+        body.pagina-reporte-exitoso {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+            background-size: 200% 200%;
+            animation: luzMovil 20s ease-in-out infinite;
+        }
+
+        .contenido-reporte {
+            width: min(90%, 850px);
+            margin: 40px auto;
+            padding: 20px;
+            color: #ffffff;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .titulo-reporte { margin: 0 0 5px; font-size: 2.2rem; font-weight: 700; }
+        .subtitulo-reporte { margin: 0 0 30px; font-size: 1.2rem; opacity: .9; }
+
+        .tarjeta-detalles {
+            padding: 40px 30px;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #333333;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+            text-align: left;
+        }
+
+        .datos-lista {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            padding: 0 0 25px;
+            border-bottom: 1px solid #eeeeee;
+            list-style: none;
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .datos-lista li { margin-bottom: 10px; color: #4a4a4a; }
+        .datos-lista li strong { color: #222222; }
+        .datos-lista .folio-destacado { color: #b0559e; font-size: 1.3rem; }
+        .texto-informativo { max-width: 600px; margin: 0 auto 40px; color: #666666; line-height: 1.6; text-align: center; }
+        .contenedor-boton { max-width: 600px; margin: 0 auto; text-align: right; }
+        .btn-volver { display: inline-block; padding: 12px 35px; border-radius: 20px; background: #dd739a; color: #fff; text-decoration: none; font-weight: 600; }
+        .btn-volver:hover { background: #b0559e; }
+        .estado-cargando { color: #777; }
+    </style>
+</head>
+<body class="pagina-reporte-exitoso">
+    <main class="contenido-reporte">
+        <h1 class="titulo-reporte">Tu reporte se ha registrado</h1>
+        <p class="subtitulo-reporte">¡Diste tu gran paso!</p>
+
+        <section class="tarjeta-detalles">
+            <ul class="datos-lista">
+                <li class="folio-destacado"><strong>Folio:</strong> <span id="folio-reporte">Cargando...</span></li>
+                <li><strong>Estatus:</strong> <span id="estado-reporte" class="estado-cargando">Consultando...</span></li>
+                <li><strong>Tipo de violencia:</strong> <span id="tipo-reporte">Registrado en el formulario</span></li>
+            </ul>
+
+            <p class="texto-informativo">
+                Conserva tu folio para consultar el seguimiento de tu reporte. Puedes volver al sitio o ingresar a la pantalla de seguimiento.
+            </p>
+
+            <div class="contenedor-boton">
+                <a href="formulario.html" class="btn-volver">Consultar seguimiento</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API = 'http://' + window.location.hostname + ':5000/api';
+        const folio = new URLSearchParams(window.location.search).get('folio');
+        const folioElemento = document.getElementById('folio-reporte');
+        const estadoElemento = document.getElementById('estado-reporte');
+
+        folioElemento.textContent = folio || 'No disponible';
+
+        if (folio) {
+            fetch(API + '/reportes/folio/' + encodeURIComponent(folio))
+                .then((respuesta) => respuesta.json().then((datos) => ({ ok: respuesta.ok, datos })))
+                .then((resultado) => {
+                    if (!resultado.ok) throw new Error(resultado.datos.error || 'Folio no encontrado');
+                    const reporte = resultado.datos.reporte;
+                    return fetch(API + '/reportes/' + reporte.id_reporte + '/estado')
+                        .then((respuesta) => respuesta.json())
+                        .then((estado) => estado.estado?.nombre || reporte.id_estado || 'Recibido');
+                })
+                .then((estado) => {
+                    estadoElemento.textContent = estado;
+                    estadoElemento.classList.remove('estado-cargando');
+                })
+                .catch(() => {
+                    estadoElemento.textContent = 'Recibido';
+                    estadoElemento.classList.remove('estado-cargando');
+                });
+        } else {
+            estadoElemento.textContent = 'Folio no disponible';
+        }
+    </script>
+</body>
+</html>

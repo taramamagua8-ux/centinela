@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento - Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+    <main class="pagina-seguimiento">
+
+        <!-- Encabezado: Volver + título -->
+        <header class="encabezado-seguimiento">
+            <button type="button" class="btn-volver" onclick="window.history.length > 1 ? window.history.back() : window.location.href='principal.html'">← Volver</button>
+            <h1 class="titulo-seguimiento">Ingresa a tu cuenta para ver tu seguimiento</h1>
+        </header>
+
+        <!-- Tarjeta blanca -->
+        <section class="tarjeta-seguimiento">
+            <img src="../img/Copia de LEO.jpg" alt="Logo Centinela Digital" class="logo-seguimiento">
+
+            <form id="form-folio" novalidate>
+                <label for="folio" class="etiqueta-folio">Coloca tu folio de seguimiento:</label>
+                <p class="ayuda-folio">Es el código que recibiste al enviar tu reporte.</p>
+
+                <input type="text" id="folio" name="folio" class="campo-folio"
+                       placeholder="Ej. CD-2026-000123" autocomplete="off">
+
+                <!-- Mensaje de validación -->
+                <div id="aviso-folio" class="aviso-folio" role="alert">
+                    <span class="aviso-icono">i</span>
+                    <span>Coloca un folio</span>
+                </div>
+
+                <div class="botones-seguimiento">
+                    <button type="button" class="btn-secundario" onclick="window.location.href='formulario_reporte.html'">NO TENGO FOLIO</button>
+                    <button type="submit" class="btn-principal">CONTINUAR</button>
+                </div>
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="../js/seguimiento.js?v=2"></script>
+</body>
+</html>

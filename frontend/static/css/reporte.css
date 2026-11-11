@@ -1,0 +1,718 @@
+/* Reset básico y Fuentes */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+body {
+  background-color: #92456e; /* Fondo borgoña / morado */
+  color: #ffffff;
+  min-height: 100vh;
+  padding: 40px 20px 80px 20px;
+  position: relative;
+}
+
+/* Contenedor principal centrado */
+.container {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+/* Encabezado */
+.header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.header .subtitle {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #f3e5f5;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+/* Tarjeta del Formulario (Blanca) */
+.form-card {
+  background-color: #ffffff;
+  color: #4a4a4a;
+  border-radius: 6px;
+  padding: 35px 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+
+.disclaimer {
+  font-size: 0.85rem;
+  color: #777;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+/* Filas del Formulario en Grid / Flex (Texto izquierda, Inputs derecha) */
+.form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 22px;
+  gap: 20px;
+}
+
+.form-label {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.input-wrapper {
+  flex: 1;
+}
+
+/* Estilos de Entradas y Campos (Gris Claro) */
+.custom-select,
+.custom-input,
+.custom-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #e2e2e2;
+  border: 1px solid #d0d0d0;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.custom-select:focus,
+.custom-input:focus,
+.custom-textarea:focus {
+  background-color: #eaeaea;
+  border-color: #92456e;
+  box-shadow: 0 0 0 2px rgba(146, 69, 110, 0.15);
+}
+
+.custom-textarea {
+  resize: vertical;
+  min-height: 85px;
+}
+
+/* Estilos para Radio Buttons (SI / NO) */
+.radio-options {
+  display: flex;
+  gap: 40px;
+}
+
+.custom-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-radio input {
+  display: none; /* Ocultar radio nativo por defecto */
+}
+
+.radio-box {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #555;
+  background-color: #fff;
+  border-radius: 3px;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.custom-radio input:checked + .radio-box {
+  background-color: #222;
+  border-color: #222;
+}
+
+.custom-radio input:checked + .radio-box::after {
+  content: "✓";
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.radio-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  color: #333;
+}
+
+.radio-text strong {
+  font-size: 0.85rem;
+}
+
+.radio-text span {
+  color: #777;
+  font-size: 0.75rem;
+}
+
+/* Botones flotantes (Volver y Continuar) con diseño redondeado */
+.btn-top-left {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+  background-color: #d184bf;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: background-color 0.2s, transform 0.1s;
+  z-index: 10;
+}
+
+.btn-bottom-right {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #d184bf;
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: background-color 0.2s, transform 0.1s;
+  z-index: 10;
+}
+
+.btn-top-left:hover,
+.btn-bottom-right:hover {
+  background-color: #c070ad;
+}
+
+
+@keyframes luzMovil {
+    0%   { background-position: 0% 0%; }
+    50%  { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+/* Pantalla de selección de modalidad del reporte */
+.pagina-seleccion-reporte {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+   background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite; }
+  
+
+
+
+
+
+
+
+.pagina-seleccion-reporte .pantalla-formulario {
+  width: min(100%, 450px);
+  padding: 0;
+}
+
+.pagina-seleccion-reporte .tarjeta-formulario-limpia {
+  padding: 38px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  
+  box-shadow: 0 16px 30px rgba(74, 25, 82, 0.28);
+  backdrop-filter: blur(8px);
+}
+
+.pagina-seleccion-reporte .tarjeta-formulario-limpia h2 {
+  margin: 0 0 28px;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.pagina-seleccion-reporte .grupo-formulario {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.pagina-seleccion-reporte .grupo-formulario label {
+  display: block;
+  margin-bottom: 9px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pagina-seleccion-reporte .grupo-formulario select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 7px;
+  outline: none;
+  background: #101d2c;
+  color: #ffffff;
+  font: inherit;
+  font-size: 14px;
+}
+
+.pagina-seleccion-reporte .btn-formulario {
+  width: 100%;
+  margin-top: 4px;
+  padding: 14px;
+  border: 0;
+  border-radius: 7px;
+  background: #963b61;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.pagina-seleccion-reporte .btn-formulario:hover {
+  background: #7f2f51;
+  transform: translateY(-1px);
+}
+
+.btn-top-left:active,
+.btn-bottom-right:active {
+  transform: scale(0.97);
+}
+
+/* Diseño Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  body {
+    padding-top: 80px;
+  }
+  
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .input-wrapper {
+    width: 100%;
+  }
+
+  .form-card {
+    padding: 20px;
+  }
+
+  .btn-top-left {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+  }
+
+  .btn-bottom-right {
+    position: static;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* Importación opcional de fuente moderna */
+@import url('https://googleapis.com');
+
+/* Fondo general de la página basado en tu imagen */
+/* Fondo general de la página con gradiente dinámico */
+.pagina-comencemos-reporte {
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61 100%);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+    
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 30px;
+    margin: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+
+/* Botón Volver Superior */
+.btn-volver {
+    background: linear-gradient(135deg, #b969b2, #94488b);
+    color: #ffffff;
+    border: none;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    margin-bottom: 15px;
+}
+
+/* Título superior fuera de la tarjeta */
+.titulo-pagina {
+    color: #ffffff;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+/* Tarjeta Blanca Contenedora */
+.comencemos-reporte {
+    background-color: #ffffff;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    color: #833961;
+}
+
+/* Párrafo explicativo superior */
+.comencemos-reporte .texto-principal {
+    font-size: 17px;
+    line-height: 1.6;
+    text-align: center;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 35px;
+}
+
+/* Fila de Términos (Texto + Botón Leer) */
+.comencemos-reporte .fila-terminos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+.comencemos-reporte .texto-secundario {
+    font-size: 14px;
+    color: #9c5c7f;
+    margin: 0;
+    max-width: 65%;
+}
+
+/* Botón Gris "Leer" */
+.comencemos-reporte .btn-leer {
+    background-color: #d1d1d6;
+    color: #723453;
+    border: none;
+    padding: 14px 45px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.comencemos-reporte .btn-leer:hover {
+    background-color: #c4c4ca;
+}
+
+/* Fila Inferior (Checkbox integrado + Botón Continuar) */
+.comencemos-reporte .fila-acciones {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Contenedor del Checkbox y su etiqueta */
+.comencemos-reporte .contenedor-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 65%;
+}
+
+/* Estilización del Checkbox nativo */
+.comencemos-reporte input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 45px;
+    height: 45px;
+    background-color: #e2f7db; /* Verde clarito */
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Efecto visual cuando se marca la casilla (Palomita integrada) */
+.comencemos-reporte input[type="checkbox"]:checked::before {
+    content: '✓';
+    color: #63264b;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.comencemos-reporte .texto-check {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+/* Botón Morado "Continuar" */
+.comencemos-reporte .btn-continuar {
+    background: linear-gradient(135deg, #c56ebc, #9c4c93);
+    color: #ffffff;
+    border: none;
+    padding: 14px 25px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(156, 76, 147, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.comencemos-reporte .btn-continuar:hover {
+    transform: translateY(-1px);
+}
+
+
+
+
+
+
+
+/* ==========================================================================
+   PÁGINA DE TÉRMINOS Y CONDICIONES
+   ========================================================================== */
+
+
+
+
+/* Nuevo estilo para ubicar el botón arriba a la izquierda */
+.btn-volver-terminos-superior {
+    position: absolute;
+    top: 30px;   /* Distancia desde el borde superior */
+    left: 40px;  /* Distancia desde el borde izquierdo (zona marcada) */
+    
+    /* Mismos estilos visuales de tu botón Volver anterior */
+    background: linear-gradient(135deg, #c56ebc, #9c4c93);
+    color: #ffffff;
+    border: none;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, background 0.2s ease;
+    z-index: 10; /* Asegura que se dibuje por encima del fondo */
+}
+
+.btn-volver-terminos-superior:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+
+
+
+
+
+
+
+
+
+/* Fondo general heredado con tu gradiente radial animado */
+.pagina-terminos {
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61 100%);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+       position: relative;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding: 30px;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Título de la sección en la parte superior */
+.titulo-terminos {
+    color: #ffffff;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 400;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+/* Tarjeta Blanca Principal */
+.contenedor-terminos {
+    background-color: #ffffff;
+    max-width: 750px;
+    width: 100%;
+    max-height: 70vh; /* Altura máxima para permitir scroll si el texto es largo */
+    overflow-y: auto;  /* Scroll vertical interno como en la imagen */
+    padding: 40px;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    color: #333333; /* Texto oscuro para máxima legibilidad */
+    box-sizing: border-box;
+}
+
+/* Estilo para los párrafos introductorios */
+.contenedor-terminos .introduccion {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #222222;
+    margin-bottom: 20px;
+}
+
+/* Títulos de las secciones numeradas (1, 2, 3...) */
+.contenedor-terminos h2 {
+    font-size: 16px;
+    color: #723453; /* Tono vino para destacar los títulos */
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+/* Listas con viñetas para las pautas */
+.contenedor-terminos ul {
+    margin: 0 0 20px 0;
+    padding-left: 20px;
+}
+
+.contenedor-terminos li {
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    color: #333333;
+    list-style-type: disc;
+}
+
+/* Texto en negrita dentro de las viñetas */
+.contenedor-terminos li strong {
+    color: #000000;
+    font-weight: 700;
+}
+
+/* Botón "Volver" centrado abajo */
+.btn-volver-terminos {
+    background: linear-gradient(135deg, #c56ebc, #9c4c93);
+    color: #ffffff;
+    border: none;
+    padding: 12px 50px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(156, 76, 147, 0.3);
+    margin: 30px auto 0 auto;
+    display: block; /* Permite centrarlo con el margin auto */
+    transition: transform 0.2s ease;
+}
+
+.btn-volver-terminos:hover {
+    transform: translateY(-1px);
+}
+
+/* Personalización elegante de la barra de scroll interno */
+.contenedor-terminos::-webkit-scrollbar {
+    width: 8px;
+}
+.contenedor-terminos::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+.contenedor-terminos::-webkit-scrollbar-thumb {
+    background: #b969b2;
+    border-radius: 4px;
+}
+
+
+/* Contenedor horizontal para empujar y alinear los botones inferiores */
+.fila-botones-terminos {
+    display: flex;
+    justify-content: center; /* Centra el botón continuar en la parte de abajo */
+    margin-top: 25px;
+    width: 100%;
+    max-width: 750px;
+}
+
+
+
+/* Botón Volver estilizado de forma discreta */
+.btn-volver-terminos {
+    background-color: #d1d1d6;
+    color: #723453;
+    border: none;
+    padding: 12px 40px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-volver-terminos:hover {
+    background-color: #c4c4ca;
+}
+
+/* Botón Continuar con gradiente llamativo */
+.btn-continuar-terminos {
+    background: linear-gradient(135deg, #c56ebc, #9c4c93);
+    color: #ffffff;
+    border: none;
+    padding: 12px 40px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(156, 76, 147, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.btn-continuar-terminos:hover {
+    transform: translateY(-1px);
+}
+
+
+.fondo-general {
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61 100%);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+    
+}

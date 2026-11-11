@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta | Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="pagina-informativa">
+    <main class="cuenta-contenedor">
+        <section class="cuenta-panel cuenta-formulario">
+            <button class="enlace-volver-cuenta boton-volver-cuenta" onclick="window.location.href='cuenta.html'">← Volver</button>
+            <h1>Crear cuenta</h1>
+            <p>Regístrate para administrar tus datos y consultar tus reportes.</p>
+            <form id="form-registro" class="form-cuenta">
+                <label for="nombre">Nombre completo</label>
+                <input id="nombre" name="nombre" type="text" required autocomplete="name">
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" name="correo" type="email" required autocomplete="email">
+                <label for="contrasena">Contraseña</label>
+                <input id="contrasena" name="contrasena" type="password" minlength="6" required autocomplete="new-password">
+                <label for="confirmar_contrasena">Confirmar contraseña</label>
+                <input id="confirmar_contrasena" name="confirmar_contrasena" type="password" minlength="6" required autocomplete="new-password">
+                <div id="aviso-auth" class="aviso-cuenta" role="alert"></div>
+                <button class="boton-cuenta" type="submit">Crear cuenta</button>
+            </form>
+            <p class="texto-cuenta-secundario">¿Ya tienes cuenta?</p>
+            <a class="enlace-volver-cuenta" href="login.html">Iniciar sesión</a>
+        </section>
+    </main>
+    <script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+-- Esquema inicial de la base de datos de Centinela Digital.

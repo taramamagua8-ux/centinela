@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="../js/resultados_busqued.js" defer></script>
+
+    <style>
+        body {
+            background: white !important;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin: 0;
+        }
+
+        header {
+            padding: 18px 7%;
+            border-bottom: 1px solid #e5e5e5;
+            background: white;
+        }
+
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .marca {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            font-size: 13px;
+        }
+
+        main {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .ruta {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 23px;
+        }
+
+        h2 {
+            font-size: 15px;
+        }
+
+        p {
+            font-size: 12px;
+            line-height: 1.7;
+            color: #666;
+        }
+
+        .buscador {
+            display: flex;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        input {
+            flex: 1;
+            min-width: 0;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: 12px;
+            background: white;
+        }
+
+        button {
+            padding: 0 22px;
+            background: white;
+            border: 1px solid #bbb;
+            border-radius: 7px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        .cantidad {
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .lista-resultados {
+            display: grid;
+            gap: 15px;
+        }
+
+        .tarjeta-resultado {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border: 1px solid #e2e2e2;
+            border-radius: 9px;
+            background: white;
+        }
+
+        .informacion {
+            flex: 1;
+        }
+
+        .informacion h2 {
+            margin-top: 0;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            padding: 5px 9px;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            font-size: 10px;
+            margin: 3px;
+        }
+
+        .boton-ver {
+            padding: 10px 16px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            color: #333;
+            text-decoration: none;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .boton-ver:hover,
+        button:hover {
+            background: #f5f5f5;
+        }
+
+        .mensaje {
+            padding: 25px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .tarjeta-resultado {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .boton-ver {
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+
+        <div class="ruta">
+            Inicio › Directorio › Resultados de búsqueda
+        </div>
+
+        <section>
+            <h1>Resultados de búsqueda</h1>
+            <p id="textoBusqueda">Instituciones disponibles</p>
+        </section>
+
+        <form class="buscador" id="formularioResultados">
+
+            <input
+                type="search"
+                name="q"
+                id="nuevaBusqueda"
+                placeholder="Buscar otra institución o servicio..."
+            >
+
+            <button type="submit">Buscar</button>
+
+        </form>
+
+        <p class="cantidad" id="cantidadResultados"></p>
+
+        <section class="lista-resultados" id="listaResultados"></section>
+
+        <div class="mensaje" id="mensajeSinResultados" hidden>
+            <h2>No se encontraron resultados</h2>
+            <p>Intenta buscar con otro nombre, ubicación o tipo de atención.</p>
+        </div>
+
+    </main>
+
+</body>
+</html>

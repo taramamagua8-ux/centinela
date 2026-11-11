@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
+    <style>
+        body.splash-index {
+            min-height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 55% 48%, rgba(216, 126, 242, .9) 0, rgba(216, 126, 242, .45) 18%, transparent 48%),
+                linear-gradient(135deg, #8f3d63 0%, #a34e83 48%, #8b3c64 100%);
+            color: #ffffff;
+        }
+
+        .splash-panel {
+            display: grid;
+            grid-template-columns: 190px minmax(260px, 390px);
+            align-items: center;
+            gap: 42px;
+            width: min(90%, 720px);
+            padding: 48px 42px;
+            border: 1px solid rgba(255, 255, 255, .28);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, .08);
+            box-shadow: 0 18px 45px rgba(57, 15, 61, .3);
+            backdrop-filter: blur(7px);
+            box-sizing: border-box;
+        }
+
+        .splash-marca {
+            text-align: center;
+        }
+
+        .splash-marca img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            filter: drop-shadow(0 7px 10px rgba(44, 10, 50, .3));
+        }
+
+        .splash-marca strong {
+            display: block;
+            margin-top: -5px;
+            font-size: 27px;
+            font-style: italic;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .splash-contenido {
+            text-align: center;
+        }
+
+        .splash-contenido p {
+            margin: 0 0 28px;
+            font-size: 20px;
+            line-height: 1.35;
+            text-shadow: 0 2px 5px rgba(70, 18, 70, .28);
+        }
+
+        .btn-visitar-sitio {
+            display: inline-block;
+            padding: 13px 24px;
+            border-radius: 6px;
+            background: #963b61;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 5px 14px rgba(77, 18, 68, .3);
+            transition: transform .2s ease, background .2s ease;
+        }
+
+        .btn-visitar-sitio:hover {
+            background: #702283;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 650px) {
+            .splash-panel {
+                grid-template-columns: 1fr;
+                gap: 22px;
+                padding: 25px;
+            }
+
+            .splash-marca img {
+                width: 125px;
+                height: 125px;
+            }
+
+            .splash-marca strong {
+                font-size: 23px;
+            }
+
+            .splash-contenido p {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+<body class="splash-index">
+    <main class="splash-panel">
+        <section class="splash-marca" aria-label="Centinela Digital">
+            <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
+        </section>
+        <section class="splash-contenido">
+            <p>Tu bienestar es primero,<br>averigua cómo puedes<br>ayudarte a ti o a algún<br>conocido.</p>
+            <a class="btn-visitar-sitio" href="principal.html">VISITAR CENTINELA DIGITAL</a>
+        </section>
+    </main>
+</body>
+</html>
+

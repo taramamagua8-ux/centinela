@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte enviado | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="pagina-informativa">
+    <main class="cuenta-contenedor">
+        <section class="cuenta-panel">
+            <h1>Reporte enviado correctamente</h1>
+            <p>Conserva este folio para consultar el seguimiento de tu reporte:</p>
+            <strong id="folio-confirmacion" class="folio-confirmacion">Generando folio...</strong>
+            <a class="boton-cuenta" href="formulario.html">Dar seguimiento</a>
+            <a class="enlace-volver-cuenta" href="principal.html">Volver al inicio</a>
+        </section>
+    </main>
+    <script>
+        const folio = new URLSearchParams(window.location.search).get('folio');
+        document.getElementById('folio-confirmacion').textContent = folio || 'No disponible';
+    </script>
+</body>
+</html>

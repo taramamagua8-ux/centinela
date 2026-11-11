@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="../js/directorio.js" defer></script>
+
+    <style>
+        body {
+            background: white !important;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            margin: 0;
+        }
+
+        header {
+            background: white;
+            padding: 18px 7%;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .marca {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            font-size: 13px;
+        }
+
+        main {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #666;
+        }
+
+        .buscador {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .buscador label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .campo-busqueda {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-family: inherit;
+            font-size: 13px;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .boton-buscar {
+            padding: 0 25px;
+            background: white;
+            border: 1px solid #bbb;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .sugerencias {
+            position: absolute;
+            top: 75px;
+            left: 0;
+            right: 85px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            z-index: 10;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .sugerencias button {
+            width: 100%;
+            padding: 12px;
+            text-align: left;
+            background: white;
+            border: none;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+
+        .sugerencias button:hover {
+            background: #f5f5f5;
+        }
+
+        .categorias {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .tarjeta-categoria {
+            background: white;
+            border: 1px solid #e3e3e3;
+            border-radius: 9px;
+            padding: 20px 10px;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .tarjeta-categoria:hover,
+        .tarjeta-institucion:hover {
+            border-color: #999;
+        }
+
+        .instituciones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+        }
+
+        .tarjeta-institucion {
+            border: 1px solid #e3e3e3;
+            border-radius: 9px;
+            padding: 20px;
+            background: white;
+        }
+
+        .tarjeta-institucion h3 {
+            font-size: 14px;
+            margin-top: 0;
+        }
+
+        .tarjeta-institucion p {
+            font-size: 12px;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            border: 1px solid #e5e5e5;
+            border-radius: 15px;
+            padding: 5px 9px;
+            font-size: 10px;
+            margin: 3px 2px;
+        }
+
+        .ver-mas {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 9px 15px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            color: #333;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .ver-mas:hover {
+            background: #f5f5f5;
+        }
+
+        @media (max-width: 600px) {
+            .campo-busqueda {
+                flex-direction: column;
+            }
+
+            .boton-buscar {
+                padding: 12px;
+            }
+
+            .sugerencias {
+                right: 0;
+                top: 105px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+
+        <section>
+            <h1>DIRECTORIO DE APOYO</h1>
+            <p>Encuentra instituciones y servicios de apoyo relacionados con situaciones de violencia.</p>
+        </section>
+
+        <section class="buscador">
+            <form id="formularioBusqueda" action="resultados_busqued.html" method="GET">
+
+                <label for="busqueda">Buscar institución o servicio</label>
+
+                <div class="campo-busqueda">
+                    <input
+                        type="search"
+                        id="busqueda"
+                        name="q"
+                        placeholder="Buscar institución, ubicación o tipo de atención..."
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button class="boton-buscar" type="submit">
+                        Buscar
+                    </button>
+                </div>
+
+                <ul class="sugerencias" id="sugerenciasBusqueda" hidden></ul>
+
+            </form>
+        </section>
+
+        <section>
+            <h2>Categorías de atención</h2>
+
+            <div class="categorias">
+
+                <button class="tarjeta-categoria" data-busqueda="psicologica">
+                    Atención psicológica
+                </button>
+
+                <button class="tarjeta-categoria" data-busqueda="juridica">
+                    Asesoría jurídica
+                </button>
+
+                <button class="tarjeta-categoria" data-busqueda="medica">
+                    Servicios médicos
+                </button>
+
+                <button class="tarjeta-categoria" data-busqueda="proteccion">
+                    Protección y seguridad
+                </button>
+
+                <button class="tarjeta-categoria" data-busqueda="social">
+                    Apoyo comunitario
+                </button>
+
+            </div>
+        </section>
+
+        <section>
+            <h2>Instituciones destacadas</h2>
+
+            <div class="instituciones">
+
+                <article class="tarjeta-institucion">
+                    <h3>Línea Sin Violencia</h3>
+                    <p>Orientación para mujeres en situación de violencia.</p>
+                    <span class="etiqueta">Psicológico</span>
+                    <span class="etiqueta">Jurídico</span>
+                    <br>
+                    <a href="detalle_institucion.html?id=linea-sin-violencia" class="ver-mas">Ver más</a>
+                </article>
+
+                <article class="tarjeta-institucion">
+                    <h3>Centro Naranja - Chimalhuacán</h3>
+                    <p>Información sobre servicios de atención para mujeres.</p>
+                    <span class="etiqueta">Psicológico</span>
+                    <span class="etiqueta">Jurídico</span>
+                    <br>
+                    <a href="detalle_institucion.html?id=centro-naranja" class="ver-mas">Ver más</a>
+                </article>
+
+                <article class="tarjeta-institucion">
+                    <h3>CEAVEM Regional Oriente</h3>
+                    <p>Atención y orientación para víctimas de delitos.</p>
+                    <span class="etiqueta">Víctimas</span>
+                    <span class="etiqueta">Jurídico</span>
+                    <br>
+                    <a href="detalle_institucion.html?id=ceavem-oriente" class="ver-mas">Ver más</a>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
