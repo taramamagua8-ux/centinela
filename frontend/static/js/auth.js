@@ -21,7 +21,8 @@ function limpiarSesion() {
 async function apiAuth(path, options = {}) {
     const usuario = usuarioGuardado();
     const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
-    if (usuario?.id) headers['X-Usuario-ID'] = usuario.id;
+    const token = sessionStorage.getItem('centinela_token');
+    if (token) headers['Authorization'] = 'Bearer ' + token;
     const respuesta = await fetch(API_AUTH + path, { ...options, headers });
     const datos = await respuesta.json().catch(() => ({}));
     if (!respuesta.ok) throw new Error(datos.error || 'No se pudo completar la operación.');

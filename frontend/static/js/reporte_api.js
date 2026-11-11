@@ -45,7 +45,7 @@ async function enviarFormularioInicial(evento) {
 
     const respuesta = await fetch(API_BASE + '/reportes', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', ...(sessionStorage.getItem('centinela_token') ? {'Authorization': 'Bearer ' + sessionStorage.getItem('centinela_token')} : {})},
         body: JSON.stringify(datos)
     });
     const resultado = await respuesta.json();
@@ -71,6 +71,7 @@ async function finalizarReporte(evento) {
         datosArchivo.append('archivo', archivo.files[0]);
         const respuestaArchivo = await fetch(API_BASE + '/reportes/' + reporte.id_reporte + '/evidencias', {
             method: 'POST',
+            headers: {'X-Reporte-Token': reporte.token_acceso},
             body: datosArchivo
         });
         if (!respuestaArchivo.ok) {

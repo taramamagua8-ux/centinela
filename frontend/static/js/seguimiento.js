@@ -1,7 +1,7 @@
 const formulario = document.getElementById('form-folio');
 const campoFolio = document.getElementById('folio');
 const aviso = document.getElementById('aviso-folio');
-const API_SEGUIMIENTO = 'http://' + window.location.hostname + ':5000/api';
+const API_SEGUIMIENTO = '/api';
 
 formulario.addEventListener('submit', function (e) {
     e.preventDefault();

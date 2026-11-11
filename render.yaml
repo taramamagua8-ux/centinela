@@ -9,13 +9,5 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.8
-      - key: CENTINELA_DB_HOST
+      - key: DATABASE_URL
         sync: false
-      - key: CENTINELA_DB_PORT
-        value: "3306"
-      - key: CENTINELA_DB_USER
-        sync: false
-      - key: CENTINELA_DB_PASSWORD
-        sync: false
-      - key: CENTINELA_DB_NAME
-        value: centinela_digital

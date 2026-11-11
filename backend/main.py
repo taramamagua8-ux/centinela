@@ -1,39 +1,38 @@
-"""API de Centinela Digital conectada a MariaDB/MySQL."""
-from datetime import datetime
-import json, os, secrets
+"""API de Centinela Digital conectada a PostgreSQL."""
+from datetime import datetime, timedelta
+import hashlib, io, json, os, secrets, threading
 from functools import wraps
 from pathlib import Path
 
-import pymysql
-from flask import Flask, g, jsonify, request, send_from_directory, redirect
+import psycopg
+from backend.database import connect, initialize
+from flask import Flask, g, jsonify, request, send_from_directory, redirect, send_file
 from werkzeug.security import check_password_hash, generate_password_hash
 
 FRONTEND = Path(__file__).resolve().parent.parent / "frontend" / "static"
 app = Flask(__name__, static_folder=str(FRONTEND), static_url_path="/static")
 app.config["JSON_AS_ASCII"] = False
 
+_database_ready = False
+_database_lock = threading.Lock()
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
+
 def db_connection():
-    return pymysql.connect(
-        host=os.getenv("CENTINELA_DB_HOST", "127.0.0.1"),
-        port=int(os.getenv("CENTINELA_DB_PORT", "3306")),
-        user=os.getenv("CENTINELA_DB_USER", "root"),
-        password=os.getenv("CENTINELA_DB_PASSWORD", ""),
-        database=os.getenv("CENTINELA_DB_NAME", "centinela_digital"),
-        charset="utf8mb4",
-        cursorclass=pymysql.cursors.DictCursor,
-        autocommit=False,
-        connect_timeout=10,
-        read_timeout=20,
-        write_timeout=20,
-    )
+    global _database_ready
+    if not _database_ready:
+        with _database_lock:
+            if not _database_ready:
+                initialize()
+                _database_ready = True
+    return connect()
 
 @app.before_request
 def open_db():
     if request.path.startswith("/api/") and request.method != "OPTIONS":
         try:
             g.db = db_connection()
-        except pymysql.MySQLError:
-            app.logger.exception("No se pudo conectar con MySQL")
+        except psycopg.Error:
+            app.logger.error("No se pudo conectar con PostgreSQL")
             return jsonify({"error": "Base de datos no disponible."}), 503
 
 @app.teardown_request
@@ -47,7 +46,7 @@ def close_db(error=None):
 @app.after_request
 def cors(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Usuario-ID, X-Administrador-ID"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Reporte-Token"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, DELETE, OPTIONS"
     return response
 
@@ -70,29 +69,85 @@ def many(sql, params=()):
 
 def run(sql, params=()):
     with g.db.cursor() as cursor:
+        if sql.lstrip().upper().startswith("INSERT INTO"):
+            table = sql.split()[2]
+            keys = {"usuarios": "id_usuario", "reportes": "id_reporte",
+                    "seguimiento_reportes": "id_seguimiento", "evidencias": "id_evidencia",
+                    "personas_involucradas": "id_persona"}
+            if table in keys:
+                sql += " RETURNING " + keys[table]
+                cursor.execute(sql, params)
+                return cursor.fetchone()[keys[table]]
         cursor.execute(sql, params)
-        return cursor.lastrowid
+        return None
 
 def fail(message, status=400):
     return jsonify({"error": message}), status
 
+def token_hash(token):
+    return hashlib.sha256(token.encode()).hexdigest()
+
+def bearer():
+    auth = request.headers.get("Authorization", "")
+    return auth[7:] if auth.startswith("Bearer ") else ""
+
+def current_user():
+    if not bearer():
+        return None
+    return one(
+        "SELECT u.* FROM usuarios u JOIN sesiones s ON s.id_usuario=u.id_usuario "
+        "WHERE s.token_hash=%s AND s.expira>CURRENT_TIMESTAMP AND u.activo=1",
+        (token_hash(bearer()),),
+    )
+
+def current_admin():
+    if not bearer():
+        return None
+    return one(
+        "SELECT a.id_administrador FROM administradores a JOIN sesiones s "
+        "ON s.id_administrador=a.id_administrador WHERE s.token_hash=%s "
+        "AND s.expira>CURRENT_TIMESTAMP AND a.activo=1", (token_hash(bearer()),),
+    )
+
 def admin_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        admin_id = request.headers.get("X-Administrador-ID")
-        valid = one(
-            "SELECT id_administrador FROM administradores WHERE id_administrador=%s AND activo=1",
-            (admin_id,),
-        ) if admin_id else None
-        if not valid:
+        admin = current_admin()
+        if not admin:
             return fail("Se requiere un administrador autenticado.", 401)
+        g.admin_id = admin["id_administrador"]
         return function(*args, **kwargs)
+    return decorated
+
+def user_required(function):
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        user = current_user()
+        if not user:
+            return fail("Se requiere una sesión válida.", 401)
+        g.user_id = user["id_usuario"]
+        return function(*args, **kwargs)
+    return decorated
+
+def report_access(function):
+    @wraps(function)
+    def decorated(report_id, *args, **kwargs):
+        report = one("SELECT acceso_hash,id_usuario FROM reportes WHERE id_reporte=%s", (report_id,))
+        if not report:
+            return fail("Reporte no encontrado.", 404)
+        supplied = request.headers.get("X-Reporte-Token", "")
+        if supplied and secrets.compare_digest(token_hash(supplied), report["acceso_hash"]):
+            return function(report_id, *args, **kwargs)
+        user = current_user()
+        if (user and user["id_usuario"] == report["id_usuario"]) or current_admin():
+            return function(report_id, *args, **kwargs)
+        return fail("Se requiere la clave de acceso del reporte.", 403)
     return decorated
 
 def report_json(item):
     if not item:
         return None
-    result = dict(item)
+    result = {k: v for k, v in item.items() if k not in ("acceso_hash", "id_usuario")}
     for key in ("fecha_hecho", "fecha_registro"):
         if result.get(key):
             result[key] = result[key].isoformat(sep=" ")
@@ -127,30 +182,33 @@ def login():
     user = one("SELECT * FROM usuarios WHERE correo=%s AND activo=1", (item.get("correo"),))
     if not user or not check_password_hash(user["contrasena_hash"], item.get("contrasena", "")):
         return fail("Correo o contraseña incorrectos.", 401)
+    token = secrets.token_urlsafe(32)
+    run("INSERT INTO sesiones (token_hash,id_usuario,expira) VALUES (%s,%s,%s)",
+        (token_hash(token), user["id_usuario"], datetime.utcnow() + timedelta(hours=12)))
+    g.db.commit()
     return jsonify({
-        "token": secrets.token_urlsafe(24),
+        "token": token,
         "usuario": {"id": user["id_usuario"], "nombre": user["nombre"], "correo": user["correo"]},
     })
 
 @app.post("/api/auth/logout")
 def logout():
+    if bearer():
+        run("DELETE FROM sesiones WHERE token_hash=%s", (token_hash(bearer()),))
+        g.db.commit()
     return jsonify({"ok": True, "mensaje": "Sesión cerrada."})
 
 @app.get("/api/auth/sesion")
+@user_required
 def session_info():
-    user = one(
-        "SELECT id_usuario,nombre,correo,activo FROM usuarios WHERE id_usuario=%s",
-        (request.headers.get("X-Usuario-ID"),),
-    )
-    if not user:
-        return fail("Sesión no encontrada.", 401)
-    return jsonify({"usuario": user})
+    user = current_user()
+    return jsonify({"usuario": {"id": user["id_usuario"], "id_usuario": user["id_usuario"],
+                                "nombre": user["nombre"], "correo": user["correo"]}})
 
 @app.patch("/api/usuarios/me")
+@user_required
 def update_user():
-    user_id, item = request.headers.get("X-Usuario-ID"), data()
-    if not user_id:
-        return fail("Falta X-Usuario-ID.", 401)
+    user_id, item = g.user_id, data()
     fields, values = [], []
     for key in ("nombre", "correo"):
         if key in item:
@@ -167,10 +225,9 @@ def update_user():
     return jsonify({"ok": True})
 
 @app.delete("/api/usuarios/me")
+@user_required
 def delete_user():
-    user_id = request.headers.get("X-Usuario-ID")
-    if not user_id:
-        return fail("Falta X-Usuario-ID.", 401)
+    user_id = g.user_id
     run("UPDATE usuarios SET activo=0 WHERE id_usuario=%s", (user_id,))
     g.db.commit()
     return jsonify({"ok": True})
@@ -184,15 +241,17 @@ def create_report():
     if not detail:
         return fail("La descripción del reporte es obligatoria.")
     state = one("SELECT id_estado FROM estados_reporte WHERE nombre=%s LIMIT 1", ("Recibido",))
-    folio = f"CD-{datetime.now().year}-{secrets.randbelow(1000000):06d}"
+    folio = "CD-" + secrets.token_hex(8).upper()
+    access_token = secrets.token_urlsafe(32)
+    user = current_user()
     report_id = run(
-        "INSERT INTO reportes (folio,descripcion,fecha_hecho,es_anonimo,id_estado) VALUES (%s,%s,%s,%s,%s)",
-        (folio, detail, item.get("fecha_hecho"), int(item.get("es_anonimo", True)), state["id_estado"] if state else None),
+        "INSERT INTO reportes (folio,descripcion,fecha_hecho,es_anonimo,id_estado,acceso_hash,id_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+        (folio, detail, item.get("fecha_hecho"), int(item.get("es_anonimo", True)), state["id_estado"] if state else None, token_hash(access_token), user["id_usuario"] if user else None),
     )
     for type_id in item.get("tipos_violencia", []):
         run("INSERT INTO reporte_tipo_violencia (id_reporte,id_tipo_violencia) VALUES (%s,%s)", (report_id, type_id))
     g.db.commit()
-    return jsonify({"reporte": {"id_reporte": report_id, "folio": folio}}), 201
+    return jsonify({"reporte": {"id_reporte": report_id, "folio": folio, "token_acceso": access_token}}), 201
 
 @app.get("/api/reportes")
 @admin_required
@@ -201,6 +260,7 @@ def list_reports():
     return jsonify({"reportes": [report_json(item) for item in reports]})
 
 @app.get("/api/reportes/<int:report_id>")
+@report_access
 def get_report(report_id):
     item = one("SELECT * FROM reportes WHERE id_reporte=%s", (report_id,))
     if not item:
@@ -240,6 +300,7 @@ def report_status(report_id):
     return jsonify({"estado": item})
 
 @app.get("/api/reportes/<int:report_id>/seguimiento")
+@report_access
 def report_tracking(report_id):
     items = many(
         "SELECT s.id_seguimiento,s.id_reporte,s.observaciones,s.fecha_actualizacion,e.id_estado,e.nombre AS estado "
@@ -259,7 +320,7 @@ def add_tracking(report_id):
         return fail("Reporte no encontrado.", 404)
     tracking_id = run(
         "INSERT INTO seguimiento_reportes (id_reporte,id_estado,id_administrador,observaciones) VALUES (%s,%s,%s,%s)",
-        (report_id, item["id_estado"], request.headers.get("X-Administrador-ID"), item.get("observaciones")),
+        (report_id, item["id_estado"], g.admin_id, item.get("observaciones")),
     )
     run("UPDATE reportes SET id_estado=%s WHERE id_reporte=%s", (item["id_estado"], report_id))
     g.db.commit()
@@ -276,26 +337,34 @@ def report_by_folio(folio):
     return jsonify({"reporte": report_json(item)})
 
 @app.post("/api/reportes/<int:report_id>/evidencias")
+@report_access
 def upload_evidence(report_id):
     if not one("SELECT id_reporte FROM reportes WHERE id_reporte=%s", (report_id,)):
         return fail("Reporte no encontrado.", 404)
     file = request.files.get("archivo")
     if not file or not file.filename:
         return fail("Debe adjuntarse un archivo.")
-    directory = os.path.join(os.path.dirname(__file__), "uploads")
-    os.makedirs(directory, exist_ok=True)
-    safe_name = f"{secrets.token_hex(8)}_{os.path.basename(file.filename)}"
-    file.save(os.path.join(directory, safe_name))
     evidence_id = run(
-        "INSERT INTO evidencias (id_reporte,nombre_archivo,ruta_archivo,tipo_mime) VALUES (%s,%s,%s,%s)",
-        (report_id, file.filename, safe_name, file.mimetype),
+        "INSERT INTO evidencias (id_reporte,nombre_archivo,contenido,tipo_mime) VALUES (%s,%s,%s,%s)",
+        (report_id, file.filename[:255], file.read(), file.mimetype),
     )
     g.db.commit()
     return jsonify({"id_evidencia": evidence_id, "nombre_archivo": file.filename}), 201
 
 @app.get("/api/reportes/<int:report_id>/evidencias")
+@report_access
 def list_evidence(report_id):
-    return jsonify({"evidencias": many("SELECT * FROM evidencias WHERE id_reporte=%s ORDER BY fecha_subida DESC", (report_id,))})
+    return jsonify({"evidencias": many("SELECT id_evidencia,id_reporte,nombre_archivo,tipo_mime,fecha_subida FROM evidencias WHERE id_reporte=%s ORDER BY fecha_subida DESC", (report_id,))})
+
+@app.get("/api/reportes/<int:report_id>/evidencias/<int:evidence_id>")
+@report_access
+def download_evidence(report_id, evidence_id):
+    item = one("SELECT nombre_archivo,contenido FROM evidencias WHERE id_reporte=%s AND id_evidencia=%s",
+               (report_id, evidence_id))
+    if not item:
+        return fail("Evidencia no encontrada.", 404)
+    return send_file(io.BytesIO(item["contenido"]), mimetype="application/octet-stream",
+                     as_attachment=True, download_name=item["nombre_archivo"])
 
 @app.delete("/api/reportes/<int:report_id>/evidencias/<int:evidence_id>")
 @admin_required
@@ -305,6 +374,7 @@ def delete_evidence(report_id, evidence_id):
     return jsonify({"ok": True})
 
 @app.post("/api/reportes/<int:report_id>/personas")
+@report_access
 def add_person(report_id):
     item = data()
     if not item.get("tipo_participacion"):
@@ -317,10 +387,12 @@ def add_person(report_id):
     return jsonify({"id_persona": person_id}), 201
 
 @app.get("/api/reportes/<int:report_id>/personas")
+@report_access
 def list_people(report_id):
     return jsonify({"personas": many("SELECT * FROM personas_involucradas WHERE id_reporte=%s", (report_id,))})
 
 @app.patch("/api/reportes/<int:report_id>/personas/<int:person_id>")
+@report_access
 def update_person(report_id, person_id):
     item = data()
     run(
@@ -346,7 +418,7 @@ def search_institutions():
     term = f"%{request.args.get('q', '').strip()}%"
     params = (term, term, term)
     items = many(
-        "SELECT * FROM instituciones WHERE activa=1 AND (nombre LIKE %s OR municipio LIKE %s OR descripcion LIKE %s) ORDER BY nombre",
+        "SELECT * FROM instituciones WHERE activa=1 AND (nombre ILIKE %s OR municipio ILIKE %s OR descripcion ILIKE %s) ORDER BY nombre",
         params,
     )
     return jsonify({"instituciones": items})
@@ -385,6 +457,16 @@ def violence_types():
 @app.get("/api/estados-reporte")
 def report_states():
     return jsonify({"estados": many("SELECT * FROM estados_reporte ORDER BY id_estado")})
+
+@app.errorhandler(psycopg.errors.UniqueViolation)
+def duplicate_record(error):
+    g.db.rollback()
+    return fail("El registro ya existe.", 409)
+
+@app.errorhandler(psycopg.errors.IntegrityConstraintViolation)
+def invalid_relation(error):
+    g.db.rollback()
+    return fail("Los datos referenciados no son válidos.", 400)
 
 @app.get("/")
 def home():
