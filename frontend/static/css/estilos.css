@@ -5,7 +5,7 @@
 }
 
 body {
-    background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background: radial-gradient(circle at center, #ee0000 0%, #923B61);
     background-size: 200% 200%;
     animation: luzMovil 20s ease-in-out infinite;
     color: white;
@@ -151,7 +151,7 @@ body {
 .btn-visita-centinela:hover {
     background-color: #ad359d;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(155, 18, 189, 0.6);
+    box-shadow: 0 6px 20px rgba(238, 2, 2, 0.6);
 }
 
 @media (max-width: 850px) {
