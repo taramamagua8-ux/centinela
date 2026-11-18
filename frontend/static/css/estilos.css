@@ -149,7 +149,7 @@ body {
 }
 
 .btn-visita-centinela:hover {
-    background-color: #ad359d;
+    background-color: #02be227c;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(238, 2, 2, 0.6);
 }
