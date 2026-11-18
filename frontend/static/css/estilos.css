@@ -5,7 +5,7 @@
 }
 
 body {
-    background: radial-gradient(circle at center, #ee0000 0%, #923B61);
+    background: radial-gradient(circle at center, #ee0000 0%, #000000);
     background-size: 200% 200%;
     animation: luzMovil 20s ease-in-out infinite;
     color: white;
@@ -47,7 +47,7 @@ body {
     text-transform: uppercase;
     letter-spacing: -1px;
     line-height: 1.1;
-    background: linear-gradient(135deg, #ffffff 60%, #ff8e9e);
+    background: linear-gradient(135deg, #ffffff 60%, #8d0517);
     background-clip: text; 
     -webkit-text-fill-color: transparent;
 }
