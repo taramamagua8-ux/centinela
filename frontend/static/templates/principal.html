@@ -1,23 +1,30 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Centinela Digital</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
+
 <body class="pagina-inicio">
 
-    <!-- Barra superior -->
+    <!-- BARRA SUPERIOR: CONSERVADA -->
     <header class="barra-superior">
+
         <input type="checkbox" id="toggle-menu" class="toggle-menu">
 
         <label for="toggle-menu" class="btn-hamburguesa" aria-label="Abrir menú">
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </label>
 
-        <!-- Menú lateral desplegable -->
         <nav class="menu-lateral">
             <a href="principal.html">Inicio</a>
             <a href="descubre_mas.html">Descubre más</a>
@@ -27,41 +34,155 @@
         </nav>
 
         <div class="logo-centro">
-            <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
-            <span>CENTINELA DIGITAL</span>
+            <img src="../img/logoB.png" alt="Logo Centinela Digital">
+
+            <span class="fx-pop" role="img" aria-label="CENTINELA DIGITAL">
+                <b aria-hidden="true" style="--i:0">C</b><b aria-hidden="true" style="--i:1">E</b><b aria-hidden="true" style="--i:2">N</b><b aria-hidden="true" style="--i:3">T</b><b aria-hidden="true" style="--i:4">I</b><b aria-hidden="true" style="--i:5">N</b><b aria-hidden="true" style="--i:6">E</b><b aria-hidden="true" style="--i:7">L</b><b aria-hidden="true" style="--i:8">A</b><b aria-hidden="true" style="--i:9">&nbsp;</b><b aria-hidden="true" style="--i:10">D</b><b aria-hidden="true" style="--i:11">I</b><b aria-hidden="true" style="--i:12">G</b><b aria-hidden="true" style="--i:13">I</b><b aria-hidden="true" style="--i:14">T</b><b aria-hidden="true" style="--i:15">A</b><b aria-hidden="true" style="--i:16">L</b>
+            </span>
         </div>
 
-        <div class="iconos-derecha">
-            <button type="button" class="btn-icono" aria-label="Perfil" onclick="window.location.href='cuenta.html'">Cuenta</button>
-        </div>
     </header>
 
-    <!-- Contenido principal -->
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="contenido-inicio">
 
-        <section class="bloque-mensaje">
-            <div class="texto-mensaje">
-                <h1 class="titulo-inicio">
-                    Si sufres algún tipo de violencia, no calles, no temas,
-                    ¡PUEDES SER ESCUCHADO!
-                    Nosotros nos encontramos a la orden para ayudarte.
-                </h1>
-                <p class="descripcion-inicio">
-                    Centinela Digital te proporcionará ayuda identificando la violencia
-                    que estás padeciendo y lo comunicará con las instituciones correspondientes.
-                </p>
+        <!-- PANTALLA 1: MENSAJE DE BIENVENIDA -->
+        <section class="pantalla-inicio pantalla-bienvenida">
+
+            <div class="bloque-mensaje">
+
+                <div class="texto-mensaje">
+
+                    <h1 class="titulo-inicio">
+                        Si sufres algún tipo de violencia,
+                        no calles, no tengas miedo.
+
+                        <span>¡PUEDES SER ESCUCHADO!</span>
+                    </h1>
+
+                    <p class="descripcion-inicio">
+                        Tu voz es importante y tienes derecho a recibir ayuda.
+                        Estamos a tu disposición para escucharte, orientarte
+                        y brindarte el apoyo que necesitas.
+                    </p>
+
+                </div>
+
+                <div class="contenedor-imagen imagen-ayuda">
+    <video src="../img/VIOLENCIA FAMILIAR CORTO.mp4"
+           class="imagen-fluida"
+           autoplay
+           loop
+           muted
+           playsinline>
+        Tu navegador no soporta la reproducción de video.
+    </video>
+</div>
+
             </div>
 
-            <div class="contenedor-imagen">
-                <img src="../img/ilustracion.png" alt="Ilustración" class="imagen-fluida">
+            <div class="indicacion-deslizar1">
+                <span>Desliza para descubrir cómo podemos ayudarte</span>
+                <span class="flecha-deslizar">↓</span>
             </div>
+
         </section>
 
-        <section class="bloque-cta">
-            <p class="texto-cta">
-                ¿Necesitas reportar algo que te haya pasado?<br>Da Click aquí
-            </p>
-            <button type="button" class="btn-reportar" onclick="window.location.href='formulario_reporte.html'">REPORTAR</button>
+
+        <!-- PANTALLA 2: AYUDA DE CENTINELA DIGITAL -->
+        <section class="pantalla-inicio pantalla-ayuda">
+
+            <div class="bloque-ayuda">
+
+                <div class="contenedor-imagen imagen-ayuda">
+                    <img src="../img/ilustracion.png"
+                         alt="Centinela Digital brindando apoyo"
+                         class="imagen-fluida">
+                </div>
+
+                <div class="texto-ayuda">
+
+                    <h2 class="titulo-inicio">
+                        ¿Cómo puede ayudarte
+                        <span>Centinela Digital?</span>
+                    </h2>
+
+                    <p class="descripcion-inicio">
+                        Centinela Digital te proporcionará ayuda identificando
+                        el tipo de violencia que estás padeciendo, brindándote
+                        orientación y acompañamiento durante el proceso.
+
+                        Además, te ayudará a comunicar tu situación con las
+                        instituciones correspondientes, para que puedas recibir
+                        la atención y el apoyo que necesitas.
+                    </p>
+
+                    <p class="descripcion-inicio">
+                        Tu seguridad y bienestar son importantes.
+                        Queremos ayudarte a encontrar una manera de hacer
+                        escuchar tu situación.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="indicacion-deslizar">
+                <span>Continúa para conocer cómo realizar tu reporte</span>
+                <span class="flecha-deslizar">↓</span>
+            </div>
+
+        </section>
+
+
+        <!-- PANTALLA 3: REALIZAR UN REPORTE -->
+        <section class="pantalla-inicio pantalla-reporte">
+
+            <div class="bloque-reporte">
+
+                <div class="contenido-reporte">
+
+                    <h2 class="titulo-reporte">
+                        ¡TU VOZ PUEDE HACER LA DIFERENCIA!
+                    </h2>
+
+                    <p class="descripcion-reporte">
+                        Si has vivido o presenciado algún tipo de violencia,
+                        puedes realizar un reporte a través de nuestra plataforma.
+
+                        Completa el formulario con la información solicitada.
+                        Tu reporte nos permitirá conocer tu situación,
+                        identificar el tipo de violencia y facilitar la
+                        comunicación con las instituciones correspondientes.
+                    </p>
+
+                    <div class="tarjeta-reporte">
+
+                        <h3>¿Qué puedes hacer?</h3>
+
+                        <ul>
+                            <li>Identificar el tipo de violencia que deseas reportar.</li>
+                            <li>Proporcionar información sobre tu situación.</li>
+                            <li>Registrar los datos necesarios para tu reporte.</li>
+                            <li>Enviar la información mediante nuestro formulario.</li>
+                            <li>Obtener el registro correspondiente de tu reporte.</li>
+                        </ul>
+
+                    </div>
+
+                    <p class="texto-cta">
+                        ¿Estás listo para realizar tu reporte?
+                    </p>
+
+                    <a href="formulario_reporte.html" class="btn-reportar">
+                        REALIZAR MI REPORTE
+                    </a>
+
+                </div>
+
+            </div>
+
         </section>
 
     </main>
