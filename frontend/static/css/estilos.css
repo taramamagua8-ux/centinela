@@ -470,7 +470,12 @@ body.pagina-inicio {
 
 /* ---------- Hamburguesa ---------- */
 .toggle-menu {
-    display: none; /* el checkbox solo controla el estado */
+    display: block;
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    clip-path: inset(50%);
+    overflow: hidden;
 }
 
 .btn-hamburguesa {
@@ -489,6 +494,11 @@ body.pagina-inicio {
     background: white;
     border-radius: 2px;
     transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toggle-menu:focus-visible ~ .btn-hamburguesa {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 
 /* Se transforma en X al abrir */
@@ -515,7 +525,9 @@ body.pagina-inicio {
     -webkit-backdrop-filter: blur(12px);
     border-radius: 0 0 14px 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
+    max-height: calc(100dvh - 90px);
+    overflow-y: auto;
+    visibility: hidden;
     transform: translateX(-100%);
     opacity: 0;
     pointer-events: none;
@@ -525,6 +537,7 @@ body.pagina-inicio {
 .toggle-menu:checked ~ .menu-lateral {
     transform: translateX(0);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 
@@ -2631,4 +2644,222 @@ body.pagina-inicio .btn-reportar:hover {
 body.pagina-inicio .pantalla-ayuda,
 body.pagina-inicio .pantalla-reporte {
     background: transparent !important;
+}
+#mis-reportes { list-style: none; padding: 0; margin: .75rem 0 1rem; }
+#mis-reportes li { margin-bottom: .5rem; }
+#mis-reportes a { color: #71304f; overflow-wrap: anywhere; }
+
+/* Pantallas de consulta y confirmación de folio */
+body.pagina-folio {
+  min-height: 100svh;
+  color: #fff;
+  background: radial-gradient(ellipse at top left, #b7669b, transparent 55%),
+              radial-gradient(ellipse at bottom right, #784089, transparent 55%),
+              #713456;
+  animation: none;
+}
+.pagina-folio .pagina-seguimiento {
+  width: min(92%, 760px);
+  gap: clamp(.9rem, 3vw, 1.5rem);
+  padding-block: clamp(1.25rem, 5vw, 3rem);
+}
+.pagina-folio .btn-volver { text-decoration: none; }
+.pagina-folio .titulo-seguimiento {
+  color: #fff;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+}
+.pagina-folio .tarjeta-seguimiento {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(1.25rem, 5vw, 2.7rem);
+  border: 1px solid #f6e3f1;
+  background: radial-gradient(ellipse at 50% 0%, #f9edf7, #fff 58%);
+}
+.pagina-folio .tarjeta-seguimiento::before,
+.pagina-folio .tarjeta-seguimiento::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: 13rem;
+  aspect-ratio: 1;
+  border: 1px solid #9e52982b;
+  border-radius: 50%;
+  box-shadow: 0 0 0 15px #9e529812, 0 0 0 31px #9e52980c;
+}
+.pagina-folio .tarjeta-seguimiento::before { top: -8rem; right: -4rem; }
+.pagina-folio .tarjeta-seguimiento::after { bottom: -9rem; left: -5rem; }
+.marca-folio {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 1rem;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 8px 25px #71345626, inset 0 0 0 1px #ebd4e8;
+}
+.pagina-folio .logo-seguimiento {
+  width: 68px;
+  height: 68px;
+  margin: 0;
+  object-fit: contain;
+  border-radius: 12px;
+}
+.marca-folio-exito {
+  position: absolute;
+  bottom: -5px;
+  right: -6px;
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  background: #364f54;
+  font-weight: 800;
+}
+.pagina-folio .etiqueta-folio { margin: 0 0 .5rem; color: #512445; }
+.pagina-folio .ayuda-folio { margin: 0 auto 1.3rem; max-width: 45ch; line-height: 1.55; }
+.recuadro-folio {
+  max-width: 520px;
+  padding: .45rem;
+  margin-inline: auto;
+  border: 1px solid #ead5e6;
+  border-radius: 15px;
+  background: #f9eff7;
+}
+.pagina-folio .campo-folio {
+  display: block;
+  max-width: none;
+  background: #fff;
+  border: 1px solid #cfaac7;
+}
+.folio-entregado {
+  user-select: all;
+  overflow-wrap: anywhere;
+  letter-spacing: .035em;
+  font-weight: 800;
+  line-height: 1.5;
+}
+.pagina-folio .botones-seguimiento { gap: .75rem; margin-top: 1.3rem; }
+.pagina-folio .botones-seguimiento a { text-decoration: none; }
+.pagina-folio .botones-seguimiento :is(a, button) { min-height: 48px; align-content: center; }
+.pagina-folio .botones-seguimiento button:disabled { opacity: .55; cursor: default; transform: none; }
+.pagina-folio #copiar-folio[data-copiado] { border-color: #364f54; color: #364f54; background: #edf5f3; }
+.estado-copia-folio { margin: .7rem 0 0; color: #364f54; font-size: .875rem; font-weight: 700; }
+.estado-copia-folio:empty { margin: 0; }
+@keyframes entrada-folio {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sello-folio {
+  from { opacity: 0; transform: scale(.75); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pagina-folio .tarjeta-seguimiento { animation: entrada-folio .38s ease-out both; }
+  .pagina-folio .recuadro-folio { animation: entrada-folio .35s .1s ease-out both; }
+  .marca-folio-exito { animation: sello-folio .3s .25s ease-out both; }
+  .estado-copia-folio:not(:empty) { animation: entrada-folio .22s ease-out both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pagina-folio .btn-volver, .pagina-folio .campo-folio, .pagina-folio .botones-seguimiento :is(a, button) { transition: none; transform: none; }
+}
+
+/* Detalle del seguimiento por folio */
+.pagina-detalle-reporte [hidden] { display: none !important; }
+.pagina-detalle-reporte .pagina-seguimiento { width: min(92%, 880px); }
+.pagina-detalle-reporte #contenido-seguimiento { display: grid; gap: .9rem; }
+.pagina-detalle-reporte .tarjeta-resumen-reporte { text-align: left; }
+.cabecera-resumen-reporte {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(.75rem, 3vw, 1.25rem);
+}
+.pagina-folio .cabecera-resumen-reporte .logo-seguimiento {
+  width: clamp(48px, 10vw, 76px);
+  height: clamp(48px, 10vw, 76px);
+  background: #fff;
+  box-shadow: 0 4px 14px #71345622;
+}
+.cabecera-resumen-reporte h2 {
+  margin: 0 0 .25rem;
+  color: #713456;
+  font-size: .93rem;
+}
+.folio-resumen-reporte {
+  margin: 0;
+  color: #431e3c;
+  font-size: clamp(.92rem, 2.5vw, 1.25rem);
+  font-weight: 800;
+  letter-spacing: .025em;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.fecha-resumen-reporte { margin: .4rem 0 0; color: #684961; font-size: .85rem; }
+.indicadores-reporte, .datos-detalle-reporte {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .7rem;
+  margin: 1rem 0 0;
+}
+.indicadores-reporte > div, .datos-detalle-reporte > div {
+  min-width: 0;
+  padding: .85rem 1rem;
+  border: 1px solid #ead5e6;
+  border-radius: 12px;
+  background: #fcf4f9;
+}
+.indicadores-reporte dt, .datos-detalle-reporte dt {
+  margin-bottom: .3rem;
+  color: #69435c;
+  font-size: .85rem;
+  font-weight: 700;
+}
+.indicadores-reporte dd, .datos-detalle-reporte dd { margin: 0; overflow-wrap: anywhere; }
+.indicadores-reporte dd { color: #512445; font-size: clamp(1rem, 2.8vw, 1.25rem); font-weight: 800; }
+.indicadores-reporte [data-riesgo="bajo"] { background: #edf5f3; border-color: #bdd9d0; }
+.indicadores-reporte [data-riesgo="medio"] { background: #fbf3e5; border-color: #e7d0a6; }
+.indicadores-reporte [data-riesgo="alto"] { background: #fbecef; border-color: #ebbac8; }
+.panel-detalle-reporte {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-radius: 16px;
+  background: #fff;
+  color: #43223e;
+  box-shadow: 0 8px 24px #34172b35;
+}
+.panel-detalle-reporte h2 { margin: 0; color: #512445; font-size: clamp(1.08rem, 3vw, 1.35rem); }
+.datos-detalle-reporte { margin-top: .85rem; }
+.datos-detalle-reporte dd { line-height: 1.55; white-space: pre-wrap; }
+.dato-reporte-ancho { grid-column: 1 / -1; }
+.espera-institucional-reporte, .respuesta-publicada-reporte {
+  margin: .75rem 0 0;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+  border-left: 3px solid #a96a94;
+  background: #fcf4f9;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.respuesta-publicada-reporte { border-color: #668a83; background: #edf5f3; }
+.recurso-institucional-reporte { padding: .75rem 0; border-bottom: 1px solid #eee1ec; }
+.recurso-institucional-reporte h3 { margin: 0; font-size: .95rem; }
+.recurso-institucional-reporte p { margin: .35rem 0 0; line-height: 1.55; }
+.contacto-institucional-reporte, .enlace-directorio-reporte { font-weight: 700; color: #713456; }
+.enlace-directorio-reporte { display: inline-block; margin-top: .85rem; }
+.pie-detalle-reporte { display: flex; justify-content: center; }
+.aviso-detalle-reporte { margin: 0; }
+@media (max-width: 520px) {
+  .datos-detalle-reporte { grid-template-columns: 1fr; }
+  .indicadores-reporte > div { padding: .65rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel-detalle-reporte { animation: entrada-folio .35s .08s ease-out both; }
+  #orientacion-reporte { animation-delay: .14s; }
 }

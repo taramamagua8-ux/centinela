@@ -20,19 +20,21 @@
 <body class="pagina-inicio">
 
     <header class="barra-superior">
-        <input type="checkbox" id="menu-toggle" class="toggle-menu">
+        <input type="checkbox" id="menu-toggle" class="toggle-menu" aria-label="Menú principal">
         <label for="menu-toggle" class="btn-hamburguesa">
             <span></span>
             <span></span>
             <span></span>
         </label>
 
-        <nav class="menu-lateral">
+        <nav class="menu-lateral" aria-label="Navegación principal">
             <a href="principal.html">Inicio</a>
             <a href="descubre_mas.html">Descubre más</a>
             <a href="videos.html">Videos</a>
             <a href="directorio.html">Directorio</a>
             <a href="sobre_nosotros.html">Sobre nosotros</a>
+            <a href="formulario.html">Consultar folio</a>
+            <a href="cuenta.html"><span aria-hidden="true">👤</span> Mi cuenta</a>
         </nav>
 
         <div class="logo-centro">
@@ -41,7 +43,7 @@
         </div>
 
         <div class="iconos-derecha">
-            <a class="btn-icono" href="cuenta.html">Cuenta</a>
+            <a class="btn-icono" href="cuenta.html"><span aria-hidden="true">👤</span> Mi cuenta</a>
         </div>
     </header>
 

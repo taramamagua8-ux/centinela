@@ -76,3 +76,16 @@ INSERT INTO tipos_violencia (id_tipo_violencia, nombre, descripcion) VALUES
     (4, 'Violencia económica', 'Control o limitación injusta de recursos'),
     (5, 'Violencia patrimonial', 'Daño, destrucción o retención de bienes')
 ON CONFLICT (id_tipo_violencia) DO NOTHING;
+
+ALTER TABLE reportes ADD COLUMN IF NOT EXISTS rol_reportante VARCHAR(10);
+ALTER TABLE reportes ADD COLUMN IF NOT EXISTS nivel_riesgo VARCHAR(20) NOT NULL DEFAULT 'Por evaluar';
+ALTER TABLE reportes ADD COLUMN IF NOT EXISTS respuesta_institucion TEXT;
+CREATE INDEX IF NOT EXISTS reportes_usuario_idx ON reportes (id_usuario);
+
+CREATE TABLE IF NOT EXISTS canalizacion_tipos (
+    id_tipo_violencia INTEGER PRIMARY KEY REFERENCES tipos_violencia(id_tipo_violencia),
+    id_institucion BIGINT NOT NULL REFERENCES instituciones(id_institucion)
+);
+
+ALTER TABLE reportes ADD COLUMN IF NOT EXISTS clave_envio UUID;
+CREATE UNIQUE INDEX IF NOT EXISTS reportes_clave_envio_idx ON reportes (clave_envio);

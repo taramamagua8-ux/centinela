@@ -21,5 +21,5 @@ def initialize():
         # Serialize worker startup so multiple workers never race to create tables.
         connection.execute("SELECT pg_advisory_xact_lock(892174320)")
         connection.execute(
-            (Path(__file__).resolve().parent.parent / "database/postgres.sql").read_text()
+            (Path(__file__).resolve().parent.parent / "database/postgres.sql").read_text(encoding="utf-8")
         )

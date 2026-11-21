@@ -12,25 +12,19 @@
         <section class="cuenta-panel">
             <div id="cuenta-acceso">
                 <h1>Mi cuenta</h1>
-                <p>Elige una opción para continuar con tu cuenta o consultar el seguimiento de tu reporte.</p>
+                <p>Inicia sesión o crea una cuenta para consultar tus reportes registrados.</p>
                 <div class="tarjetas-opciones-cuenta">
                     <article class="tarjeta-opcion-cuenta">
-                        <div class="icono-opcion-cuenta">↪</div>
+                        <div class="icono-opcion-cuenta">👤</div>
                         <h2>Iniciar sesión</h2>
                         <p>Accede a tu cuenta para administrar tus datos.</p>
                         <a class="boton-cuenta" href="login.html">Entrar</a>
                     </article>
                     <article class="tarjeta-opcion-cuenta">
-                        <div class="icono-opcion-cuenta">＋</div>
+                        <div class="icono-opcion-cuenta">👤 +</div>
                         <h2>Crear una cuenta</h2>
                         <p>Regístrate para guardar y consultar tu información.</p>
                         <a class="boton-cuenta" href="registro.html">Registrarme</a>
-                    </article>
-                    <article class="tarjeta-opcion-cuenta tarjeta-opcion-ancha">
-                        <div class="icono-opcion-cuenta">⌕</div>
-                        <h2>Consultar por folio</h2>
-                        <p>Consulta el avance de tu reporte con el folio recibido.</p>
-                        <a class="boton-cuenta boton-cuenta-claro" href="formulario.html">Consultar seguimiento</a>
                     </article>
                 </div>
             </div>
@@ -38,7 +32,12 @@
             <div id="panel-cuenta-usuario" hidden>
                 <h1>Hola, <span id="nombre-cuenta"></span></h1>
                 <p class="datos-cuenta">Correo: <strong id="correo-cuenta"></strong></p>
-                <a class="boton-cuenta" href="formulario.html">Consultar seguimiento</a>
+                <section>
+                    <h2>Mis reportes</h2>
+                    <p id="aviso-mis-reportes" role="status"></p>
+                    <ul id="mis-reportes"></ul>
+                </section>
+                <a class="boton-cuenta" href="formulario_reporte.html">Crear reporte</a>
                 <form id="form-editar-cuenta" class="form-cuenta form-editar-cuenta">
                     <h2>Editar mis datos</h2>
                     <input name="nombre" type="text" placeholder="Nuevo nombre">

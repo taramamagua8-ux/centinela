@@ -2,23 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reporte enviado | Centinela Digital</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Tu reporte se ha registrado | Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
-<body class="pagina-informativa">
-    <main class="cuenta-contenedor">
-        <section class="cuenta-panel">
-            <h1>Reporte enviado correctamente</h1>
-            <p>Conserva este folio para consultar el seguimiento de tu reporte:</p>
-            <strong id="folio-confirmacion" class="folio-confirmacion">Generando folio...</strong>
-            <a class="boton-cuenta" href="formulario.html">Dar seguimiento</a>
-            <a class="enlace-volver-cuenta" href="principal.html">Volver al inicio</a>
+<body class="pagina-folio">
+    <main class="pagina-seguimiento">
+        <header class="encabezado-seguimiento">
+            <a class="btn-volver" href="principal.html">← Inicio</a>
+            <h1 class="titulo-seguimiento">Tu reporte se ha registrado</h1>
+        </header>
+        <section class="tarjeta-seguimiento">
+            <div class="marca-folio">
+                <img src="../img/Copia de LEO.jpg" alt="Centinela Digital" class="logo-seguimiento">
+                <span class="marca-folio-exito" aria-hidden="true">✓</span>
+            </div>
+            <h2 class="etiqueta-folio">Tu folio de seguimiento</h2>
+            <p class="ayuda-folio">Guárdalo en un lugar seguro para consultar el estado de tu reporte.</p>
+            <div class="recuadro-folio">
+                <strong class="campo-folio folio-entregado" id="folio-confirmacion">Folio no disponible</strong>
+            </div>
+            <div class="botones-seguimiento">
+                <button type="button" class="btn-secundario" id="copiar-folio" disabled>Copiar folio</button>
+                <a class="btn-principal" id="ver-reporte" href="formulario.html">Consultar reporte <span aria-hidden="true">→</span></a>
+            </div>
+            <p class="estado-copia-folio" id="aviso-copia" role="status"></p>
         </section>
     </main>
-    <script>
-        const folio = new URLSearchParams(window.location.search).get('folio');
-        document.getElementById('folio-confirmacion').textContent = folio || 'No disponible';
-    </script>
+    <script src="../js/confirmacion_reporte.js"></script>
 </body>
 </html>

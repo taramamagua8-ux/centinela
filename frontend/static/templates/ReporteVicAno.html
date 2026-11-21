@@ -6,10 +6,10 @@
   <title>Mi Reporte (Víctima, Anónima)</title>
   <link rel="stylesheet" href="../css/reporte.css">
 </head>
-<body>
-
-  <!-- Botón Volver -->
-  <button type="button" class="btn-top-left" onclick="history.back()">VOLVER</button>
+<body class="pagina-captura-reporte">
+  <div class="barra-captura">
+    <a href="formulario_reporte.html">← Volver a la selección</a>
+  </div>
 
   <div class="container">
     <header class="header">
@@ -19,37 +19,29 @@
       </p>
     </header>
 
-    <main class="form-card">
-      <p class="disclaimer">
-        Los campos marcados con * serían obligatorios en esta propuesta. Los demás serían opcionales. La obligatoriedad definitiva debe ajustarse a los protocolos de tu institución.
-      </p>
+    <main class="form-card captura-reporte">
+      <ol class="pasos-captura" aria-label="Progreso del reporte">
+        <li id="paso-datos" aria-current="step">Datos del reporte</li>
+        <li id="paso-revision">Revisión y envío</li>
+      </ol>
+      <p class="disclaimer" id="ayuda-captura">Completa los campos marcados con *.</p>
 
-      <!-- Si por ahora no usas base de datos, puedes dejar el action vacío o apuntando a una ruta de prueba -->
-      <form id="reportForm" action="AdjuEvidenciaVicAno.html" method="GET">
+      <form id="reportForm" class="campos-captura">
         
-        <!-- Pregunta 1 -->
-        <div class="form-group">
-          <label class="form-label" for="tipoViolencia">1–¿Qué tipo de violencia crees que sufres?*</label>
+        <p id="tipo-elegido" class="tipo-elegido campo-ancho" hidden>
+          <span>Tipo de violencia</span>
+          <strong id="nombre-tipo-elegido"></strong>
+        </p>
+        <div class="form-group campo-ancho" data-editar-tipo hidden>
+          <label class="form-label" for="tipoViolencia">Tipo de violencia</label>
           <div class="input-wrapper">
-            <select id="tipoViolencia" name="tipoViolencia" class="custom-select" required>
-              <option value="" disabled selected>Selecciona una opción</option>
-              <option value="Violencia física">Violencia física</option>
-              <option value="Violencia psicológica">Violencia psicológica</option>
-              <option value="Violencia sexual">Violencia sexual</option>
-              <option value="Violencia económica">Violencia económica</option>
-              <option value="Violencia patrimonial">Violencia patrimonial</option>
-              <option value="Agresión verbal">Agresión verbal</option>
-              <option value="Control y coerción">Control y coerción</option>
-              <option value="Amenazas e intimidación">Amenazas e intimidación</option>
-              <option value="Privación ilegítima de la libertad">Privación ilegítima de la libertad</option>
-              <option value="Negligencia y abandono">Negligencia y abandono</option>
-            </select>
+            <select id="tipoViolencia" name="tipoViolencia" class="custom-select" required></select>
           </div>
         </div>
 
         <!-- Pregunta 2 -->
         <div class="form-group">
-          <label class="form-label" for="fecha">2. Fecha aproximada del incidente*</label>
+          <label class="form-label" for="fecha">Fecha aproximada del incidente*</label>
           <div class="input-wrapper">
             <input type="date" id="fecha" name="fecha" class="custom-input" required>
           </div>
@@ -57,35 +49,35 @@
 
         <!-- Pregunta 3 -->
         <div class="form-group">
-          <label class="form-label" for="lugar">3. Lugar donde ocurrió *</label>
+          <label class="form-label" for="lugar">Lugar donde ocurrió *</label>
           <div class="input-wrapper">
-            <input type="text" id="lugar" name="lugar" class="custom-input" placeholder="Ej. Afuera de la escuela..." required>
+            <input type="text" id="lugar" name="lugar" maxlength="300" class="custom-input" placeholder="Ej. Afuera de la escuela..." required>
           </div>
         </div>
 
         <!-- Pregunta 4 -->
         <div class="form-group">
-          <label class="form-label" for="ayudaInmediata">4– ¿Necesitas ayuda inmediata para sentirte a salvo?</label>
+          <label class="form-label" for="ayudaInmediata">¿Necesitas ayuda inmediata para sentirte a salvo?</label>
           <div class="input-wrapper">
             <select id="ayudaInmediata" name="ayudaInmediata" class="custom-select">
               <option value="" disabled selected>Selecciona una opción</option>
-              <option value="SI">SI</option>
-              <option value="NO">NO</option>
-              <option value="No estoy segu@">No estoy segu@</option>
+              <option value="SI">Sí</option>
+              <option value="NO">No</option>
+              <option value="No estoy segu@">No tengo certeza</option>
             </select>
           </div>
         </div>
 
         <!-- Pregunta 5 -->
-        <div class="form-group">
-          <label class="form-label">5. ¿Ha ocurrido anteriormente? *</label>
+        <div class="form-group campo-ancho" role="group" aria-labelledby="pregunta-recurrencia">
+          <label class="form-label" id="pregunta-recurrencia">¿Ha ocurrido anteriormente? *</label>
           <div class="input-wrapper radio-group-wrapper">
             <div class="radio-options">
               <label class="custom-radio">
                 <input type="radio" name="haOcurrido" value="SI" required>
                 <span class="radio-box"></span>
                 <div class="radio-text">
-                  <strong>SI</strong>
+                  <strong>Sí</strong>
                   <span>Ha ocurrido anteriormente</span>
                 </div>
               </label>
@@ -94,7 +86,7 @@
                 <input type="radio" name="haOcurrido" value="NO" required>
                 <span class="radio-box"></span>
                 <div class="radio-text">
-                  <strong>NO</strong>
+                  <strong>No</strong>
                   <span>No ha ocurrido anteriormente</span>
                 </div>
               </label>
@@ -103,19 +95,41 @@
         </div>
 
         <!-- Pregunta 6 -->
-        <div class="form-group">
-          <label class="form-label" for="descripcion">6. Describe lo ocurrido *</label>
+        <div class="form-group campo-ancho">
+          <label class="form-label" for="descripcion">Describe lo ocurrido *</label>
           <div class="input-wrapper">
-            <textarea id="descripcion" name="descripcion" class="custom-textarea" rows="4" placeholder="Describe brevemente lo que ocurrió..." required></textarea>
+            <textarea id="descripcion" name="descripcion" maxlength="10000" class="custom-textarea" rows="4" placeholder="Describe brevemente lo que ocurrió..." required></textarea>
           </div>
         </div>
+        <div class="form-group" data-contacto hidden>
+          <label class="form-label" for="nombre-reportante">10. Nombre</label>
+          <input class="custom-input" id="nombre-reportante" readonly>
+        </div>
+        <div class="form-group" data-contacto hidden>
+          <label class="form-label" for="correo-reportante">12. Correo electrónico</label>
+          <input class="custom-input" id="correo-reportante" type="email" readonly>
+        </div>
+        <div class="form-group campo-ancho">
+          <label class="form-label" for="archivoEvidencia">Evidencia (opcional, hasta 10 MB)</label>
+          <input type="file" id="archivoEvidencia" name="archivo" class="custom-input">
+        </div>
+        <div class="acciones-captura">
+          <button class="btn-formulario" id="revisar-reporte" disabled>Revisar reporte <span aria-hidden="true">→</span></button>
+        </div>
       </form>
+      <section id="revision-reporte" class="flujo-reporte" hidden>
+        <h2>Revisa tu información</h2>
+        <div id="campos-revision"></div>
+        <div class="acciones-captura">
+          <button class="btn-formulario" id="enviar-reporte" type="button">Enviar reporte <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+      <p id="aviso-reporte" role="alert"></p>
     </main>
   </div>
 
-  <!-- Botón Continuar flotante vinculado al formulario -->
-  <button type="submit" form="reportForm" class="btn-bottom-right">Continuar</button>
 
-</body>
+
 <script src="../js/reporte_api.js"></script>
+</body>
 </html>
