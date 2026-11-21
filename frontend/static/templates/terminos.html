@@ -2,237 +2,125 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Términos y Condiciones | Centinela Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/estilos.css">
-    <style>
-        html { scroll-behavior: smooth; }
-        .hero-terminos { gap: 40px; }
-        .hero-terminos h1 { margin: 0 0 12px; font-size: 2.4rem; font-weight: 800; line-height: 1.15; }
-        .hero-terminos p { margin: 0; max-width: 620px; font-family: 'Inter', sans-serif; font-size: 1.05rem; line-height: 1.65; color: #f1e4f7; }
-        .hero-terminos img { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 7px 10px rgba(44, 10, 50, .3)); }
-        .terminos-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 30px; align-items: start; }
-        .indice-terminos { position: sticky; top: 20px; width: 100%; padding: 24px 22px; box-sizing: border-box; text-align: left; }
-        .indice-terminos h2 { margin: 0 0 10px; color: #923b61; font-size: 1.1rem; }
-        .indice-terminos ol { margin: 0; padding: 0; list-style: none; }
-        .indice-terminos a { display: block; padding: 9px 0; border-bottom: 1px solid #f0cdea; color: #923b61; font-size: .95rem; font-weight: 600; text-decoration: none; }
-        .indice-terminos li:last-child a { border-bottom: 0; }
-        .indice-terminos a:hover { color: #DC91F6; text-decoration: underline; }
-        .indice-terminos a:active { color: #572038; }
-        .indice-terminos a:focus-visible { outline: 2px solid #923b61; outline-offset: 3px; border-radius: 4px; }
-        .lista-terminos { display: grid; gap: 22px; }
-        .seccion-terminos { width: 100%; padding: 30px 34px; box-sizing: border-box; text-align: left; scroll-margin-top: 20px; }
-        .titulo-seccion { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-        .titulo-seccion h2 { margin: 0; color: #923b61; font-size: 1.4rem; font-weight: 800; }
-        .numero-seccion { display: grid; flex: 0 0 auto; width: 40px; height: 40px; place-items: center; border-radius: 12px; background: linear-gradient(135deg, #702283, #923b61); color: #ffffff; font-weight: 800; }
-        .seccion-terminos p { margin: 0 0 12px; font-family: 'Inter', sans-serif; font-size: 1.05rem; line-height: 1.65; color: #4a3f4c; }
-        .seccion-terminos p:last-child { margin-bottom: 0; }
-        .aviso-riesgo { padding: 16px 18px; border-left: 4px solid #923b61; border-radius: 8px; background: #ffffff; font-weight: 500; }
-        .acciones-terminos { display: flex; justify-content: flex-end; gap: 14px; flex-wrap: wrap; }
-        .acciones-terminos .boton-cuenta { margin: 0; padding: 14px 38px; border: 2px solid #923b61; font: inherit; font-weight: 700; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
-        .acciones-terminos .boton-cuenta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(146, 59, 97, .28); }
-        .acciones-terminos .boton-cuenta:active { background: #572038; border-color: #572038; color: #ffffff; transform: scale(.99); }
-        .acciones-terminos .boton-cuenta:focus-visible { outline: 3px solid #DC91F6; outline-offset: 3px; }
-        @media (max-width: 850px) {
-            .hero-terminos { flex-direction: column-reverse; align-items: flex-start; }
-            .hero-terminos img { width: 90px; height: 90px; }
-            .terminos-layout { grid-template-columns: 1fr; }
-            .indice-terminos { position: static; }
-            .seccion-terminos { padding: 24px 22px; }
-            .acciones-terminos { justify-content: stretch; }
-            .acciones-terminos .boton-cuenta { flex: 1; padding: 14px 20px; }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Términos y condiciones | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/reporte.css">
 </head>
-<body class="pagina-inicio">
+<body>
+    <main class="container">
+        <header class="header"><h1>Términos y condiciones</h1></header>
+        <section class="form-card flujo-reporte">
+    <p>
+        Bienvenido a Centinela Digital. Antes de utilizar esta plataforma,
+        te recomendamos leer cuidadosamente los siguientes términos y condiciones.
+        Al continuar utilizando el sistema, aceptas las condiciones descritas
+        en este documento.
+    </p>
 
-    <header class="barra-superior">
-        <input type="checkbox" id="menu-toggle" class="toggle-menu">
-        <label for="menu-toggle" class="btn-hamburguesa">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
+    <h2>1. Uso de la plataforma</h2>
 
-        <nav class="menu-lateral">
-            <a href="principal.html">Inicio</a>
-            <a href="descubre_mas.html">Descubre más</a>
-            <a href="videos.html">Videos</a>
-            <a href="directorio.html">Directorio</a>
-            <a href="sobre_nosotros.html">Sobre nosotros</a>
-        </nav>
+    <p>
+        Centinela Digital es una plataforma desarrollada con fines de orientación,
+        información y registro de situaciones relacionadas con distintos tipos
+        de violencia. El sistema busca brindar apoyo informativo y facilitar
+        el acceso a recursos de ayuda.
+    </p>
 
-        <div class="logo-centro">
-            <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
-            <span>CENTINELA DIGITAL</span>
-        </div>
+    <p>
+        El usuario se compromete a utilizar la plataforma de manera responsable
+        y a proporcionar información verídica en los formularios cuando sea posible.
+    </p>
 
-        <div class="iconos-derecha">
-            <a class="btn-icono" href="cuenta.html">Cuenta</a>
-        </div>
-    </header>
+    <h2>2. Sobre los reportes</h2>
 
-    <main class="contenido-inicio">
+    <p>
+        Los reportes pueden realizarse de manera anónima o proporcionando datos
+        de identificación, dependiendo de la modalidad seleccionada por el usuario.
+    </p>
 
-        <section class="bloque-cta hero-terminos">
-            <div>
-                <h1>Términos y Condiciones de Centinela Digital</h1>
-                <p>
-                    Bienvenido a Centinela Digital. Antes de utilizar esta plataforma,
-                    te recomendamos leer cuidadosamente los siguientes términos y condiciones.
-                    Al continuar utilizando el sistema, aceptas las condiciones descritas
-                    en este documento.
-                </p>
-            </div>
-            <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
-        </section>
+    <p>
+        La información registrada será utilizada únicamente con fines de
+        orientación, organización y seguimiento dentro del alcance del proyecto.
+    </p>
 
-        <div class="terminos-layout">
+    <p>
+        El usuario es responsable de la información que decide compartir dentro
+        de los formularios de reporte.
+    </p>
 
-            <nav class="cuenta-panel indice-terminos" aria-label="Índice de secciones">
-                <h2>En esta página</h2>
-                <ol>
-                    <li><a href="#uso">1. Uso de la plataforma</a></li>
-                    <li><a href="#reportes">2. Sobre los reportes</a></li>
-                    <li><a href="#privacidad">3. Privacidad y confidencialidad</a></li>
-                    <li><a href="#responsabilidades">4. Responsabilidades del usuario</a></li>
-                    <li><a href="#limitaciones">5. Limitaciones del servicio</a></li>
-                    <li><a href="#modificaciones">6. Modificaciones</a></li>
-                    <li><a href="#aceptacion">7. Aceptación</a></li>
-                </ol>
-            </nav>
+    <h2>3. Privacidad y confidencialidad</h2>
 
-            <div class="lista-terminos">
+    <p>
+        Centinela Digital procura resguardar la información registrada dentro
+        de la plataforma y limitar el acceso a los datos almacenados.
+    </p>
 
-                <section class="cuenta-panel seccion-terminos" id="uso">
-                    <div class="titulo-seccion">
-                        <span class="numero-seccion">1</span>
-                        <h2>Uso de la plataforma</h2>
-                    </div>
-                    <p>
-                        Centinela Digital es una plataforma desarrollada con fines de orientación,
-                        información y registro de situaciones relacionadas con distintos tipos
-                        de violencia. El sistema busca brindar apoyo informativo y facilitar
-                        el acceso a recursos de ayuda.
-                    </p>
-                    <p>
-                        El usuario se compromete a utilizar la plataforma de manera responsable
-                        y a proporcionar información verídica en los formularios cuando sea posible.
-                    </p>
-                </section>
+    <p>
+        Cuando el usuario seleccione la modalidad anónima, no será obligatorio
+        proporcionar información personal identificable.
+    </p>
 
-                <section class="cuenta-panel seccion-terminos" id="reportes">
-                    <div class="titulo-seccion">
-                        <span class="numero-seccion">2</span>
-                        <h2>Sobre los reportes</h2>
-                    </div>
-                    <p>
-                        Los reportes pueden realizarse de manera anónima o proporcionando datos
-                        de identificación, dependiendo de la modalidad seleccionada por el usuario.
-                    </p>
-                    <p>
-                        La información registrada será utilizada únicamente con fines de
-                        orientación, organización y seguimiento dentro del alcance del proyecto.
-                    </p>
-                    <p>
-                        El usuario es responsable de la información que decide compartir dentro
-                        de los formularios de reporte.
-                    </p>
-                </section>
+    <p>
+        Aun así, se recomienda evitar incluir datos innecesarios que puedan
+        revelar la identidad propia o de terceras personas.
+    </p>
 
-                <section class="cuenta-panel seccion-terminos" id="privacidad">
-                    <div class="titulo-seccion">
-                        <span class="numero-seccion">3</span>
-                        <h2>Privacidad y confidencialidad</h2>
-                    </div>
-                    <p>
-                        Centinela Digital procura resguardar la información registrada dentro
-                        de la plataforma y limitar el acceso a los datos almacenados.
-                    </p>
-                    <p>
-                        Cuando el usuario seleccione la modalidad anónima, no será obligatorio
-                        proporcionar información personal identificable.
-                    </p>
-                    <p>
-                        Aun así, se recomienda evitar incluir datos innecesarios que puedan
-                        revelar la identidad propia o de terceras personas.
-                    </p>
-                </section>
+    <h2>4. Responsabilidades del usuario</h2>
 
-                <section class="cuenta-panel seccion-terminos" id="responsabilidades">
-                    <div class="titulo-seccion">
-                        <span class="numero-seccion">4</span>
-                        <h2>Responsabilidades del usuario</h2>
-                    </div>
-                    <p>
-                        El usuario acepta utilizar la plataforma con respeto y evitar proporcionar
-                        información falsa, ofensiva o que vulnere los derechos de otras personas.
-                    </p>
-                    <p>
-                        Asimismo, el usuario reconoce que cualquier dato ingresado en los formularios
-                        debe relacionarse directamente con la situación que desea reportar.
-                    </p>
-                </section>
+    <p>
+        El usuario acepta utilizar la plataforma con respeto y evitar proporcionar
+        información falsa, ofensiva o que vulnere los derechos de otras personas.
+    </p>
 
-                <section class="cuenta-panel seccion-terminos" id="limitaciones">
-                    <div class="titulo-seccion">
-                        <span class="numero-seccion">5</span>
-                        <h2>Limitaciones del servicio</h2>
-                    </div>
-                    <p>
-                        Centinela Digital no sustituye a las instituciones oficiales de atención,
-                        autoridades competentes, servicios de emergencia ni atención profesional.
-                    </p>
-                    <p>
-                        El uso de esta plataforma no constituye una denuncia legal oficial y no
-                        garantiza que una institución externa reciba automáticamente la información.
-                    </p>
-                    <p class="aviso-riesgo">
-                        Si existe una situación de riesgo inmediato, se recomienda contactar
-                        directamente a las autoridades o servicios de emergencia correspondientes.
-                    </p>
-                </section>
+    <p>
+        Asimismo, el usuario reconoce que cualquier dato ingresado en los formularios
+        debe relacionarse directamente con la situación que desea reportar.
+    </p>
 
-                <section class="cuenta-panel seccion-terminos" id="modificaciones">
-                    <div class="titulo-seccion">
-                        <span class="numero-seccion">6</span>
-                        <h2>Modificaciones</h2>
-                    </div>
-                    <p>
-                        Los presentes términos y condiciones podrán modificarse para mejorar
-                        el funcionamiento de la plataforma o adaptarse a nuevas necesidades
-                        del proyecto.
-                    </p>
-                </section>
+    <h2>5. Limitaciones del servicio</h2>
 
-                <section class="cuenta-panel seccion-terminos" id="aceptacion">
-                    <div class="titulo-seccion">
-                        <span class="numero-seccion">7</span>
-                        <h2>Aceptación</h2>
-                    </div>
-                    <p>
-                        Al utilizar Centinela Digital, el usuario confirma que ha leído,
-                        comprendido y aceptado los presentes términos y condiciones.
-                    </p>
-                </section>
+    <p>
+        Centinela Digital no sustituye a las instituciones oficiales de atención,
+        autoridades competentes, servicios de emergencia ni atención profesional.
+    </p>
 
-                <div class="acciones-terminos">
-                    <button type="button" class="boton-cuenta boton-cuenta-claro" onclick="volverPagina()">
-                        Volver
-                    </button>
+    <p>
+        El uso de esta plataforma no constituye una denuncia legal oficial y no
+        garantiza una respuesta de una institución externa. Cuando exista un canal oficial configurado, Centinela Digital puede enviar una solicitud de orientación sin adjuntar el reporte.
+    </p>
 
-                    <button type="button" class="boton-cuenta" onclick="continuarPagina()">
-                        Continuar
-                    </button>
+    <p>
+        Si existe una situación de riesgo inmediato, se recomienda contactar
+        directamente a las autoridades o servicios de emergencia correspondientes.
+    </p>
+
+    <h2>6. Modificaciones</h2>
+
+    <p>
+        Los presentes términos y condiciones podrán modificarse para mejorar
+        el funcionamiento de la plataforma o adaptarse a nuevas necesidades
+        del proyecto.
+    </p>
+
+    <h2>7. Aceptación</h2>
+
+    <p>
+        Al utilizar Centinela Digital, el usuario confirma que ha leído,
+        comprendido y aceptado los presentes términos y condiciones.
+    </p>
+
+
+            <form id="aceptar-terminos" hidden>
+                <label><input type="checkbox" required> He leído y acepto los términos y condiciones.</label>
+                <div class="acciones-reporte">
+                    <a href="formulario_reporte.html">Volver</a>
+                    <button class="btn-formulario">Continuar</button>
                 </div>
-
-            </div>
-        </div>
-
+            </form>
+            <a id="volver-terminos" href="principal.html">Volver al inicio</a>
+        </section>
     </main>
-
     <script src="../js/terminos.js"></script>
-
 </body>
 </html>

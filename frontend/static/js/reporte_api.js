@@ -1,105 +1,154 @@
-const API_BASE = window.CENTINELA_API || '/api';
+const flujo = JSON.parse(sessionStorage.getItem('centinela_flujo') || 'null');
+const form = document.getElementById('reportForm');
+const tipo = document.getElementById('tipoViolencia');
+const revisar = document.getElementById('revisar-reporte');
+const tipoElegido = document.getElementById('tipo-elegido');
+const pasoDatos = document.getElementById('paso-datos');
+const pasoRevision = document.getElementById('paso-revision');
+const ayudaCaptura = document.getElementById('ayuda-captura');
+const revision = document.getElementById('revision-reporte');
+const enviar = document.getElementById('enviar-reporte');
+const aviso = document.getElementById('aviso-reporte');
+const evidencia = document.getElementById('archivoEvidencia');
+const grupos = Array.from(form.querySelectorAll('.form-group'));
+const pagina = location.pathname.split('/').pop();
+const rol = pagina === 'ReporteVicAno.html' ? 'victima' : 'testigo';
+const anonimo = flujo?.modalidad !== 'registrada';
+const claveEnvio = crypto.randomUUID();
+const token = sessionStorage.getItem('centinela_token');
 
-async function cargarTiposViolencia() {
-    const selector = document.getElementById('tipoViolencia');
-    if (!selector) return;
-    try {
-        const respuesta = await fetch(API_BASE + '/tipos-violencia');
-        if (!respuesta.ok) throw new Error('No se pudieron cargar los tipos.');
-        const datos = await respuesta.json();
-        selector.innerHTML = '<option value="" disabled selected>Selecciona una opción</option>';
-        datos.tipos.forEach((tipo) => {
-            const opcion = document.createElement('option');
-            opcion.value = tipo.id_tipo_violencia;
-            opcion.textContent = tipo.nombre;
-            selector.appendChild(opcion);
-        });
-    } catch (error) {
-        console.warn('Se conservaron las opciones locales:', error.message);
-    }
+function volverASesion() {
+    sessionStorage.setItem('centinela_regreso', pagina);
+    location.assign('cuenta.html');
 }
 
-function formToObject(form) {
-    const result = {};
-    new FormData(form).forEach((value, key) => {
-        if (typeof value === 'string' && value.trim() !== '') result[key] = value;
-    });
-    return result;
-}
-
-async function enviarFormularioInicial(evento) {
-    evento.preventDefault();
-    const form = evento.currentTarget;
-    const datos = formToObject(form);
-    datos.es_anonimo = true;
-    datos.tipos_violencia = datos.tipoViolencia ? [Number(datos.tipoViolencia)] : [];
-    datos.detalle = {
-        tipoViolencia: datos.tipoViolencia,
-        fecha: datos.fecha,
-        lugar: datos.lugar,
-        ayudaInmediata: datos.ayudaInmediata,
-        haOcurrido: datos.haOcurrido,
-        descripcion: datos.descripcion
-    };
-    datos.fecha_hecho = datos.fecha || null;
-
-    const respuesta = await fetch(API_BASE + '/reportes', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', ...(sessionStorage.getItem('centinela_token') ? {'Authorization': 'Bearer ' + sessionStorage.getItem('centinela_token')} : {})},
-        body: JSON.stringify(datos)
-    });
-    const resultado = await respuesta.json();
-    if (!respuesta.ok) throw new Error(resultado.error || 'No se pudo crear el reporte.');
-
-    sessionStorage.setItem('reporte_activo', JSON.stringify(resultado.reporte));
-    window.location.href = form.getAttribute('action') + '?reporte_id=' + resultado.reporte.id_reporte;
-}
-
-async function finalizarReporte(evento) {
-    evento.preventDefault();
-    const form = evento.currentTarget;
-    const reporte = JSON.parse(sessionStorage.getItem('reporte_activo') || 'null');
-
-    if (!reporte) {
-        alert('No se encontró el reporte activo.');
+async function preparar() {
+    if (!flujo?.terminos || flujo.rol !== rol) {
+        location.replace('formulario_reporte.html');
         return;
     }
-
-    const archivo = document.getElementById('archivoEvidencia');
-    if (archivo && archivo.files.length > 0) {
-        const datosArchivo = new FormData();
-        datosArchivo.append('archivo', archivo.files[0]);
-        const respuestaArchivo = await fetch(API_BASE + '/reportes/' + reporte.id_reporte + '/evidencias', {
-            method: 'POST',
-            headers: {'X-Reporte-Token': reporte.token_acceso},
-            body: datosArchivo
-        });
-        if (!respuestaArchivo.ok) {
-            const errorArchivo = await respuestaArchivo.json();
-            throw new Error(errorArchivo.error || 'No se pudo guardar la evidencia.');
-        }
+    if (!flujo.tipoViolencia) {
+        location.replace('violentometro.html');
+        return;
     }
-
-    sessionStorage.removeItem('reporte_activo');
-    window.location.href = 'seguimiento.html?folio=' + encodeURIComponent(reporte.folio);
+    if (!anonimo) {
+        if (!token) {
+            volverASesion();
+            return;
+        }
+        const sesion = await fetch('/api/auth/sesion', {headers: {Authorization: 'Bearer ' + token}});
+        if (sesion.status === 401) {
+            sessionStorage.removeItem('centinela_token');
+            sessionStorage.removeItem('centinela_usuario');
+            volverASesion();
+            return;
+        }
+        if (!sesion.ok) throw new Error('No se pudo cargar tu cuenta.');
+        const {usuario} = await sesion.json();
+        document.querySelector('.header h1').textContent = rol === 'victima' ? 'Mi reporte (Víctima, registrado)' : 'Mi reporte (Testigo, registrado)';
+        document.querySelector('.subtitle').textContent = 'Tu reporte quedará disponible en Mis reportes.';
+        document.getElementById('nombre-reportante').value = usuario.nombre;
+        document.getElementById('correo-reportante').value = usuario.correo;
+        grupos.filter(grupo => grupo.hasAttribute('data-contacto')).forEach(grupo => { grupo.hidden = false; });
+    }
+    const respuesta = await fetch('/api/tipos-violencia');
+    if (!respuesta.ok) throw new Error('No se pudieron cargar los tipos de violencia.');
+    const {tipos} = await respuesta.json();
+    tipos.forEach(item => tipo.add(new Option(item.nombre, item.id_tipo_violencia)));
+    tipo.value = flujo.tipoViolencia;
+    if (!tipo.value) {
+        location.replace('violentometro.html');
+        return;
+    }
+    document.getElementById('nombre-tipo-elegido').textContent = tipo.selectedOptions[0].textContent;
+    tipoElegido.hidden = false;
+    revisar.disabled = false;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    cargarTiposViolencia();
-    const form = document.getElementById('reportForm');
-    if (!form) return;
-
-    form.addEventListener('submit', async (evento) => {
-        try {
-            if (document.body.contains(document.getElementById('tipoViolencia'))) {
-                await enviarFormularioInicial(evento);
-            } else {
-                await finalizarReporte(evento);
-            }
-        } catch (error) {
-            evento.preventDefault();
-            alert(error.message);
+function mostrarRevision() {
+    form.hidden = true;
+    revision.hidden = false;
+    ayudaCaptura.hidden = true;
+    pasoDatos.removeAttribute('aria-current');
+    pasoRevision.setAttribute('aria-current', 'step');
+    const campos = document.getElementById('campos-revision');
+    campos.replaceChildren();
+    const datos = new FormData(form);
+    grupos.filter(grupo => !anonimo || !grupo.hasAttribute('data-contacto')).forEach(grupo => {
+        const etiqueta = grupo.querySelector('.form-label').textContent;
+        const control = grupo.querySelector('input, select, textarea');
+        const fila = document.createElement('div');
+        fila.className = 'fila-revision';
+        const contenido = document.createElement('div');
+        const titulo = document.createElement('strong');
+        titulo.textContent = etiqueta;
+        const valor = document.createElement('p');
+        valor.textContent = (control === tipo ? tipo.selectedOptions[0].textContent :
+            control === evidencia ? evidencia.files[0]?.name :
+            control.readOnly ? control.value : datos.get(control.name)) || 'Sin respuesta';
+        contenido.append(titulo, valor);
+        fila.append(contenido);
+        if (!control.readOnly) {
+            const editar = document.createElement('button');
+            editar.type = 'button';
+            editar.textContent = 'Editar';
+            editar.setAttribute('aria-label', 'Editar ' + etiqueta);
+            editar.addEventListener('click', () => {
+                grupos.forEach(item => { item.hidden = item !== grupo; });
+                tipoElegido.hidden = true;
+                revisar.textContent = 'Guardar cambio';
+                form.classList.add('editando-campo');
+                pasoRevision.removeAttribute('aria-current');
+                pasoDatos.setAttribute('aria-current', 'step');
+                revision.hidden = true;
+                form.hidden = false;
+                control.focus();
+            });
+            fila.append(editar);
         }
+        campos.append(fila);
     });
+    revision.querySelector('h2').tabIndex = -1;
+    revision.querySelector('h2').focus();
+}
+
+form.addEventListener('submit', (evento) => {
+    evento.preventDefault();
+    if (evidencia.files[0]?.size > 10 * 1024 * 1024) {
+        aviso.textContent = 'La evidencia debe pesar como máximo 10 MB.';
+        return;
+    }
+    aviso.textContent = '';
+    flujo.tipoViolencia = tipo.value;
+    sessionStorage.setItem('centinela_flujo', JSON.stringify(flujo));
+    mostrarRevision();
 });
 
+enviar.addEventListener('click', async () => {
+    enviar.disabled = true;
+    aviso.textContent = '';
+    const detalle = Object.fromEntries(new FormData(form));
+    delete detalle.archivo;
+    delete detalle.tipoViolencia;
+    const datos = new FormData();
+    datos.append('reporte', JSON.stringify({
+        rol, es_anonimo: anonimo, terminos: true, tipo_violencia: Number(tipo.value),
+        clave_envio: claveEnvio, detalle
+    }));
+    if (evidencia.files[0]) datos.append('archivo', evidencia.files[0]);
+    try {
+        const respuesta = await fetch('/api/reportes', {
+            method: 'POST',
+            headers: anonimo ? {} : {Authorization: 'Bearer ' + token},
+            body: datos
+        });
+        const resultado = await respuesta.json().catch(() => ({}));
+        if (!respuesta.ok) throw new Error(resultado.error || 'No se pudo registrar el reporte.');
+        sessionStorage.removeItem('centinela_flujo');
+        location.assign('confirmacion_reporte.html#folio=' + encodeURIComponent(resultado.reporte.folio));
+    } catch (error) {
+        aviso.textContent = error.message;
+        enviar.disabled = false;
+    }
+});
+preparar().catch(error => { aviso.textContent = error.message; });
