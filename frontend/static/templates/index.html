@@ -4,118 +4,185 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centinela Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Marca la página como "en intro" antes de pintar nada -->
+    <script>
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('con-intro');
+    </script>
+    <noscript><style>.intro-capa { display: none; }</style></noscript>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
     <style>
+        /* Fuente, color, márgenes, centrado, tamaño 200% del fondo y la animación luzMovil vienen del body de estilos.css.
+           Por eso aquí se usa background-image (y no "background:"): la abreviatura resetea el tamaño y la luz deja de moverse. */
         body.splash-index {
-            min-height: 100vh;
-            margin: 0;
-            display: grid;
-            place-items: center;
             overflow: hidden;
-            background:
-                radial-gradient(circle at 55% 48%, rgba(216, 126, 242, .9) 0, rgba(216, 126, 242, .45) 18%, transparent 48%),
+            background-image:
+                radial-gradient(circle at center, rgba(220, 145, 246, .85) 0%, rgba(220, 145, 246, .35) 30%, transparent 65%),
                 linear-gradient(135deg, #8f3d63 0%, #a34e83 48%, #8b3c64 100%);
-            color: #ffffff;
         }
 
-        .splash-panel {
-            display: grid;
-            grid-template-columns: 190px minmax(260px, 390px);
-            align-items: center;
-            gap: 42px;
-            width: min(90%, 720px);
-            padding: 48px 42px;
-            border: 1px solid rgba(255, 255, 255, .28);
-            border-radius: 24px;
-            background: rgba(255, 255, 255, .08);
-            box-shadow: 0 18px 45px rgba(57, 15, 61, .3);
-            backdrop-filter: blur(7px);
-            box-sizing: border-box;
+        /* ---------- Proporciones: logo grande a la izquierda; texto arriba y botón abajo a la derecha ---------- */
+        .splash {
+            position: relative; z-index: 1;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 6vw;
+            width: min(88%, 1100px); height: min(75vh, 560px);
         }
+        .splash-marca { display: grid; place-items: center; min-height: 0; }
+        .splash-marca img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 7px 10px rgba(44, 10, 50, .3)); }
 
-        .splash-marca {
-            text-align: center;
-        }
-
-        .splash-marca img {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-            filter: drop-shadow(0 7px 10px rgba(44, 10, 50, .3));
-        }
-
-        .splash-marca strong {
-            display: block;
-            margin-top: -5px;
-            font-size: 27px;
-            font-style: italic;
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -1px;
-        }
-
+        /* ---------- Columna derecha: título y texto arriba, botón abajo ---------- */
         .splash-contenido {
-            text-align: center;
+            --fuente-titulo: 'Anton', Impact, sans-serif;   /* FUENTE del título y del botón: cámbiala solo aquí */
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center;
         }
+        .splash-textos { text-shadow: 0 2px 5px rgba(70, 18, 70, .28); }
 
-        .splash-contenido p {
-            margin: 0 0 28px;
-            font-size: 20px;
-            line-height: 1.35;
-            text-shadow: 0 2px 5px rgba(70, 18, 70, .28);
+        /* Título en mayúsculas: TAMAÑO = font-size, ESPACIO ENTRE LETRAS = letter-spacing */
+        .splash-titulo {
+            margin: 0 0 18px; font-family: var(--fuente-titulo); font-weight: 400;
+            font-size: clamp(34px, 4.6vw, 64px); line-height: 1.05; letter-spacing: 1px;
         }
+        /* Texto en minúsculas de abajo: TAMAÑO = font-size */
+        .splash-texto { margin: 0; font-size: clamp(16px, 1.7vw, 22px); line-height: 1.5; }
 
+        /* Botón: ANCHO = width, ALTO = padding de arriba y abajo (primer valor), LETRA = font-size */
         .btn-visitar-sitio {
-            display: inline-block;
-            padding: 13px 24px;
-            border-radius: 6px;
-            background: #963b61;
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 700;
-            text-decoration: none;
+            box-sizing: border-box; width: min(100%, 420px); padding: 36px 24px;
+            border-radius: 10px; background: #963b61; color: #fff; text-align: center;
+            font-family: var(--fuente-titulo); font-weight: 400; font-size: clamp(20px, 2.1vw, 28px); letter-spacing: 1.5px; text-decoration: none;
             box-shadow: 0 5px 14px rgba(77, 18, 68, .3);
-            transition: transform .2s ease, background .2s ease;
+            transition: transform .2s, background .2s;
         }
-
-        .btn-visitar-sitio:hover {
-            background: #702283;
-            transform: translateY(-2px);
-        }
+        .btn-visitar-sitio:hover { background: #631363; transform: translateY(-2px); }
 
         @media (max-width: 650px) {
-            .splash-panel {
-                grid-template-columns: 1fr;
-                gap: 22px;
-                padding: 25px;
-            }
-
-            .splash-marca img {
-                width: 125px;
-                height: 125px;
-            }
-
-            .splash-marca strong {
-                font-size: 23px;
-            }
-
-            .splash-contenido p {
-                font-size: 17px;
-            }
+            .splash { grid-template-columns: 1fr; grid-template-rows: 1fr auto; height: 85vh; gap: 24px; }
+            .splash-contenido { justify-content: center; gap: 24px; }
         }
+
+        /* ---------- Intro: tu contenido aparece al terminar el goteo ---------- */
+        /* Los tiempos (--gota, --paso, --destello, --funde) los define el script */
+        body > *:not(.intro-capa) { transition: opacity .6s ease; }
+        html.con-intro body > *:not(.intro-capa) { opacity: 0; }
+
+        .intro-capa { position: fixed; inset: 0; overflow: hidden; }
+
+        /* Capa 1: goteo + destello (encima de todo). Pantalla negra con leve degradado morado */
+        #intro-gotas {
+            z-index: 9999;
+            background:
+                radial-gradient(ellipse 60% 50% at 90% 108%, rgba(216, 126, 242, .38) 0%, rgba(163, 78, 131, .24) 28%, rgba(143, 61, 99, .11) 52%, rgba(143, 61, 99, .03) 72%, transparent 100%),
+                #000;
+        }
+        #intro-gotas.fase-fondo { background: transparent; }
+        #intro-gotas.fase-fondo .intro-lineas { display: none; }
+
+        .intro-lineas { position: absolute; inset: 0; width: 90vw; margin: auto; display: flex; justify-content: space-between; }
+        .intro-linea { position: relative; width: 2px; overflow: hidden; }
+        .intro-linea::after {
+            content: ''; position: absolute; left: 0; top: -50%; width: 100%; height: 15vh;
+            background: linear-gradient(to bottom, transparent, var(--c) 75%);
+            animation: intro-drop var(--gota) cubic-bezier(.4, .26, 0, .97) calc(var(--i) * var(--paso)) both;
+        }
+        @keyframes intro-drop { to { top: 110%; } }
+
+        .intro-destello { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+        .fase-destello .intro-destello { animation: intro-destello var(--destello) ease-in-out forwards; }
+        @keyframes intro-destello { 40% { opacity: 1; } }
+
+        /* Capa 2: fondo diagonal (detrás de tu contenido) que se funde hacia la luz móvil */
+        #intro-fondo { z-index: 0; background: #6b2a55; opacity: 0; pointer-events: none; }
+        #intro-fondo.visible { opacity: 1; }
+        #intro-fondo.desvaneciendo { opacity: 0; transition: opacity var(--funde) ease; }
+        #intro-fondo i {
+            position: absolute; top: 0; bottom: 0; left: -50%; right: -50%;
+            background-image: linear-gradient(-60deg, #DC91F6 50%, #923B61 50%);
+            opacity: .5; animation: intro-slide 3s ease-in-out infinite alternate;
+        }
+        #intro-fondo i:nth-child(2) { animation-direction: alternate-reverse; animation-duration: 4s; }
+        #intro-fondo i:nth-child(3) { animation-duration: 5s; }
+        @keyframes intro-slide { from { transform: translateX(-25%); } to { transform: translateX(25%); } }
     </style>
 </head>
 <body class="splash-index">
-    <main class="splash-panel">
+
+    <div id="intro-fondo" class="intro-capa" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div id="intro-gotas" class="intro-capa" aria-hidden="true">
+        <div class="intro-lineas"></div>
+        <div class="intro-destello"></div>
+    </div>
+
+    <main class="splash">
         <section class="splash-marca" aria-label="Centinela Digital">
             <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
         </section>
         <section class="splash-contenido">
-            <p>T,<br>averigua cómo puedes<br>ayudarte a ti o a algún<br>conocido.</p>
+            <div class="splash-textos">
+                <!-- TÍTULO (mayúsculas): edita el texto aquí -->
+                <h1 class="splash-titulo">TU BIENESTAR ES PRIMERO</h1>
+                <!-- TEXTO (minúsculas): edita el texto aquí -->
+                <p class="splash-texto"> <br>Si tú o algún conocido ha sufrido alguna situación de violencia, ingresa a esta página para reportar tu caso, NOSOTROS TE CONCEDEREMOS AYUDA.</p>
+            </div>
+            <!-- BOTÓN: texto y enlace -->
+
             <a class="btn-visitar-sitio" href="principal.html">VISITAR CENTINELA DIGITAL</a>
         </section>
     </main>
+
+    <script>
+    (function () {
+        var root = document.documentElement;
+        var gotas = document.getElementById('intro-gotas');
+        var fondo = document.getElementById('intro-fondo');
+        var lineas = gotas.querySelector('.intro-lineas');
+        var quitar = function (el) { if (el.parentNode) el.parentNode.removeChild(el); };
+
+        // Sin intro (movimiento reducido): se limpia y listo
+        if (!root.classList.contains('con-intro')) { quitar(gotas); quitar(fondo); return; }
+
+        // ===== VALORES AJUSTABLES (en milisegundos) =====
+        var GOTA = 1800;           // lo que tarda cada gota en caer
+        var PASO = 130;            // diferencia de salida entre una gota y la siguiente
+        var DESTELLO = 500;        // duración del destello blanco
+        var FONDO_VISIBLE = 3600;  // cuánto se ve el fondo diagonal antes de fundirse
+        var FUNDE = 2000;          // duración del fundido hacia la luz móvil
+        var COLORES = ['#DC91F6', '#E51BB8', '#D81B60', '#C56ED3', '#F4C5EE', '#B659A4', '#923B61', '#D87EF2', '#FF6FB5', '#A34E83'];
+        // =================================================
+
+        // El CSS lee estos mismos tiempos, así no se repiten en dos lugares
+        root.style.setProperty('--gota', GOTA + 'ms');
+        root.style.setProperty('--paso', PASO + 'ms');
+        root.style.setProperty('--destello', DESTELLO + 'ms');
+        root.style.setProperty('--funde', FUNDE + 'ms');
+
+        COLORES.forEach(function (c, i) {
+            var l = document.createElement('div');
+            l.className = 'intro-linea';
+            l.style.cssText = '--i:' + i + ';--c:' + c;
+            lineas.appendChild(l);
+        });
+
+        var pico = DESTELLO * 0.4;   // instante más blanco del destello (40 % de su duración)
+        var SALE = 0.62;             // fracción de GOTA en que la última gota ya salió de pantalla (por la curva de .intro-linea::after)
+        var salida = (COLORES.length - 1) * PASO + GOTA * SALE;
+
+        // El destello arranca justo para que su punto más blanco coincida con la salida de la última gota (sin tiempo muerto)
+        setTimeout(function () {
+            gotas.classList.add('fase-destello');
+            setTimeout(function () {                           // en el punto más blanco:
+                gotas.classList.add('fase-fondo');             //   se va el goteo
+                fondo.classList.add('visible');                //   aparece el fondo diagonal
+                root.classList.remove('con-intro');            //   aparece tu página
+                setTimeout(function () { quitar(gotas); }, DESTELLO - pico + 50);
+                setTimeout(function () {                       // luego el fondo diagonal
+                    fondo.classList.add('desvaneciendo');      // se funde hacia la luz móvil
+                    setTimeout(function () { quitar(fondo); }, FUNDE + 200);
+                }, FONDO_VISIBLE);
+            }, pico);
+        }, salida - pico);
+    })();
+    </script>
 </body>
 </html>
-
