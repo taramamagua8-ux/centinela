@@ -19,7 +19,21 @@ const instituciones = [
     "Comisión de Derechos Humanos del Estado de México",
     "Fiscalía General de Justicia del Estado de México",
     "Sistema Nacional para el Desarrollo Integral de la Familia",
-    "Red Nacional de Refugios A.C."
+    "Red Nacional de Refugios A.C.",
+    "Centro de Atención para la Convivencia Escolar Mexiquense (CACEM)",
+    "Secretaría Ejecutiva del SIPINNA Estado de México",
+    "Instituto Mexiquense para la Discapacidad (IMEDIS)",
+    "Coordinación de Atención a Adultos Mayores del DIFEM",
+    "Centro de Conciliación Laboral del Estado de México (CCLEM)",
+    "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Toluca",
+    "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Naucalpan",
+    "Secretaría de Igualdad Sustantiva y Cuidados (UAEMéx)",
+    "CODHEM - Visitaduría Adjunta de Atención Integral a Niñas, Niños y Adolescentes",
+    "CODHEM - Visitaduría Adjunta de Atención a Personas con Discapacidad, Adultos Mayores y Atención Empresarial",
+    "CODHEM - Visitaduría Adjunta de Atención a la Trata de Personas y Desaparición Forzada",
+    "CODHEM - Visitaduría Adjunta de Atención a Personas Migrantes, Periodistas y Defensores",
+    "CODHEM - Visitaduría Adjunta de Atención a Pueblos Indígenas y Afrodescendientes",
+    "CODHEM - Visitaduría Adjunta de Igualdad de Género y No Discriminación"
 ];
 
 function normalizar(texto) {

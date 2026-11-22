@@ -135,6 +135,118 @@ const instituciones = [
         servicios: ["Orientación", "Protección", "Información sobre refugios"],
         palabras: "mujeres violencia apoyo protección refugios"
     }
+    ,{
+        id: "cacem",
+        nombre: "Centro de Atención para la Convivencia Escolar Mexiquense (CACEM)",
+        descripcion: "Recibe y canaliza reportes de violencia escolar.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Violencia escolar", "Orientación", "Canalización"],
+        palabras: "escuela escolar estudiantes alumnos bullying acoso convivencia reportes conebi toluca"
+    }
+    ,{
+        id: "sipinna-edomex",
+        nombre: "Secretaría Ejecutiva del SIPINNA Estado de México",
+        descripcion: "Coordina la protección de los derechos de la infancia y la adolescencia.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Coordinación", "Infancia", "Orientación"],
+        palabras: "niñas niños adolescentes menores familias derechos sipinna toluca politicas publicas"
+    }
+    ,{
+        id: "imedis",
+        nombre: "Instituto Mexiquense para la Discapacidad (IMEDIS)",
+        descripcion: "Orientación y promoción de derechos de las personas con discapacidad.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Discapacidad", "Orientación", "Vinculación"],
+        palabras: "discapacidad inclusion accesibilidad cuidadoras familias derechos salud imedis toluca"
+    }
+    ,{
+        id: "difem-adultos-mayores",
+        nombre: "Coordinación de Atención a Adultos Mayores del DIFEM",
+        descripcion: "Atención, orientación y canalización para personas adultas mayores.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Adultos mayores", "Trabajo social", "Canalización"],
+        palabras: "adultos mayores abandono negligencia familias cuidadoras difem asistencia social toluca"
+    }
+    ,{
+        id: "cclem",
+        nombre: "Centro de Conciliación Laboral del Estado de México (CCLEM)",
+        descripcion: "Conciliación en conflictos laborales antes de llegar a juicio.",
+        ubicacion: "Toluca, Tlalnepantla, Ecatepec y Texcoco, Estado de México",
+        servicios: ["Laboral", "Conciliación", "Orientación"],
+        palabras: "trabajo laboral trabajadores empleadores conflicto conciliacion despido toluca tlalnepantla ecatepec texcoco"
+    }
+    ,{
+        id: "profedet-toluca",
+        nombre: "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Toluca",
+        descripcion: "Asesoría jurídica y representación legal gratuita en asuntos laborales federales.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Jurídico", "Laboral", "Gratuito"],
+        palabras: "trabajo laboral trabajadores asesoria juridica defensa gratuita profedet toluca federal"
+    }
+    ,{
+        id: "profedet-naucalpan",
+        nombre: "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Naucalpan",
+        descripcion: "Asesoría jurídica y representación legal gratuita en asuntos laborales federales.",
+        ubicacion: "Naucalpan de Juárez, Estado de México",
+        servicios: ["Jurídico", "Laboral", "Gratuito"],
+        palabras: "trabajo laboral trabajadores asesoria juridica defensa gratuita profedet naucalpan federal"
+    }
+    ,{
+        id: "uaemex-igualdad",
+        nombre: "Secretaría de Igualdad Sustantiva y Cuidados (UAEMéx)",
+        descripcion: "Prevención y acompañamiento por violencia de género en la comunidad universitaria.",
+        ubicacion: "Ciudad Universitaria, Toluca, Estado de México",
+        servicios: ["Violencia de género", "Acompañamiento", "Comunidad UAEMéx"],
+        palabras: "universidad uaemex alumnado docentes genero igualdad inclusion acompañamiento prevencion violencia toluca"
+    }
+    ,{
+        id: "codhem-nna",
+        nombre: "CODHEM - Visitaduría Adjunta de Atención Integral a Niñas, Niños y Adolescentes",
+        descripcion: "Quejas por violaciones a derechos humanos de niñas, niños y adolescentes.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Quejas", "Niñez y adolescencia", "Derechos humanos"],
+        palabras: "codhem derechos humanos quejas visitaduria autoridades servidores publicos toluca niñas niños adolescentes menores infancia cuidadoras"
+    }
+    ,{
+        id: "codhem-discapacidad",
+        nombre: "CODHEM - Visitaduría Adjunta de Atención a Personas con Discapacidad, Adultos Mayores y Atención Empresarial",
+        descripcion: "Quejas por violaciones a derechos humanos de personas con discapacidad y adultas mayores.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Quejas", "Discapacidad", "Adultos mayores"],
+        palabras: "codhem derechos humanos quejas visitaduria autoridades servidores publicos toluca discapacidad adultos mayores empresas"
+    }
+    ,{
+        id: "codhem-trata",
+        nombre: "CODHEM - Visitaduría Adjunta de Atención a la Trata de Personas y Desaparición Forzada",
+        descripcion: "Acompañamiento en derechos humanos a víctimas y familiares de trata o desaparición forzada.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Quejas", "Trata de personas", "Desaparición forzada"],
+        palabras: "codhem derechos humanos quejas visitaduria autoridades servidores publicos toluca trata desaparicion forzada victimas familiares"
+    }
+    ,{
+        id: "codhem-migrantes",
+        nombre: "CODHEM - Visitaduría Adjunta de Atención a Personas Migrantes, Periodistas y Defensores",
+        descripcion: "Quejas por violaciones a derechos humanos de migrantes, periodistas y personas defensoras.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Quejas", "Migrantes", "Periodistas y defensores"],
+        palabras: "codhem derechos humanos quejas visitaduria autoridades servidores publicos toluca migrantes periodistas defensores huehuetoca"
+    }
+    ,{
+        id: "codhem-indigenas",
+        nombre: "CODHEM - Visitaduría Adjunta de Atención a Pueblos Indígenas y Afrodescendientes",
+        descripcion: "Quejas por violaciones a derechos humanos de pueblos indígenas y afrodescendientes.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Quejas", "Pueblos indígenas", "Afrodescendientes"],
+        palabras: "codhem derechos humanos quejas visitaduria autoridades servidores publicos toluca indigenas pueblos originarios comunidades afrodescendientes"
+    }
+    ,{
+        id: "codhem-igualdad",
+        nombre: "CODHEM - Visitaduría Adjunta de Igualdad de Género y No Discriminación",
+        descripcion: "Quejas por violaciones a derechos humanos y discriminación hacia mujeres y diversidad sexogenérica.",
+        ubicacion: "Toluca, Estado de México",
+        servicios: ["Quejas", "Igualdad de género", "No discriminación"],
+        palabras: "codhem derechos humanos quejas visitaduria autoridades servidores publicos toluca mujeres genero igualdad discriminacion diversidad sexogenerica lgbt violencia"
+    }
 ];
 
 function normalizar(texto) {
@@ -163,6 +275,24 @@ const palabrasBusqueda = normalizar(busqueda)
     .split(/\s+/)
     .filter(Boolean);
 
+const categorias = {
+    psicologica: ["psicolog", "emocional", "mental"],
+    juridica: ["juridic", "justicia", "denuncia", "abogad"],
+    medica: ["salud", "medic"],
+    proteccion: ["proteccion", "refugio", "seguridad"],
+    social: ["social", "comunit", "familia"]
+};
+
+function coincide(contenido, palabra) {
+    const raices = categorias[palabra];
+    if (raices) {
+        return raices.some(function(raiz) {
+            return contenido.includes(raiz);
+        });
+    }
+    return contenido.includes(palabra);
+}
+
 const encontrados = instituciones.filter(function(institucion) {
 
     const contenido = normalizar(
@@ -174,7 +304,7 @@ const encontrados = instituciones.filter(function(institucion) {
     );
 
     return palabrasBusqueda.every(function(palabra) {
-        return contenido.includes(palabra);
+        return coincide(contenido, palabra);
     });
 
 });

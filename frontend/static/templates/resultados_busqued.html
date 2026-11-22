@@ -15,20 +15,32 @@
         .cantidad { margin: 0; color: #923b61; font-weight: 700; }
         .lista-resultados { display: grid; gap: 15px; }
         .tarjeta-resultado { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 24px; border: 1px solid #efb3e5; border-radius: 16px; background: linear-gradient(145deg, #fffaff, #f7d9f3); box-shadow: 0 8px 18px rgba(146, 59, 97, .14); }
-        .imagen-resultado { display: grid; flex: 0 0 auto; width: 120px; height: 120px; place-items: center; overflow: hidden; border-radius: 14px; background: linear-gradient(145deg, #f7d0f1, #ffffff); }
+        .imagen-resultado { display: flex; flex: 0 0 auto; width: 120px; height: 120px; align-items: center; justify-content: center; overflow: hidden; border-radius: 14px; background: linear-gradient(145deg, #f7d0f1, #ffffff); }
         .imagen-resultado img { width: 100%; height: 100%; object-fit: contain; }
-        .informacion { flex: 1; }
+        .informacion { flex: 1; min-width: 0; overflow-wrap: anywhere; }
         .informacion h2 { margin: 0 0 6px; color: #923b61; font-size: 18px; }
         .informacion p { margin: 0 0 8px; color: #6e5a70; font-size: 13px; line-height: 1.45; }
         .etiqueta { display: inline-block; margin: 3px 2px; padding: 5px 10px; border: 1px solid #d5b6dd; border-radius: 15px; background: #ffffff; color: #702283; font-size: 11px; font-weight: 600; }
         .boton-ver { padding: 12px 20px; border-radius: 9px; background: linear-gradient(135deg, #702283, #923b61); color: #ffffff; font-weight: 700; text-decoration: none; white-space: nowrap; }
         .mensaje { width: 100%; box-sizing: border-box; }
         .mensaje h2 { margin-top: 0; color: #923b61; }
+        @media (max-width: 850px) {
+            .contenido-inicio { width: 100%; padding: 32px 20px; gap: 28px; }
+        }
         @media (max-width: 600px) {
+            .contenido-inicio { padding: 24px 14px; gap: 22px; }
+            .bloque-cta { padding: 22px 20px; }
+            .titulo-inicio { font-size: 24px; }
+            .descripcion-inicio { font-size: 15px; }
+            .buscador { padding: 18px; }
+            .boton-ver { width: 100%; box-sizing: border-box; text-align: center; }
             .campo-busqueda { flex-direction: column; }
             .campo-busqueda .boton-cuenta { padding: 13px; }
             .tarjeta-resultado { flex-direction: column; align-items: flex-start; }
             .imagen-resultado { width: 100%; height: 150px; }
+        }
+        @media (max-width: 420px) {
+            .logo-centro span { display: none; }
         }
     </style>
 </head>
@@ -96,6 +108,7 @@
     </main>
 
     <script>
+        const respaldo = "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 32 32%27 fill=%27none%27 stroke=%27%23c56ed3%27 stroke-width=%271.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M3 21h18M5 21V7l7-4 7 4v14M9 9h2M13 9h2M9 13h2M13 13h2M10 21v-4h4v4%27/%3E%3C/svg%3E";
         const lista = document.getElementById('listaResultados');
         function agregarImagenes() {
             lista.querySelectorAll('.tarjeta-resultado:not([data-imagen])').forEach(function (tarjeta) {
@@ -107,7 +120,7 @@
                 caja.className = 'imagen-resultado';
                 const img = document.createElement('img');
                 img.alt = 'Imagen de la institución';
-                img.onerror = function () { img.remove(); };
+                img.onerror = function () { img.onerror = null; img.src = respaldo; };
                 img.src = '../img/' + id + '.png';
                 caja.appendChild(img);
                 tarjeta.insertBefore(caja, tarjeta.firstChild);

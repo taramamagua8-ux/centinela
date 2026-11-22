@@ -16,17 +16,35 @@
         .sugerencias button { width: 100%; padding: 12px 14px; border: 0; border-bottom: 1px solid #f3dcef; background: #ffffff; color: #3b1d4a; font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
         .sugerencias button:hover { background: #f9eaf2; }
         .titulo-seccion { margin: 0 0 18px; color: #923b61; font-size: 20px; }
-        .tarjetas-directorio { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-top: 0; }
+        .tarjetas-directorio { grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); margin-top: 0; }
+        .categorias-directorio { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); }
+        .tarjeta-opcion-cuenta h2, .tarjeta-opcion-cuenta p { overflow-wrap: anywhere; }
         .tarjetas-directorio .tarjeta-opcion-cuenta { min-height: 0; }
         button.tarjeta-opcion-cuenta { justify-content: center; gap: 10px; color: #923b61; font: inherit; font-weight: 700; cursor: pointer; }
         button.tarjeta-opcion-cuenta svg { color: #c56ed3; transition: color .2s ease; }
         button.tarjeta-opcion-cuenta:hover svg { color: #923b61; }
-        .imagen-institucion { display: grid; width: 88px; height: 88px; margin-bottom: 6px; place-items: center; overflow: hidden; border-radius: 16px; background: linear-gradient(145deg, #f7d0f1, #ffffff); }
+        .tarjetas-directorio article > div:not(.imagen-institucion) { margin-bottom: 16px; }
+        .imagen-institucion { display: flex; width: 88px; height: 88px; margin-bottom: 6px; align-items: center; justify-content: center; overflow: hidden; border-radius: 16px; background: linear-gradient(145deg, #f7d0f1, #ffffff); }
         .imagen-institucion img { width: 100%; height: 100%; object-fit: contain; }
         .etiqueta { display: inline-block; margin: 8px 2px 0; padding: 5px 10px; border: 1px solid #d5b6dd; border-radius: 15px; background: #ffffff; color: #702283; font-size: 11px; font-weight: 600; }
+        @media (max-width: 850px) {
+            .contenido-inicio { width: 100%; padding: 32px 20px; gap: 32px; }
+        }
         @media (max-width: 600px) {
+            .contenido-inicio { padding: 24px 14px; gap: 26px; }
+            .bloque-cta { padding: 22px 20px; }
+            .titulo-inicio { font-size: 24px; }
+            .descripcion-inicio { font-size: 15px; }
+            .buscador { padding: 18px; }
             .campo-busqueda { flex-direction: column; }
             .campo-busqueda .boton-cuenta { padding: 13px; }
+            .categorias-directorio { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+            .categorias-directorio .tarjeta-opcion-cuenta { padding: 18px 10px; font-size: 13px; }
+            .categorias-directorio .tarjeta-opcion-cuenta:last-child:nth-child(odd) { grid-column: 1 / -1; }
+            .titulo-seccion { font-size: 18px; }
+        }
+        @media (max-width: 420px) {
+            .logo-centro span { display: none; }
         }
     </style>
 </head>
@@ -91,24 +109,24 @@
         <section>
             <h2 class="titulo-seccion">Categorías de atención</h2>
 
-            <div class="tarjetas-opciones-cuenta tarjetas-directorio">
-                <button class="tarjeta-opcion-cuenta" data-busqueda="psicologica">
+            <div class="tarjetas-opciones-cuenta tarjetas-directorio categorias-directorio">
+                <button class="tarjeta-opcion-cuenta tarjeta-categoria" data-busqueda="psicologica">
                     <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5C19 15.6 12 20 12 20z"/><path d="M12 3v2M8 4l1 1.6M16 4l-1 1.6"/></svg>
                     <span>Atención psicológica</span>
                 </button>
-                <button class="tarjeta-opcion-cuenta" data-busqueda="juridica">
+                <button class="tarjeta-opcion-cuenta tarjeta-categoria" data-busqueda="juridica">
                     <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M5 21h14M6 7h12"/><path d="M6 7l-3 7a3 3 0 0 0 6 0L6 7zM18 7l-3 7a3 3 0 0 0 6 0l-3-7z"/></svg>
                     <span>Asesoría jurídica</span>
                 </button>
-                <button class="tarjeta-opcion-cuenta" data-busqueda="medica">
+                <button class="tarjeta-opcion-cuenta tarjeta-categoria" data-busqueda="medica">
                     <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M12 12v5M9.5 14.5h5"/></svg>
                     <span>Servicios médicos</span>
                 </button>
-                <button class="tarjeta-opcion-cuenta" data-busqueda="proteccion">
+                <button class="tarjeta-opcion-cuenta tarjeta-categoria" data-busqueda="proteccion">
                     <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
                     <span>Protección y seguridad</span>
                 </button>
-                <button class="tarjeta-opcion-cuenta" data-busqueda="social">
+                <button class="tarjeta-opcion-cuenta tarjeta-categoria" data-busqueda="social">
                     <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c2.8 0 5 2.2 5 5"/></svg>
                     <span>Apoyo comunitario</span>
                 </button>
@@ -121,7 +139,7 @@
             <div class="tarjetas-opciones-cuenta tarjetas-directorio">
 
                 <article class="tarjeta-opcion-cuenta">
-                    <div class="imagen-institucion"><img src="../img/linea-sin-violencia.png" alt="Logo de Línea Sin Violencia" onerror="this.remove()"></div>
+                    <div class="imagen-institucion"><img src="../img/linea-sin-violencia.png" alt="Logo de Línea Sin Violencia" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 32 32%27 fill=%27none%27 stroke=%27%23c56ed3%27 stroke-width=%271.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M3 21h18M5 21V7l7-4 7 4v14M9 9h2M13 9h2M9 13h2M13 13h2M10 21v-4h4v4%27/%3E%3C/svg%3E'"></div>
                     <h2>Línea Sin Violencia</h2>
                     <p>Orientación para mujeres en situación de violencia.</p>
                     <div>
@@ -132,7 +150,18 @@
                 </article>
 
                 <article class="tarjeta-opcion-cuenta">
-                    <div class="imagen-institucion"><img src="../img/ceavem-oriente.png" alt="Logo de CEAVEM Regional Oriente" onerror="this.remove()"></div>
+                    <div class="imagen-institucion"><img src="../img/direccion-mujeres.png" alt="Logo de la Dirección de las Mujeres de Chimalhuacán" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 32 32%27 fill=%27none%27 stroke=%27%23c56ed3%27 stroke-width=%271.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M3 21h18M5 21V7l7-4 7 4v14M9 9h2M13 9h2M9 13h2M13 13h2M10 21v-4h4v4%27/%3E%3C/svg%3E'"></div>
+                    <h2>Dirección de las Mujeres de Chimalhuacán</h2>
+                    <p>Área municipal de atención y orientación para mujeres.</p>
+                    <div>
+                        <span class="etiqueta">Mujeres</span>
+                        <span class="etiqueta">Orientación</span>
+                    </div>
+                    <a href="detalle_institucion.html?id=direccion-mujeres" class="boton-cuenta">Ver más</a>
+                </article>
+
+                <article class="tarjeta-opcion-cuenta">
+                    <div class="imagen-institucion"><img src="../img/ceavem-oriente.png" alt="Logo de CEAVEM Regional Oriente" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 32 32%27 fill=%27none%27 stroke=%27%23c56ed3%27 stroke-width=%271.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27M3 21h18M5 21V7l7-4 7 4v14M9 9h2M13 9h2M9 13h2M13 13h2M10 21v-4h4v4%27/%3E%3C/svg%3E'"></div>
                     <h2>CEAVEM Regional Oriente</h2>
                     <p>Atención y orientación para víctimas de delitos.</p>
                     <div>
