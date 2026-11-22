@@ -2863,3 +2863,27 @@ body.pagina-folio {
   .panel-detalle-reporte { animation: entrada-folio .35s .08s ease-out both; }
   #orientacion-reporte { animation-delay: .14s; }
 }
+
+.pagina-folio .encabezado-confirmacion {
+  flex-direction: column;
+  align-items: stretch;
+  gap: .8rem;
+}
+.navegacion-confirmacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+}
+.pagina-folio .encabezado-confirmacion .titulo-seguimiento { text-align: center; }
+
+#cuenta-acceso .tarjeta-opcion-cuenta[hidden] { display: none; }
+.lista-datos-cuenta {
+  display: grid;
+  gap: .5rem;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.lista-datos-cuenta > div { padding: .6rem .8rem; border-radius: 8px; background: #f9eff7; }
+.lista-datos-cuenta dt { font-weight: 750; }
+.lista-datos-cuenta dd { margin: .2rem 0 0; }

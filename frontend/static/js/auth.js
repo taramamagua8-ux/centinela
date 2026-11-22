@@ -3,7 +3,7 @@ const API_AUTH = '/api';
 function irDespuesDeAutenticar() {
     const regreso = sessionStorage.getItem('centinela_regreso');
     sessionStorage.removeItem('centinela_regreso');
-    window.location.href = ['ReporteVicAno.html', 'ReporteTesAno.html'].includes(regreso) ? regreso : 'cuenta.html';
+    window.location.href = ['terminos.html', 'ReporteVicAno.html', 'ReporteTesAno.html'].includes(regreso) ? regreso : 'cuenta.html';
 }
 
 function guardarSesion(usuario, token) {
@@ -88,6 +88,7 @@ if (formularioRegistro) {
 const panelCuenta = document.getElementById('panel-cuenta-usuario');
 if (panelCuenta) {
     if (sessionStorage.getItem('centinela_regreso')) {
+        document.getElementById('acceso-anonimo-cuenta').hidden = true;
         document.querySelector('#cuenta-acceso > p').textContent = 'Inicia sesión o crea una cuenta para continuar con tu reporte registrado.';
     }
     if (sessionStorage.getItem('centinela_token')) {
