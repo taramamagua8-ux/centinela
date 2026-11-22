@@ -14,6 +14,13 @@
         .bloque-detalle p, .bloque-detalle li { margin: 6px 0; color: #665d67; line-height: 1.6; }
         .bloque-detalle ul { margin: 0; padding-left: 20px; }
         .volver { width: max-content; margin: 0; }
+        .hero-detalle { justify-content: flex-start; }
+        .imagen-detalle { display: grid; flex: 0 0 auto; width: 160px; height: 160px; place-items: center; overflow: hidden; border-radius: 16px; background: rgba(255, 255, 255, 0.92); }
+        .imagen-detalle img { width: 100%; height: 100%; object-fit: contain; }
+        @media (max-width: 600px) {
+            .hero-detalle { flex-direction: column; align-items: flex-start; }
+            .imagen-detalle { width: 100%; height: 170px; }
+        }
     </style>
 </head>
 
@@ -49,7 +56,10 @@
 
         <p class="ruta">Inicio › Directorio › Información de institución</p>
 
-        <section class="bloque-cta">
+        <section class="bloque-cta hero-detalle">
+            <div class="imagen-detalle">
+                <img id="imagenInstitucion" alt="Imagen de la institución">
+            </div>
             <div>
                 <h1 class="titulo-inicio" id="nombreInstitucion">Nombre de la institución</h1>
                 <p class="descripcion-inicio" id="resumenInstitucion"></p>
@@ -77,6 +87,17 @@
         <a href="resultados_busqued.html" class="boton-cuenta volver">Volver al directorio</a>
 
     </main>
+
+    <script>
+        const imagenInstitucion = document.getElementById('imagenInstitucion');
+        const idInstitucion = new URLSearchParams(location.search).get('id');
+        imagenInstitucion.onerror = function () { imagenInstitucion.remove(); };
+        if (idInstitucion) {
+            imagenInstitucion.src = '../img/' + idInstitucion + '.png';
+        } else {
+            imagenInstitucion.remove();
+        }
+    </script>
 
 </body>
 </html>

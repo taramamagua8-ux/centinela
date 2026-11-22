@@ -5,10 +5,9 @@ const sugerencias = document.getElementById("sugerenciasBusqueda");
 const instituciones = [
     "Línea Sin Violencia - Estado de México",
     "UNIDAS - Secretaría de las Mujeres del Estado de México",
-    "Centro Naranja - Chimalhuacán",
     "Dirección de las Mujeres de Chimalhuacán",
     "CEAVEM - Comisión Ejecutiva de Atención a Víctimas del Estado de México",
-    "CEAVEM Regional Oriente - Nezahualcóyotl",
+    "CEAVEM - Subdirección Regional Oriente y Coordinación Regional Oriente I",
     "Centro de Justicia para las Mujeres de Ecatepec",
     "Centro de Justicia para las Mujeres de Toluca",
     "Centro de Justicia para las Mujeres de Cuautitlán Izcalli",
@@ -20,8 +19,7 @@ const instituciones = [
     "Comisión de Derechos Humanos del Estado de México",
     "Fiscalía General de Justicia del Estado de México",
     "Sistema Nacional para el Desarrollo Integral de la Familia",
-    "Consejo Estatal de la Mujer y Bienestar Social",
-    "Red de Refugios para Mujeres en Situación de Violencia"
+    "Red Nacional de Refugios A.C."
 ];
 
 function normalizar(texto) {

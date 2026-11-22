@@ -16,14 +16,6 @@ const instituciones = [
         palabras: "violencia apoyo psicológico jurídico"
     },
     {
-        id: "centro-naranja",
-        nombre: "Centro Naranja - Chimalhuacán",
-        descripcion: "Centro de atención y orientación para mujeres.",
-        ubicacion: "Chimalhuacán, Estado de México",
-        servicios: ["Psicológico", "Jurídico", "Social"],
-        palabras: "mujeres violencia canteros apoyo"
-    },
-    {
         id: "direccion-mujeres",
         nombre: "Dirección de las Mujeres de Chimalhuacán",
         descripcion: "Área municipal de atención y orientación para mujeres.",
@@ -41,11 +33,11 @@ const instituciones = [
     },
     {
         id: "ceavem-oriente",
-        nombre: "CEAVEM Regional Oriente - Nezahualcóyotl",
-        descripcion: "Unidad regional de atención a víctimas de delitos.",
+        nombre: "CEAVEM - Subdirección Regional Oriente y Coordinación Regional Oriente I",
+        descripcion: "Unidad regional de la Comisión Ejecutiva de Atención a Víctimas del Estado de México.",
         ubicacion: "Nezahualcóyotl, Estado de México",
-        servicios: ["Víctimas", "Jurídico", "Psicológico"],
-        palabras: "delitos violencia atención orientación"
+        servicios: ["Atención a víctimas", "Orientación", "Canalización"],
+        palabras: "delitos violencia atención orientación nezahualcoyotl"
     },
     {
         id: "cjm-ecatepec",
@@ -136,20 +128,12 @@ const instituciones = [
         palabras: "niños adolescentes familia apoyo"
     },
     {
-        id: "consejo-mujer",
-        nombre: "Consejo Estatal de la Mujer y Bienestar Social",
-        descripcion: "Referencia institucional histórica. Es necesario verificar la vigencia de esta denominación.",
-        ubicacion: "Estado de México",
-        servicios: ["Mujeres", "Bienestar social"],
-        palabras: "violencia igualdad apoyo atención"
-    },
-    {
         id: "red-refugios",
-        nombre: "Red de Refugios para Mujeres en Situación de Violencia",
-        descripcion: "Red de organizaciones y espacios de apoyo para mujeres en situación de violencia.",
+        nombre: "Red Nacional de Refugios A.C.",
+        descripcion: "Organización que trabaja para brindar apoyo y protección a mujeres en situación de violencia.",
         ubicacion: "México",
-        servicios: ["Protección", "Refugio", "Orientación"],
-        palabras: "mujeres seguridad violencia protección refugios"
+        servicios: ["Orientación", "Protección", "Información sobre refugios"],
+        palabras: "mujeres violencia apoyo protección refugios"
     }
 ];
 

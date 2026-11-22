@@ -6,8 +6,8 @@ const instituciones = {
         ubicacion: "Estado de México",
         descripcion: "Servicio de orientación para mujeres en situación de violencia. Para conocer sus condiciones de atención y servicios vigentes, consulta los medios oficiales del Gobierno del Estado de México.",
         servicios: ["Orientación psicológica", "Asesoría jurídica", "Orientación y canalización"],
-        telefono: "800 108 40 53. Verificar vigencia.",
-        horario: "Consultar disponibilidad oficial.",
+        telefono: "800 108 40 53",
+        horario: "24 horas, los 365 días del año.",
         sitio: "Gobierno del Estado de México."
     },
 
@@ -19,17 +19,6 @@ const instituciones = {
         servicios: ["Orientación", "Atención a mujeres", "Canalización"],
         telefono: "Consultar medios oficiales.",
         horario: "Consultar disponibilidad.",
-        sitio: "Secretaría de las Mujeres del Estado de México."
-    },
-
-    "centro-naranja": {
-        nombre: "Centro Naranja - Chimalhuacán",
-        resumen: "Centro de atención y orientación para mujeres.",
-        ubicacion: "Chimalhuacán, Estado de México",
-        descripcion: "Espacio de atención y orientación para mujeres. Los servicios, requisitos y disponibilidad deben confirmarse directamente con la sede correspondiente.",
-        servicios: ["Atención psicológica", "Orientación jurídica", "Trabajo social", "Canalización"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad de la sede.",
         sitio: "Secretaría de las Mujeres del Estado de México."
     },
 
@@ -56,10 +45,10 @@ const instituciones = {
     },
 
     "ceavem-oriente": {
-        nombre: "CEAVEM Regional Oriente - Nezahualcóyotl",
+        nombre: "CEAVEM - Subdirección Regional Oriente y Coordinación Regional Oriente I",
         resumen: "Unidad regional de atención a víctimas.",
         ubicacion: "Nezahualcóyotl, Estado de México",
-        descripcion: "Unidad regional relacionada con los servicios de atención a víctimas de delitos. Es recomendable confirmar la dirección y disponibilidad antes de acudir.",
+        descripcion: "Unidad regional de la Comisión Ejecutiva de Atención a Víctimas del Estado de México. Se recomienda confirmar su dirección y disponibilidad antes de acudir.",
         servicios: ["Orientación jurídica", "Atención psicológica", "Atención a víctimas", "Canalización"],
         telefono: "Consultar medios oficiales.",
         horario: "Consultar disponibilidad.",
@@ -116,8 +105,8 @@ const instituciones = {
         ubicacion: "Servicio nacional",
         descripcion: "Servicio de orientación relacionado con la salud mental y el bienestar emocional. No sustituye la atención especializada de las instituciones de justicia o atención a víctimas.",
         servicios: ["Orientación emocional", "Salud mental", "Información y apoyo"],
-        telefono: "Consultar el número vigente en el portal oficial.",
-        horario: "Consultar condiciones del servicio.",
+        telefono: "800 911 2000",
+        horario: "24 horas, los 365 días del año.",
         sitio: "Gobierno de México."
     },
 
@@ -187,22 +176,11 @@ const instituciones = {
         sitio: "Sistema Nacional DIF."
     },
 
-    "consejo-mujer": {
-        nombre: "Consejo Estatal de la Mujer y Bienestar Social",
-        resumen: "Referencia institucional histórica del Estado de México.",
-        ubicacion: "Estado de México",
-        descripcion: "Esta denominación corresponde a una referencia institucional anterior. Es necesario verificar su vigencia y la dependencia que actualmente realiza sus funciones.",
-        servicios: ["Consultar información institucional vigente"],
-        telefono: "No disponible sin confirmar.",
-        horario: "No disponible sin confirmar.",
-        sitio: "Gobierno del Estado de México."
-    },
-
     "red-refugios": {
-        nombre: "Red de Refugios para Mujeres en Situación de Violencia",
-        resumen: "Red de organizaciones y espacios de apoyo.",
+        nombre: "Red Nacional de Refugios A.C.",
+        resumen: "Organización de apoyo y protección para mujeres en situación de violencia.",
         ubicacion: "México",
-        descripcion: "Red relacionada con espacios de protección y apoyo para mujeres en situación de violencia. La disponibilidad y ubicación de los refugios debe consultarse mediante sus canales oficiales.",
+        descripcion: "Organización que trabaja para brindar apoyo, orientación y protección a mujeres en situación de violencia. La disponibilidad y ubicación de los refugios debe consultarse mediante sus canales oficiales.",
         servicios: ["Orientación", "Protección", "Información sobre refugios"],
         telefono: "Consultar medios oficiales.",
         horario: "Consultar disponibilidad.",
