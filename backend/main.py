@@ -1,8 +1,11 @@
 """API de Centinela Digital conectada a PostgreSQL."""
-from datetime import datetime, timedelta
+from datetime import datetime
+from uuid import UUID
 import hashlib, io, json, os, secrets, threading
 from functools import wraps
 from pathlib import Path
+from email.message import EmailMessage
+import smtplib
 
 import psycopg
 from backend.database import connect, initialize
@@ -15,7 +18,7 @@ app.config["JSON_AS_ASCII"] = False
 
 _database_ready = False
 _database_lock = threading.Lock()
-app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
+app.config["MAX_CONTENT_LENGTH"] = 12 * 1024 * 1024
 
 def db_connection():
     global _database_ready
@@ -150,7 +153,7 @@ def report_json(item):
     result = {k: v for k, v in item.items() if k not in ("acceso_hash", "id_usuario")}
     for key in ("fecha_hecho", "fecha_registro"):
         if result.get(key):
-            result[key] = result[key].isoformat(sep=" ")
+            result[key] = result[key].isoformat().replace("T", " ")
     try:
         result["detalle"] = json.loads(result["descripcion"])
     except (KeyError, TypeError, json.JSONDecodeError):
@@ -178,17 +181,25 @@ def register():
 
 @app.post("/api/auth/login")
 def login():
+    return authenticate("usuarios", "id_usuario")
+
+@app.post("/api/auth/admin")
+def admin_login():
+    return authenticate("administradores", "id_administrador")
+
+def authenticate(table, id_column):
     item = data()
-    user = one("SELECT * FROM usuarios WHERE correo=%s AND activo=1", (item.get("correo"),))
-    if not user or not check_password_hash(user["contrasena_hash"], item.get("contrasena", "")):
+    user = one(f"SELECT * FROM {table} WHERE correo=%s AND activo=1", (item.get("correo"),))
+    password = item.get("contrasena")
+    if not user or not isinstance(password, str) or not check_password_hash(user["contrasena_hash"], password):
         return fail("Correo o contraseña incorrectos.", 401)
     token = secrets.token_urlsafe(32)
-    run("INSERT INTO sesiones (token_hash,id_usuario,expira) VALUES (%s,%s,%s)",
-        (token_hash(token), user["id_usuario"], datetime.utcnow() + timedelta(hours=12)))
+    run(f"INSERT INTO sesiones (token_hash,{id_column},expira) VALUES (%s,%s,CURRENT_TIMESTAMP + interval '12 hours')",
+        (token_hash(token), user[id_column]))
     g.db.commit()
     return jsonify({
         "token": token,
-        "usuario": {"id": user["id_usuario"], "nombre": user["nombre"], "correo": user["correo"]},
+        "usuario": {"id": user[id_column], "nombre": user["nombre"], "correo": user["correo"]},
     })
 
 @app.post("/api/auth/logout")
@@ -232,8 +243,126 @@ def delete_user():
     g.db.commit()
     return jsonify({"ok": True})
 
+DETAIL_FIELDS = ("fecha", "lugar", "ayudaInmediata", "haOcurrido", "descripcion")
+RISKS = ("Por evaluar", "Bajo", "Medio", "Alto")
+
+def send_referral(report_id, type_id):
+    institution = one(
+        "SELECT i.correo,t.nombre FROM canalizacion_tipos c JOIN instituciones i USING (id_institucion) "
+        "JOIN tipos_violencia t USING (id_tipo_violencia) "
+        "WHERE c.id_tipo_violencia=%s AND i.activa=1", (type_id,),
+    )
+    host, sender = os.getenv("CENTINELA_SMTP_HOST"), os.getenv("CENTINELA_SMTP_FROM")
+    if not institution or not institution["correo"] or not host or not sender:
+        return
+    message = EmailMessage()
+    message["From"], message["To"] = sender, institution["correo"]
+    message["Subject"] = "Centinela Digital solicita orientación institucional"
+    message.set_content(
+        f"Solicitamos orientación sobre {institution['nombre']} para la referencia interna {report_id}. "
+        "Por favor, respondan a este correo con los servicios disponibles y los pasos para acceder a ellos."
+    )
+    try:
+        with smtplib.SMTP(host, int(os.getenv("CENTINELA_SMTP_PORT", "587")), timeout=5) as smtp:
+            smtp.starttls()
+            if os.getenv("CENTINELA_SMTP_USER"):
+                smtp.login(os.environ["CENTINELA_SMTP_USER"], os.environ["CENTINELA_SMTP_PASSWORD"])
+            smtp.send_message(message)
+    except (OSError, ValueError, KeyError):
+        app.logger.exception("No se pudo enviar la canalización del reporte %s", report_id)
+
 @app.post("/api/reportes")
 def create_report():
+    if request.mimetype == "multipart/form-data" or "rol" in data():
+        return submit_reviewed_report()
+    return create_legacy_report()
+
+def submit_reviewed_report():
+    try:
+        item = json.loads(request.form.get("reporte", "")) if request.mimetype == "multipart/form-data" else data()
+    except ValueError:
+        return fail("El reporte no tiene un formato válido.")
+    if not isinstance(item, dict):
+        return fail("El reporte no tiene un formato válido.")
+    submission = item.get("clave_envio")
+    if submission is not None:
+        try:
+            submission = UUID(submission)
+        except (ValueError, TypeError, AttributeError):
+            return fail("La clave de envío no es válida.")
+    anonymous = item.get("es_anonimo")
+    role = item.get("rol")
+    if not isinstance(anonymous, bool) or role not in ("victima", "testigo") or item.get("terminos") is not True:
+        return fail("Selecciona la modalidad y acepta los términos.")
+    user = None if anonymous else current_user()
+    if not anonymous and not user:
+        return fail("Inicia sesión para enviar un reporte registrado.", 401)
+    source = item.get("detalle")
+    if not isinstance(source, dict):
+        return fail("Completa los datos del reporte.")
+    detail = {key: source[key].strip() for key in DETAIL_FIELDS if isinstance(source.get(key), str)}
+    if not all(detail.get(key) for key in ("fecha", "lugar", "haOcurrido", "descripcion")):
+        return fail("Completa los campos obligatorios.")
+    if detail["haOcurrido"] not in ("SI", "NO") or detail.get("ayudaInmediata") not in (
+        None, "", "SI", "NO", "No estoy segu@"
+    ):
+        return fail("Selecciona respuestas válidas para las preguntas de opción.")
+    try:
+        date = datetime.strptime(detail["fecha"], "%Y-%m-%d").date()
+    except ValueError:
+        return fail("La fecha del incidente no es válida.")
+    if date.year < 1000 or len(detail["lugar"]) > 300 or len(detail["descripcion"]) > 10000:
+        return fail("Revisa la fecha, el lugar y la extensión de la descripción.")
+    type_id = item.get("tipo_violencia")
+    if type(type_id) is not int or not one(
+        "SELECT id_tipo_violencia FROM tipos_violencia WHERE id_tipo_violencia=%s AND activo=1", (type_id,),
+    ):
+        return fail("Selecciona un tipo de violencia válido.")
+    state = one("SELECT id_estado FROM estados_reporte WHERE nombre=%s LIMIT 1", ("Recibido",))
+    folio = f"CD-{datetime.now().year}-{secrets.token_hex(16).upper()}"
+    user_id = user["id_usuario"] if user else None
+    inserted = one(
+        "INSERT INTO reportes (folio,descripcion,fecha_hecho,es_anonimo,id_estado,id_usuario,"
+        "rol_reportante,acceso_hash,clave_envio) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) "
+        "ON CONFLICT (clave_envio) DO NOTHING RETURNING id_reporte",
+        (folio, json.dumps(detail, ensure_ascii=False), date, int(anonymous), state["id_estado"],
+         user_id, role, token_hash(secrets.token_urlsafe(32)), submission),
+    )
+    if not inserted:
+        existing = one(
+            "SELECT id_reporte,folio FROM reportes WHERE clave_envio=%s AND id_usuario IS NOT DISTINCT FROM %s",
+            (submission, user_id),
+        )
+        if not existing:
+            return fail("La clave de envío ya está en uso.", 409)
+        return jsonify({"reporte": existing})
+    report_id = inserted["id_reporte"]
+    run("INSERT INTO reporte_tipo_violencia VALUES (%s,%s)", (report_id, type_id))
+    file = request.files.get("archivo")
+    if file and file.filename:
+        if len(file.filename) > 255:
+            return fail("El nombre del archivo es demasiado largo.")
+        content = file.read()
+        if len(content) > 10 * 1024 * 1024:
+            return fail("La evidencia debe pesar como máximo 10 MB.", 413)
+        run(
+            "INSERT INTO evidencias (id_reporte,nombre_archivo,contenido,tipo_mime) VALUES (%s,%s,%s,%s)",
+            (report_id, file.filename, content, file.mimetype),
+        )
+    g.db.commit()
+    send_referral(report_id, type_id)
+    return jsonify({"reporte": {"id_reporte": report_id, "folio": folio}}), 201
+
+@app.get("/api/usuarios/me/reportes")
+@user_required
+def my_reports():
+    return jsonify({"reportes": many(
+        "SELECT r.folio,r.fecha_registro,e.nombre AS estado FROM reportes r "
+        "LEFT JOIN estados_reporte e USING (id_estado) WHERE r.id_usuario=%s ORDER BY r.id_reporte DESC",
+        (g.user_id,),
+    )})
+
+def create_legacy_report():
     item = data()
     detail = item.get("detalle", item.get("descripcion", ""))
     if isinstance(detail, dict):
@@ -243,10 +372,13 @@ def create_report():
     state = one("SELECT id_estado FROM estados_reporte WHERE nombre=%s LIMIT 1", ("Recibido",))
     folio = "CD-" + secrets.token_hex(8).upper()
     access_token = secrets.token_urlsafe(32)
-    user = current_user()
+    anonymous = bool(item.get("es_anonimo", True))
+    user = None if anonymous else current_user()
+    if not anonymous and not user:
+        return fail("Inicia sesión para enviar un reporte registrado.", 401)
     report_id = run(
         "INSERT INTO reportes (folio,descripcion,fecha_hecho,es_anonimo,id_estado,acceso_hash,id_usuario) VALUES (%s,%s,%s,%s,%s,%s,%s)",
-        (folio, detail, item.get("fecha_hecho"), int(item.get("es_anonimo", True)), state["id_estado"] if state else None, token_hash(access_token), user["id_usuario"] if user else None),
+        (folio, detail, item.get("fecha_hecho"), int(anonymous), state["id_estado"] if state else None, token_hash(access_token), user["id_usuario"] if user else None),
     )
     for type_id in item.get("tipos_violencia", []):
         run("INSERT INTO reporte_tipo_violencia (id_reporte,id_tipo_violencia) VALUES (%s,%s)", (report_id, type_id))
@@ -271,7 +403,14 @@ def get_report(report_id):
 @admin_required
 def update_report(report_id):
     item, fields, values = data(), [], []
-    for key in ("descripcion", "fecha_hecho", "es_anonimo", "id_estado"):
+    response = item.get("respuesta_institucion")
+    if response is not None and (not isinstance(response, str) or len(response) > 8000):
+        return fail("La respuesta institucional admite hasta 8000 caracteres.")
+    if "nivel_riesgo" in item and item["nivel_riesgo"] not in RISKS:
+        return fail("Nivel de riesgo inválido.")
+    if not one("SELECT id_reporte FROM reportes WHERE id_reporte=%s", (report_id,)):
+        return fail("Reporte no encontrado.", 404)
+    for key in ("descripcion", "fecha_hecho", "id_estado", "nivel_riesgo", "respuesta_institucion"):
         if key in item:
             fields.append(f"{key}=%s")
             values.append(item[key])
@@ -325,6 +464,41 @@ def add_tracking(report_id):
     run("UPDATE reportes SET id_estado=%s WHERE id_reporte=%s", (item["id_estado"], report_id))
     g.db.commit()
     return jsonify({"id_seguimiento": tracking_id}), 201
+
+@app.post("/api/reportes/consulta")
+def consult_report():
+    folio = data().get("folio")
+    if not isinstance(folio, str) or not folio.strip() or len(folio) > 64:
+        return fail("Escribe un folio válido.")
+    item = one(
+        "SELECT r.*,e.nombre AS estado FROM reportes r LEFT JOIN estados_reporte e USING (id_estado) "
+        "WHERE r.folio=%s", (folio.strip().upper(),),
+    )
+    if not item:
+        return fail("Folio no encontrado.", 404)
+    report = report_json(item)
+    fields = ("folio", "fecha_registro", "estado", "nivel_riesgo")
+    response = {key: report[key] for key in fields}
+    if item["rol_reportante"]:
+        response["respuesta_institucion"] = report["respuesta_institucion"]
+        response["rol_reportante"] = report["rol_reportante"]
+        response["tipos"] = many(
+            "SELECT t.nombre,t.descripcion AS orientacion,i.nombre AS institucion,i.sitio_web,i.telefono "
+            "FROM reporte_tipo_violencia r JOIN tipos_violencia t USING (id_tipo_violencia) "
+            "LEFT JOIN canalizacion_tipos c USING (id_tipo_violencia) "
+            "LEFT JOIN instituciones i ON i.id_institucion=c.id_institucion AND i.activa=1 WHERE r.id_reporte=%s",
+            (item["id_reporte"],),
+        )
+        user = current_user() if not item["es_anonimo"] else None
+        if item["es_anonimo"] or (user and user["id_usuario"] == item["id_usuario"]):
+            detail = report.get("detalle")
+            if isinstance(detail, dict):
+                response["detalle"] = {key: detail.get(key) for key in DETAIL_FIELDS}
+            elif report.get("descripcion"):
+                response["detalle"] = {"descripcion": report["descripcion"]}
+    result = jsonify({"reporte": response})
+    result.headers["Cache-Control"] = "no-store"
+    return result
 
 @app.get("/api/reportes/folio/<string:folio>")
 def report_by_folio(folio):
@@ -481,5 +655,5 @@ def liveness():
     return jsonify({"ok": True, "servicio": "centinela"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", os.getenv("CENTINELA_API_PORT", "5000"))), debug=False)
+    app.run(host=os.getenv("CENTINELA_API_HOST", "127.0.0.1"), port=int(os.getenv("PORT", os.getenv("CENTINELA_API_PORT", "5000"))), debug=False)
 

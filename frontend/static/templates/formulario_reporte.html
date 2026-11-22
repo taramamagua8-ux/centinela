@@ -2,28 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centinela Digital - Formulario de Reporte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Formulario de reporte | Centinela Digital</title>
     <link rel="stylesheet" href="../css/reporte.css">
 </head>
-<body class="pagina-seleccion-reporte">
-    <div class="pantalla-formulario">
-        <div class="tarjeta-formulario-limpia">
-            <h2>Formulario de Reporte</h2>
+<body>
+    <main class="container">
+        <header class="header"><h1>Formulario de reporte</h1></header>
+        <section class="form-card flujo-reporte">
             <form id="formularioReporte">
-                <div class="grupo-formulario">
-                    <label for="tipo_reporte">¿Cómo deseas realizar tu reporte?</label>
-                    <select id="tipo_reporte" required>
-                        <option value="" disabled selected>Selecciona una opción</option>
-                        <option value="testigo_anonimo">Testigo anónimo</option>
-                        <option value="victima_anonima">Víctima anónima</option>
-                    </select>
+                <fieldset class="selecciones-reporte">
+                    <legend>¿Cómo quieres continuar con tu reporte?</legend>
+                    <label><input type="radio" name="rol" value="victima" required><span>Víctima</span></label>
+                    <label><input type="radio" name="rol" value="testigo" required><span>Testigo</span></label>
+                </fieldset>
+                <fieldset class="selecciones-reporte">
+                    <legend>¿De qué manera quieres reportar?</legend>
+                    <label><input type="radio" name="modalidad" value="anonima" required><span>Anónima</span></label>
+                    <label><input type="radio" name="modalidad" value="registrada" required><span>Registrado</span></label>
+                </fieldset>
+                <div class="acciones-reporte">
+                    <a href="principal.html">Volver al inicio</a>
+                    <button class="btn-formulario" type="submit">Continuar</button>
                 </div>
-
-                <button type="submit" class="btn-formulario">Continuar</button>
             </form>
-        </div>
-    </div>
+        </section>
+    </main>
     <script src="../js/formulario_reporte.js"></script>
 </body>
 </html>

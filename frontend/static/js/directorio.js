@@ -67,7 +67,7 @@ busqueda.addEventListener("input", function() {
 
         boton.addEventListener("click", function() {
             busqueda.value = institucion;
-            formulario.submit();
+            formulario.requestSubmit();
         });
 
         elemento.appendChild(boton);
@@ -81,7 +81,7 @@ document.querySelectorAll(".tarjeta-categoria").forEach(function(categoria) {
 
     categoria.addEventListener("click", function() {
         busqueda.value = categoria.dataset.busqueda;
-        formulario.submit();
+        formulario.requestSubmit();
     });
 
 });
@@ -92,4 +92,9 @@ document.addEventListener("click", function(evento) {
         sugerencias.hidden = true;
     }
 
+});
+formulario.addEventListener("keydown", function(evento) {
+    if (evento.key !== "Escape" || sugerencias.hidden) return;
+    sugerencias.hidden = true;
+    busqueda.focus();
 });

@@ -8,7 +8,7 @@ body {
     background: radial-gradient(circle at center, #ee0000 0%, #000000);
     background-size: 200% 200%;
     animation: luzMovil 20s ease-in-out infinite;
-    color: white;
+    color: rgb(233, 233, 233);
     font-family: 'Plus Jakarta Sans', sans-serif;
     margin: 0;
     padding: 0;
@@ -74,6 +74,16 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.2);
+    /* Suaviza el movimiento para que no brinque de golpe */
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s ease;
+    cursor: pointer;
+}
+
+/* Al pasar el mouse o seleccionarlo, toda la tarjeta sobresale */
+.contenedor-imagen:hover,
+.contenedor-imagen:focus-within {
+    transform: translateY(-4px) scale(1.03); /* Sube un poco y se acerca un 3% */
+    box-shadow: 0 18px 40px rgba(146, 59, 97, 0.45); /* Sombra más profunda con toque guinda */
 }
 
 /* Tu clase original adaptada para que funcione con el contenedor */
@@ -82,7 +92,14 @@ body {
     height: auto;
     display: block;
     object-fit: cover;
+    transition: transform 0.4s ease;
 }
+
+/* Opcional: un micro-zoom extra al video por dentro al mismo tiempo */
+.contenedor-imagen:hover .imagen-fluida {
+    transform: scale(1.08);
+}
+
 
 /* 1. El contenedor que recorta el brillo para que no se salga de la tarjeta */
 .contenedor-brillo {
@@ -352,59 +369,113 @@ body.pagina-inicio {
 
 /* ---------- Barra superior ---------- */
 .barra-superior {
-    position: relative;
-    display: flex;
+    --barra-a: #923B61;   /* COLOR OSCURO del fondo animado */
+    --barra-b: #DC91F6;   /* COLOR CLARO del fondo animado */
+    position: sticky; top: 0; z-index: 20;   /* ANTES: relative. Sticky = la barra sigue al hacer scroll */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;     /* menú | logo | iconos: nunca se encimen */
     align-items: center;
-    justify-content: space-between;
     padding: 14px 28px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    z-index: 20;
+    color: #fff;
+    background: linear-gradient(180deg, var(--barra-a), var(--barra-b) 50%, var(--barra-a)) 50% 0 / 100% 300%;
+    animation: barra-sube-baja 10s ease-in-out infinite alternate;   /* VELOCIDAD: cambia los 10s */
+    box-shadow: 0 4px 15px rgba(146, 59, 97, .35);
 }
+@keyframes barra-sube-baja { to { background-position: 50% 100%; } }
+
+.barra-superior > .btn-hamburguesa { grid-column: 1; justify-self: start; }
+.iconos-derecha { grid-column: 3; justify-self: end; display: flex; gap: 8px; }
 
 .logo-centro {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 800;
-    font-size: 20px;
-    letter-spacing: 1px;
-    white-space: nowrap;
+    --ink-2: #923B61;   /* COLOR de la sombra del efecto pop */
+    grid-column: 2;
+    display: flex; align-items: center; gap: 12px;
+    font-weight: 800; 
+    font-size: 24px;    /* ANTES: 20px (texto un poco más grande) */
+    letter-spacing: 1px; white-space: nowrap;
 }
 
-.logo-centro img {
-    height: 42px;
-    width: auto;
+.logo-centro img { 
+    height: 52px;       /* ANTES: 42px (imagen un poco más grande) */
+    width: auto; 
+    /* Misma duración (9.5s) y empieza 0.08s antes que la letra 'C' */
+    animation: fx-pop-img 9.5s cubic-bezier(.3, 1.6, .4, 1) infinite;
+    animation-delay: -0.08s; 
 }
 
-.iconos-derecha {
-    display: flex;
-    gap: 8px;
+@keyframes fx-pop-img {
+    0%, 15%, 100% {
+        transform: translateY(0) rotate(0deg);
+        filter: drop-shadow(0 0 0 var(--ink-2));
+    }
+    5% {
+        transform: translateY(-7px) rotate(-6deg);
+        filter: drop-shadow(0 6px 0 var(--ink-2)); /* Sombra que sigue la silueta del PNG */
+    }
 }
 
-.btn-icono {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-    padding: 6px 10px;
-    border-radius: 8px;
-    transition: background 0.3s;
+
+/* Efecto Pop-Riot en "CENTINELA DIGITAL" */
+/* Efecto Pop-Riot en "CENTINELA DIGITAL" */
+.fx-pop b {
+  font-weight: inherit;
+  display: inline-block;
+  /* 1.5s de salto + 8s de pausa = 9.5s en total */
+  animation: fx-pop 9.5s cubic-bezier(.3, 1.6, .4, 1) infinite;
+  animation-delay: calc(var(--i) * .06s); /* retraso entre letras */
 }
 
-.btn-icono:hover {
-    background: rgba(255, 255, 255, 0.15);
+@keyframes fx-pop {
+  /* El salto ocurre entre el 0% y el 15% (aprox. 1.5 segundos) */
+  0%, 15%, 100% {
+    transform: translateY(0);
+    text-shadow: 0 0 0 var(--ink-2);
+  }
+  5% {
+    transform: translateY(-.3em) rotate(-4deg);
+    text-shadow: 0 .3em 0 var(--ink-2);
+  }
+  /* Del 15% al 100% (8 segundos) las letras esperan quietas */
 }
+
+
+.btn-icono { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 6px 10px; border-radius: 8px; transition: background .3s; }
+.btn-icono:hover { background: rgba(255, 255, 255, .15); }
+
+/* ---------- Hamburguesa (igual que la tuya) ---------- */
+.toggle-menu { display: none; }
+.btn-hamburguesa { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 30; }
+.btn-hamburguesa span { display: block; width: 28px; height: 3px; background: #fff; border-radius: 2px; transition: transform .3s ease, opacity .3s ease; }
+.toggle-menu:checked ~ .btn-hamburguesa span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.toggle-menu:checked ~ .btn-hamburguesa span:nth-child(2) { opacity: 0; }
+.toggle-menu:checked ~ .btn-hamburguesa span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* ---------- Teléfonos ---------- */
+@media (max-width: 600px) {
+    .barra-superior { padding: 10px 14px; }
+    .logo-centro { gap: 6px; font-size: 12px; letter-spacing: .5px; }
+    .logo-centro img { height: 32px; }
+    .btn-icono { padding: 6px; }
+}
+@media (max-width: 360px) {
+    .logo-centro { font-size: 11px; letter-spacing: 0; }
+    .logo-centro img { height: 28px; }
+}
+
+/* Respeta a quien desactiva las animaciones en su sistema */
+@media (prefers-reduced-motion: reduce) {
+    .barra-superior, .fx-pop b { animation: none; }
+}
+
 
 /* ---------- Hamburguesa ---------- */
 .toggle-menu {
-    display: none; /* el checkbox solo controla el estado */
+    display: block;
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    clip-path: inset(50%);
+    overflow: hidden;
 }
 
 .btn-hamburguesa {
@@ -423,6 +494,11 @@ body.pagina-inicio {
     background: white;
     border-radius: 2px;
     transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toggle-menu:focus-visible ~ .btn-hamburguesa {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 
 /* Se transforma en X al abrir */
@@ -449,7 +525,9 @@ body.pagina-inicio {
     -webkit-backdrop-filter: blur(12px);
     border-radius: 0 0 14px 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
+    max-height: calc(100dvh - 90px);
+    overflow-y: auto;
+    visibility: hidden;
     transform: translateX(-100%);
     opacity: 0;
     pointer-events: none;
@@ -459,6 +537,7 @@ body.pagina-inicio {
 .toggle-menu:checked ~ .menu-lateral {
     transform: translateX(0);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 
@@ -1168,7 +1247,6 @@ body.pagina-inicio {
 }
 
 /* Mismo estilo animado que tu body, aplicado a los 3 recuadros */
-.barra-superior,
 .bloque-mensaje,
 .bloque-cta {
     background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
@@ -1431,4 +1509,1357 @@ body.pagina-inicio {
         max-width: 100%;
         width: 100%;
     }
+}
+
+
+
+/* ==========================================================
+   CENTINELA DIGITAL - NUEVA PÁGINA DE INICIO
+   TRES PANTALLAS CON DESPLAZAMIENTO VERTICAL
+   ========================================================== */
+
+/* DESPLAZAMIENTO ENTRE PANTALLAS */
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scroll-padding-top: 0;
+}
+
+body.pagina-inicio {
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* CONTENEDOR PRINCIPAL */
+
+.pagina-inicio .contenido-inicio {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* CADA PANTALLA */
+
+.pantalla-inicio {
+    width: 100%;
+    min-height: calc(100svh - 80px);
+    padding: 55px 7%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    position: relative;
+
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+/* ==========================================================
+   PANTALLA 1 - BIENVENIDA
+   ========================================================== */
+
+.pantalla-bienvenida {
+    background: transparent;
+}
+
+.pantalla-bienvenida .bloque-mensaje {
+    width: 100%;
+    max-width: 1150px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 55px;
+}
+
+.pantalla-bienvenida .texto-mensaje {
+    text-align: left;
+}
+
+.pantalla-bienvenida .titulo-inicio {
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 25px;
+}
+
+.pantalla-bienvenida .titulo-inicio span {
+    display: block;
+    color: #f6b9e9;
+    margin-top: 12px;
+}
+
+.pantalla-bienvenida .descripcion-inicio {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #f1e4f7;
+    max-width: 550px;
+}
+
+.pantalla-bienvenida .contenedor-imagen {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+}
+
+/* INDICACIÓN PARA DESLIZAR */
+
+.indicacion-deslizar1 {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+.indicacion-deslizar {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    color: #6d035f;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+
+
+.flecha-deslizar {
+    font-size: 28px;
+    animation: flechaMovimiento 1.5s infinite;
+}
+
+@keyframes flechaMovimiento {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(8px);
+    }
+}
+
+/* ==========================================================
+   PANTALLA 2 - AYUDA DE CENTINELA DIGITAL
+   IMAGEN IZQUIERDA / TEXTO DERECHA
+   ========================================================== */
+
+.pantalla-ayuda {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.bloque-ayuda {
+    width: 100%;
+    max-width: 1150px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+}
+
+/* IMAGEN A LA IZQUIERDA */
+
+.imagen-ayuda {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    order: 1;
+}
+
+.imagen-ayuda img {
+    width: 100%;
+    display: block;
+}
+
+/* TEXTO A LA DERECHA */
+
+.texto-ayuda {
+    order: 2;
+    text-align: left;
+}
+
+.texto-ayuda .titulo-inicio {
+    font-size: clamp(29px, 3.5vw, 43px);
+    line-height: 1.2;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.texto-ayuda .titulo-inicio span {
+    display: block;
+    color: #f6b9e9;
+    margin-top: 8px;
+}
+
+.texto-ayuda .descripcion-inicio {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+/* ==========================================================
+   PANTALLA 3 - REALIZAR REPORTE
+   ========================================================== */
+
+.pantalla-reporte {
+    background: rgba(0, 0, 0, 0.18);
+    align-items: center;
+}
+
+.bloque-reporte {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+}
+
+.titulo-reporte {
+    font-size: clamp(27px, 4vw, 42px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.descripcion-reporte {
+    max-width: 800px;
+    margin: 0 auto 30px;
+
+    color: #f1e4f7;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* TARJETA DE FUNCIONES */
+
+.tarjeta-reporte {
+    max-width: 700px;
+    margin: 0 auto 30px;
+    padding: 25px 35px;
+
+    text-align: left;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.tarjeta-reporte h3 {
+    color: #f6b9e9;
+    font-size: 21px;
+    margin: 0 0 18px;
+}
+
+.tarjeta-reporte ul {
+    padding-left: 22px;
+    margin: 0;
+}
+
+.tarjeta-reporte li {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 8px;
+}
+
+.pantalla-reporte .texto-cta {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+/* BOTÓN DE REPORTE */
+
+.pantalla-reporte .btn-reportar {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+}
+
+/* ==========================================================
+   ANIMACIONES DE APARICIÓN AL DESLIZAR
+   ========================================================== */
+
+@keyframes aparicionPantalla {
+    from {
+        opacity: 0.35;
+        transform: translateY(35px);
+        filter: blur(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@supports (animation-timeline: view()) {
+
+    .pantalla-inicio > .bloque-mensaje,
+    .pantalla-inicio > .bloque-ayuda,
+    .pantalla-inicio > .bloque-reporte {
+        animation: aparicionPantalla linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 75%;
+    }
+
+}
+
+/* ==========================================================
+   ADAPTACIÓN A TELÉFONOS Y TABLETS
+   ========================================================== */
+
+@media (max-width: 850px) {
+
+    .pantalla-inicio {
+        padding: 45px 7%;
+        min-height: calc(100svh - 70px);
+    }
+
+    .pantalla-bienvenida .bloque-mensaje,
+    .bloque-ayuda {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .pantalla-bienvenida .texto-mensaje {
+        text-align: center;
+    }
+
+    .pantalla-bienvenida .descripcion-inicio {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pantalla-bienvenida .contenedor-imagen {
+        max-width: 350px;
+    }
+
+    .imagen-ayuda {
+        order: 1;
+        max-width: 350px;
+    }
+
+    .texto-ayuda {
+        order: 2;
+        text-align: center;
+    }
+
+    .tarjeta-reporte {
+        padding: 22px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .pantalla-inicio {
+        padding: 35px 6%;
+    }
+
+    .pantalla-bienvenida .titulo-inicio {
+        font-size: 29px;
+    }
+
+    .texto-ayuda .titulo-inicio {
+        font-size: 29px;
+    }
+
+    .pantalla-bienvenida .descripcion-inicio,
+    .texto-ayuda .descripcion-inicio {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .titulo-reporte {
+        font-size: 27px;
+    }
+
+    .descripcion-reporte {
+        font-size: 14px;
+    }
+
+    .tarjeta-reporte li {
+        font-size: 13px;
+    }
+
+    .indicacion-deslizar {
+        font-size: 10px;
+    }
+
+}
+
+/* RESPETAR PREFERENCIAS DE MOVIMIENTO */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .flecha-deslizar {
+        animation: none;
+    }
+
+    .pantalla-inicio > .bloque-mensaje,
+    .pantalla-inicio > .bloque-ayuda,
+    .pantalla-inicio > .bloque-reporte {
+        animation: none;
+    }
+
+}
+
+
+
+/* =========================================================
+   AJUSTES VISUALES DE LA PÁGINA DE INICIO
+   No modifica la navbar ni sus funciones
+   ========================================================= */
+
+/* Fondo general blanco y desplazamiento suave */
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 80px;
+}
+
+body.pagina-inicio {
+    background: #ffffff;
+    background-image: none;
+    animation: none;
+    color: #51245f;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* El contenido ocupa todo el ancho disponible */
+body.pagina-inicio .contenido-inicio {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 18px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    box-sizing: border-box;
+}
+
+/* Cada sección ocupa el espacio visible debajo de la navbar */
+.pantalla-inicio {
+    width: 100%;
+    min-height: calc(100svh - 80px);
+    padding: 35px 5%;
+    margin: 0;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+
+    background: #ffffff;
+    position: relative;
+}
+
+/* =========================================================
+   PRIMERA PANTALLA: MENSAJE DE BIENVENIDA
+   ========================================================= */
+
+.pantalla-bienvenida {
+    width: 92%;
+    max-width: 1500px;
+    min-height: calc(100svh - 110px);
+    margin: 0 auto 25px;
+
+    padding: 45px clamp(28px, 5vw, 75px);
+    border-radius: 0 0 22px 22px;
+
+    background: linear-gradient(
+        115deg,
+        #923b61 0%,
+        #b45c9d 48%,
+        #dc91f6 100%
+    );
+
+    box-shadow: 0 14px 35px rgba(146, 59, 97, 0.20);
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mantiene el texto y la imagen bien distribuidos */
+.pantalla-bienvenida .bloque-mensaje {
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
+    align-items: center;
+    gap: clamp(30px, 5vw, 75px);
+}
+
+/* Título y descripción */
+.pantalla-bienvenida .titulo-inicio {
+    font-size: clamp(30px, 3.5vw, 48px);
+    line-height: 1.2;
+}
+
+.pantalla-bienvenida .descripcion-inicio {
+    font-size: clamp(15px, 1.3vw, 18px);
+    line-height: 1.8;
+}
+
+/* Imagen */
+.pantalla-bienvenida .contenedor-imagen {
+    max-width: 540px;
+    box-shadow: 0 12px 28px rgba(55, 15, 65, 0.28);
+}
+
+/* =========================================================
+   TEXTO Y FLECHA PARA DESLIZAR
+   ========================================================= */
+
+.indicador-deslizar {
+    color: #702283 !important;
+    font-weight: 800;
+    text-align: center;
+    opacity: 1;
+}
+
+.flecha-deslizar,
+.flecha-scroll {
+    color: #702283 !important;
+    border-color: #702283 !important;
+    animation: flechaSuave 2s ease-in-out infinite;
+}
+
+@keyframes flechaSuave {
+    0%, 100% {
+        transform: translateY(0);
+        opacity: 0.75;
+    }
+
+    50% {
+        transform: translateY(7px);
+        opacity: 1;
+    }
+}
+
+/* =========================================================
+   SEGUNDA PANTALLA: CÓMO PODEMOS AYUDARTE
+   ========================================================= */
+
+.pantalla-ayuda {
+    background: #ffffff;
+    color: #51245f;
+    padding-top: 55px;
+    padding-bottom: 55px;
+}
+
+.pantalla-ayuda .imagen-ayuda {
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(81, 35, 95, 0.16);
+}
+
+.pantalla-ayuda .texto-ayuda {
+    color: #51245f;
+}
+
+.pantalla-ayuda h2 {
+    color: #702283;
+}
+
+.pantalla-ayuda p {
+    color: #5e5263;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   TERCERA PANTALLA: REPORTES Y FUNCIONES
+   ========================================================= */
+
+.pantalla-reporte {
+    background: #ffffff;
+    color: #51245f;
+    padding: 55px 5%;
+}
+
+.pantalla-reporte h2 {
+    color: #702283;
+}
+
+/* Tarjeta con el mismo lenguaje visual de la bienvenida */
+.tarjeta-reporte {
+    width: min(100%, 950px);
+    margin: 25px auto;
+    padding: clamp(28px, 4vw, 50px);
+
+    box-sizing: border-box;
+    border-radius: 22px;
+
+    background: linear-gradient(
+        115deg,
+        #923b61 0%,
+        #b45c9d 48%,
+        #dc91f6 100%
+    );
+
+    color: #ffffff;
+    box-shadow: 0 14px 35px rgba(146, 59, 97, 0.20);
+
+    text-align: center;
+}
+
+.tarjeta-reporte h3,
+.tarjeta-reporte p,
+.tarjeta-reporte li {
+    color: #ffffff;
+    line-height: 1.8;
+}
+
+.tarjeta-reporte li {
+    margin-bottom: 8px;
+}
+
+/* =========================================================
+   TRANSICIONES SUAVES Y LIGERAS
+   ========================================================= */
+
+/* Animación de entrada para las secciones */
+@keyframes aparicionSuave {
+    from {
+        opacity: 0.45;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación ligada al desplazamiento cuando el navegador la admite */
+@supports (animation-timeline: view()) {
+    .pantalla-ayuda,
+    .pantalla-reporte {
+        animation: aparicionSuave linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 55%;
+    }
+
+    .tarjeta-reporte {
+        animation: aparicionSuave linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 50%;
+    }
+}
+
+/* Evita animaciones innecesarias en dispositivos que las desactivan */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .pantalla-inicio,
+    .tarjeta-reporte,
+    .flecha-deslizar,
+    .flecha-scroll {
+        animation: none !important;
+    }
+}
+
+/* =========================================================
+   ADAPTACIÓN A CELULARES Y TABLETAS
+   ========================================================= */
+
+@media (max-width: 850px) {
+    .pantalla-inicio {
+        min-height: calc(100svh - 75px);
+        padding: 30px 5%;
+    }
+
+    .pantalla-bienvenida {
+        width: 94%;
+        min-height: calc(100svh - 100px);
+        padding: 35px 25px;
+    }
+
+    .pantalla-bienvenida .bloque-mensaje {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 25px;
+    }
+
+    .pantalla-bienvenida .contenedor-imagen {
+        margin: 0 auto;
+    }
+
+    .pantalla-ayuda {
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .pantalla-bienvenida {
+        border-radius: 0 0 18px 18px;
+    }
+
+    .pantalla-inicio {
+        padding: 25px 18px;
+    }
+
+    .tarjeta-reporte {
+        padding: 28px 20px;
+    }
+}
+
+
+/* =====================================================
+   CORRECCIÓN FINAL: CENTRADO Y LEGIBILIDAD
+   ===================================================== */
+
+/* Evitar que el contenido quede pegado a la navbar */
+body.pagina-inicio .contenido-inicio {
+    width: 100%;
+    max-width: none;
+    padding: 24px 0 0;
+    margin: 0;
+    gap: 0;
+    box-sizing: border-box;
+}
+
+/* PRIMERA PANTALLA: un solo recuadro morado */
+body.pagina-inicio .pantalla-bienvenida {
+    width: 92%;
+    max-width: 1500px;
+    min-height: calc(100svh - 145px);
+    height: auto;
+
+    margin: 0 auto 24px;
+    padding: 40px clamp(25px, 6vw, 85px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+    border-radius: 22px;
+
+    background: linear-gradient(
+        115deg,
+        #923b61,
+        #b45c9d 50%,
+        #dc91f6
+    );
+
+    box-shadow: 0 12px 30px rgba(100, 35, 90, 0.18);
+}
+
+/* ELIMINAR EL SEGUNDO RECUADRO INTERIOR */
+body.pagina-inicio .pantalla-bienvenida .bloque-mensaje {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0;
+
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(25px, 5vw, 70px);
+}
+
+/* Centrar correctamente el texto */
+body.pagina-inicio .pantalla-bienvenida .texto-mensaje {
+    width: 100%;
+    margin: 0;
+    text-align: left;
+}
+
+/* Mantener el texto blanco sobre el degradado */
+body.pagina-inicio .pantalla-bienvenida .titulo-inicio {
+    color: #ffffff;
+}
+
+body.pagina-inicio .pantalla-bienvenida .descripcion-inicio {
+    color: #ffffff;
+    line-height: 1.8;
+}
+
+/* Imagen proporcionada */
+body.pagina-inicio .pantalla-bienvenida .contenedor-imagen {
+    width: 100%;
+    max-width: 540px;
+    margin: auto;
+}
+
+/* INDICADOR DE DESPLAZAMIENTO */
+body.pagina-inicio .pantalla-bienvenida .indicador-deslizar,
+body.pagina-inicio .pantalla-bienvenida .flecha-deslizar,
+body.pagina-inicio .pantalla-bienvenida .flecha-scroll {
+    color: #51245f !important;
+}
+
+/* =====================================================
+   SEGUNDA Y TERCERA PANTALLA: FONDO BLANCO
+   ===================================================== */
+
+body.pagina-inicio .pantalla-ayuda,
+body.pagina-inicio .pantalla-reporte {
+    background: #ffffff !important;
+    color: #42234e !important;
+}
+
+/* Títulos oscuros para que contrasten */
+body.pagina-inicio .pantalla-ayuda h1,
+body.pagina-inicio .pantalla-ayuda h2,
+body.pagina-inicio .pantalla-ayuda h3,
+body.pagina-inicio .pantalla-reporte h1,
+body.pagina-inicio .pantalla-reporte h2,
+body.pagina-inicio .pantalla-reporte h3 {
+    color: #702283 !important;
+}
+
+/* Párrafos y textos legibles sobre blanco */
+body.pagina-inicio .pantalla-ayuda p,
+body.pagina-inicio .pantalla-ayuda li,
+body.pagina-inicio .pantalla-reporte p,
+body.pagina-inicio .pantalla-reporte li {
+    color: #514657 !important;
+    line-height: 1.8;
+}
+
+/* Tarjeta de reporte: conserva el degradado */
+body.pagina-inicio .pantalla-reporte .tarjeta-reporte {
+    background: linear-gradient(
+        115deg,
+        #923b61,
+        #b45c9d 50%,
+        #dc91f6
+    );
+    color: #ffffff;
+}
+
+body.pagina-inicio .pantalla-reporte .tarjeta-reporte h3,
+body.pagina-inicio .pantalla-reporte .tarjeta-reporte p,
+body.pagina-inicio .pantalla-reporte .tarjeta-reporte li {
+    color: #ffffff !important;
+}
+
+/* =====================================================
+   ADAPTACIÓN A PANTALLAS PEQUEÑAS
+   ===================================================== */
+
+@media (max-width: 850px) {
+    body.pagina-inicio .pantalla-bienvenida {
+        width: 94%;
+        min-height: auto;
+        padding: 35px 25px;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida .bloque-mensaje {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida .texto-mensaje {
+        text-align: center;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida .contenedor-imagen {
+        max-width: 480px;
+    }
+}
+
+
+/* =====================================================
+   AJUSTE DE NAVBAR Y SEPARACIÓN DE LA PRIMERA PANTALLA
+   ===================================================== */
+
+/* La navbar conserva sus colores, logo y menú */
+body.pagina-inicio .barra-superior {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    /* Espacio debajo de la barra */
+    margin-bottom: 32px !important;
+    flex-shrink: 0;
+}
+
+/* Evita que el contenido se pegue a la navbar */
+body.pagina-inicio .contenido-inicio {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 0 0 25px !important;
+    gap: 0;
+    box-sizing: border-box;
+}
+
+/* Primera pantalla */
+body.pagina-inicio .pantalla-bienvenida {
+    width: 92%;
+    max-width: 1450px;
+
+    /* Altura y centrado */
+    min-height: calc(100svh - 165px);
+    margin: 0 auto 45px !important;
+    padding: 45px clamp(25px, 6vw, 85px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+    border-radius: 24px;
+
+    background: linear-gradient(
+        115deg,
+        #923b61 0%,
+        #b45c9d 50%,
+        #dc91f6 100%
+    );
+
+    box-shadow: 0 15px 40px rgba(100, 35, 90, 0.17);
+}
+
+/* Contenido interior sin fondos adicionales */
+body.pagina-inicio .pantalla-bienvenida .bloque-mensaje {
+    width: 100%;
+    max-width: 1400px;
+    margin: auto;
+    padding: 0;
+
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: clamp(25px, 5vw, 70px);
+}
+
+/* Imagen centrada */
+body.pagina-inicio .pantalla-bienvenida .contenedor-imagen {
+    width: 100%;
+    max-width: 540px;
+    margin: auto;
+}
+
+/* =====================================================
+   DESPLAZAMIENTO MÁS NATURAL ENTRE PANTALLAS
+   ===================================================== */
+
+html {
+    scroll-behavior: smooth !important;
+
+    /* Evita que el navegador fuerce saltos bruscos */
+    scroll-snap-type: y proximity !important;
+}
+
+body.pagina-inicio .pantalla-inicio {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    scroll-margin-top: 20px;
+}
+
+/* =====================================================
+   ANIMACIONES SUAVES DE APARICIÓN
+   ===================================================== */
+
+@keyframes entradaFluida {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@supports (animation-timeline: view()) {
+    body.pagina-inicio .pantalla-ayuda,
+    body.pagina-inicio .pantalla-reporte {
+        animation: entradaFluida linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 45%;
+    }
+
+    body.pagina-inicio .tarjeta-reporte {
+        animation: entradaFluida linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 50%;
+    }
+}
+
+/* Animación discreta de la imagen inicial */
+@keyframes imagenFlotante {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+body.pagina-inicio .pantalla-bienvenida .contenedor-imagen {
+    animation: imagenFlotante 5s ease-in-out infinite;
+}
+
+/* Botones con transición ligera */
+body.pagina-inicio .btn-reportar {
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.3s ease;
+}
+
+body.pagina-inicio .btn-reportar:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(81, 35, 95, 0.22);
+}
+
+/* =====================================================
+   ADAPTACIÓN PARA CELULARES
+   ===================================================== */
+
+@media (max-width: 850px) {
+    body.pagina-inicio .barra-superior {
+        margin-bottom: 22px !important;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida {
+        width: 94%;
+        min-height: auto;
+        padding: 35px 25px;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida .bloque-mensaje {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida .texto-mensaje {
+        text-align: center;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida .contenedor-imagen {
+        max-width: 480px;
+    }
+}
+
+/* Respetar la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+
+    body.pagina-inicio .pantalla-bienvenida .contenedor-imagen {
+        animation: none;
+    }
+
+    body.pagina-inicio .pantalla-ayuda,
+    body.pagina-inicio .pantalla-reporte,
+    body.pagina-inicio .tarjeta-reporte {
+        animation: none !important;
+    }
+}
+
+/* CAMBIO PROGRESIVO DEL FONDO AL DESPLAZARSE */
+
+@keyframes cambioColorScroll {
+    0% {
+        background-color: #ffffff;
+    }
+
+    30% {
+        background-color: #fffaff;
+    }
+
+    60% {
+        background-color: #f3d9f8;
+    }
+
+    100% {
+        background-color: #DC91F6;
+    }
+}
+
+@supports (animation-timeline: scroll()) {
+    body.pagina-inicio {
+        background-color: #ffffff;
+        animation: cambioColorScroll linear both;
+        animation-timeline: scroll(root);
+    }
+}
+
+/* Permitir que el fondo general se vea en las secciones */
+body.pagina-inicio .pantalla-ayuda,
+body.pagina-inicio .pantalla-reporte {
+    background: transparent !important;
+}
+#mis-reportes { list-style: none; padding: 0; margin: .75rem 0 1rem; }
+#mis-reportes li { margin-bottom: .5rem; }
+#mis-reportes a { color: #71304f; overflow-wrap: anywhere; }
+
+/* Pantallas de consulta y confirmación de folio */
+body.pagina-folio {
+  min-height: 100svh;
+  color: #fff;
+  background: radial-gradient(ellipse at top left, #b7669b, transparent 55%),
+              radial-gradient(ellipse at bottom right, #784089, transparent 55%),
+              #713456;
+  animation: none;
+}
+.pagina-folio .pagina-seguimiento {
+  width: min(92%, 760px);
+  gap: clamp(.9rem, 3vw, 1.5rem);
+  padding-block: clamp(1.25rem, 5vw, 3rem);
+}
+.pagina-folio .btn-volver { text-decoration: none; }
+.pagina-folio .titulo-seguimiento {
+  color: #fff;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+}
+.pagina-folio .tarjeta-seguimiento {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(1.25rem, 5vw, 2.7rem);
+  border: 1px solid #f6e3f1;
+  background: radial-gradient(ellipse at 50% 0%, #f9edf7, #fff 58%);
+}
+.pagina-folio .tarjeta-seguimiento::before,
+.pagina-folio .tarjeta-seguimiento::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  width: 13rem;
+  aspect-ratio: 1;
+  border: 1px solid #9e52982b;
+  border-radius: 50%;
+  box-shadow: 0 0 0 15px #9e529812, 0 0 0 31px #9e52980c;
+}
+.pagina-folio .tarjeta-seguimiento::before { top: -8rem; right: -4rem; }
+.pagina-folio .tarjeta-seguimiento::after { bottom: -9rem; left: -5rem; }
+.marca-folio {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 1rem;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 8px 25px #71345626, inset 0 0 0 1px #ebd4e8;
+}
+.pagina-folio .logo-seguimiento {
+  width: 68px;
+  height: 68px;
+  margin: 0;
+  object-fit: contain;
+  border-radius: 12px;
+}
+.marca-folio-exito {
+  position: absolute;
+  bottom: -5px;
+  right: -6px;
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  background: #364f54;
+  font-weight: 800;
+}
+.pagina-folio .etiqueta-folio { margin: 0 0 .5rem; color: #512445; }
+.pagina-folio .ayuda-folio { margin: 0 auto 1.3rem; max-width: 45ch; line-height: 1.55; }
+.recuadro-folio {
+  max-width: 520px;
+  padding: .45rem;
+  margin-inline: auto;
+  border: 1px solid #ead5e6;
+  border-radius: 15px;
+  background: #f9eff7;
+}
+.pagina-folio .campo-folio {
+  display: block;
+  max-width: none;
+  background: #fff;
+  border: 1px solid #cfaac7;
+}
+.folio-entregado {
+  user-select: all;
+  overflow-wrap: anywhere;
+  letter-spacing: .035em;
+  font-weight: 800;
+  line-height: 1.5;
+}
+.pagina-folio .botones-seguimiento { gap: .75rem; margin-top: 1.3rem; }
+.pagina-folio .botones-seguimiento a { text-decoration: none; }
+.pagina-folio .botones-seguimiento :is(a, button) { min-height: 48px; align-content: center; }
+.pagina-folio .botones-seguimiento button:disabled { opacity: .55; cursor: default; transform: none; }
+.pagina-folio #copiar-folio[data-copiado] { border-color: #364f54; color: #364f54; background: #edf5f3; }
+.estado-copia-folio { margin: .7rem 0 0; color: #364f54; font-size: .875rem; font-weight: 700; }
+.estado-copia-folio:empty { margin: 0; }
+@keyframes entrada-folio {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes sello-folio {
+  from { opacity: 0; transform: scale(.75); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pagina-folio .tarjeta-seguimiento { animation: entrada-folio .38s ease-out both; }
+  .pagina-folio .recuadro-folio { animation: entrada-folio .35s .1s ease-out both; }
+  .marca-folio-exito { animation: sello-folio .3s .25s ease-out both; }
+  .estado-copia-folio:not(:empty) { animation: entrada-folio .22s ease-out both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pagina-folio .btn-volver, .pagina-folio .campo-folio, .pagina-folio .botones-seguimiento :is(a, button) { transition: none; transform: none; }
+}
+
+/* Detalle del seguimiento por folio */
+.pagina-detalle-reporte [hidden] { display: none !important; }
+.pagina-detalle-reporte .pagina-seguimiento { width: min(92%, 880px); }
+.pagina-detalle-reporte #contenido-seguimiento { display: grid; gap: .9rem; }
+.pagina-detalle-reporte .tarjeta-resumen-reporte { text-align: left; }
+.cabecera-resumen-reporte {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(.75rem, 3vw, 1.25rem);
+}
+.pagina-folio .cabecera-resumen-reporte .logo-seguimiento {
+  width: clamp(48px, 10vw, 76px);
+  height: clamp(48px, 10vw, 76px);
+  background: #fff;
+  box-shadow: 0 4px 14px #71345622;
+}
+.cabecera-resumen-reporte h2 {
+  margin: 0 0 .25rem;
+  color: #713456;
+  font-size: .93rem;
+}
+.folio-resumen-reporte {
+  margin: 0;
+  color: #431e3c;
+  font-size: clamp(.92rem, 2.5vw, 1.25rem);
+  font-weight: 800;
+  letter-spacing: .025em;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.fecha-resumen-reporte { margin: .4rem 0 0; color: #684961; font-size: .85rem; }
+.indicadores-reporte, .datos-detalle-reporte {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .7rem;
+  margin: 1rem 0 0;
+}
+.indicadores-reporte > div, .datos-detalle-reporte > div {
+  min-width: 0;
+  padding: .85rem 1rem;
+  border: 1px solid #ead5e6;
+  border-radius: 12px;
+  background: #fcf4f9;
+}
+.indicadores-reporte dt, .datos-detalle-reporte dt {
+  margin-bottom: .3rem;
+  color: #69435c;
+  font-size: .85rem;
+  font-weight: 700;
+}
+.indicadores-reporte dd, .datos-detalle-reporte dd { margin: 0; overflow-wrap: anywhere; }
+.indicadores-reporte dd { color: #512445; font-size: clamp(1rem, 2.8vw, 1.25rem); font-weight: 800; }
+.indicadores-reporte [data-riesgo="bajo"] { background: #edf5f3; border-color: #bdd9d0; }
+.indicadores-reporte [data-riesgo="medio"] { background: #fbf3e5; border-color: #e7d0a6; }
+.indicadores-reporte [data-riesgo="alto"] { background: #fbecef; border-color: #ebbac8; }
+.panel-detalle-reporte {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-radius: 16px;
+  background: #fff;
+  color: #43223e;
+  box-shadow: 0 8px 24px #34172b35;
+}
+.panel-detalle-reporte h2 { margin: 0; color: #512445; font-size: clamp(1.08rem, 3vw, 1.35rem); }
+.datos-detalle-reporte { margin-top: .85rem; }
+.datos-detalle-reporte dd { line-height: 1.55; white-space: pre-wrap; }
+.dato-reporte-ancho { grid-column: 1 / -1; }
+.espera-institucional-reporte, .respuesta-publicada-reporte {
+  margin: .75rem 0 0;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+  border-left: 3px solid #a96a94;
+  background: #fcf4f9;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.respuesta-publicada-reporte { border-color: #668a83; background: #edf5f3; }
+.recurso-institucional-reporte { padding: .75rem 0; border-bottom: 1px solid #eee1ec; }
+.recurso-institucional-reporte h3 { margin: 0; font-size: .95rem; }
+.recurso-institucional-reporte p { margin: .35rem 0 0; line-height: 1.55; }
+.contacto-institucional-reporte, .enlace-directorio-reporte { font-weight: 700; color: #713456; }
+.enlace-directorio-reporte { display: inline-block; margin-top: .85rem; }
+.pie-detalle-reporte { display: flex; justify-content: center; }
+.aviso-detalle-reporte { margin: 0; }
+@media (max-width: 520px) {
+  .datos-detalle-reporte { grid-template-columns: 1fr; }
+  .indicadores-reporte > div { padding: .65rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel-detalle-reporte { animation: entrada-folio .35s .08s ease-out both; }
+  #orientacion-reporte { animation-delay: .14s; }
 }

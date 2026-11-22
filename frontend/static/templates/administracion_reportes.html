@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Gestión de reportes | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/reporte.css">
+</head>
+<body>
+    <main class="container">
+        <header class="header"><h1>Gestión de reportes</h1></header>
+        <section class="form-card flujo-reporte">
+            <form id="acceso-admin">
+                <div class="form-group">
+                    <label for="correo-admin">Correo institucional</label>
+                    <input class="custom-input" id="correo-admin" name="correo" type="email" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="contrasena-admin">Contraseña</label>
+                    <input class="custom-input" id="contrasena-admin" name="contrasena" type="password" autocomplete="current-password" required>
+                </div>
+                <button class="btn-formulario">Iniciar sesión</button>
+            </form>
+            <section id="panel-admin" hidden>
+                <button class="btn-formulario" id="salir-admin" type="button">Cerrar sesión</button>
+                <h2>Seguimiento institucional</h2>
+                <form id="actualizar-reporte">
+                    <label for="seleccionar-reporte">Reporte</label>
+                    <select id="seleccionar-reporte" class="custom-select" required></select>
+                    <p id="resumen-admin"></p>
+                    <label for="estado-admin">Estatus</label>
+                    <select id="estado-admin" class="custom-select" required></select>
+                    <label for="riesgo-admin">Nivel de riesgo</label>
+                    <select id="riesgo-admin" class="custom-select">
+                        <option>Por evaluar</option>
+                        <option>Bajo</option>
+                        <option>Medio</option>
+                        <option>Alto</option>
+                    </select>
+                    <label for="respuesta-admin">Respuesta institucional visible en seguimiento</label>
+                    <textarea id="respuesta-admin" class="custom-textarea" maxlength="8000"></textarea>
+                    <button class="btn-formulario" id="publicar-respuesta">Guardar seguimiento</button>
+                </form>
+            </section>
+            <p id="aviso-admin" role="status"></p>
+            <a href="principal.html">Volver al inicio</a>
+        </section>
+    </main>
+    <script src="../js/administracion_reportes.js"></script>
+</body>
+</html>
