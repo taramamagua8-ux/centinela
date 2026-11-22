@@ -26,12 +26,24 @@
                         <p>Regístrate para guardar y consultar tu información.</p>
                         <a class="boton-cuenta" href="registro.html">Registrarme</a>
                     </article>
+                    <article class="tarjeta-opcion-cuenta" id="acceso-anonimo-cuenta">
+                        <div class="icono-opcion-cuenta" aria-hidden="true">⌕</div>
+                        <h2>Acceso con folio</h2>
+                        <p>Si reportaste de forma anónima, ingresa tu folio para ver los datos y el seguimiento de tu reporte.</p>
+                        <a class="boton-cuenta" href="formulario.html">Ingresar folio</a>
+                    </article>
                 </div>
             </div>
 
             <div id="panel-cuenta-usuario" hidden>
-                <h1>Hola, <span id="nombre-cuenta"></span></h1>
-                <p class="datos-cuenta">Correo: <strong id="correo-cuenta"></strong></p>
+                <h1>Mi cuenta</h1>
+                <section aria-labelledby="titulo-datos-cuenta">
+                    <h2 id="titulo-datos-cuenta">Mis datos</h2>
+                    <dl class="datos-cuenta lista-datos-cuenta">
+                        <div><dt>Nombre</dt><dd id="nombre-cuenta"></dd></div>
+                        <div><dt>Correo electrónico</dt><dd id="correo-cuenta"></dd></div>
+                    </dl>
+                </section>
                 <section>
                     <h2>Mis reportes</h2>
                     <p id="aviso-mis-reportes" role="status"></p>
