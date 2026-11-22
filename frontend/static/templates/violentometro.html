@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Violentómetro | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/reporte.css">
+</head>
+<body class="pagina-captura-reporte">
+    <div class="barra-captura">
+        <a href="terminos.html">← Volver a términos</a>
+    </div>
+    <main class="container">
+        <header class="header">
+            <h1>Violentómetro</h1>
+            <p class="subtitle">Arrastra el indicador o toca un tipo de violencia dentro del termómetro.</p>
+        </header>
+        <section class="form-card captura-reporte flujo-reporte">
+            <form id="form-violentometro">
+                <fieldset class="selector-violentometro">
+                    <legend id="pregunta-violentometro">¿Qué tipo de violencia identificas?</legend>
+                    <div class="escala-violentometro" id="escala-violentometro" hidden>
+                        <div class="termometro">
+                            <span class="bulbo-violentometro" aria-hidden="true"></span>
+                            <div class="riel-violentometro">
+                                <div class="tubo-violentometro">
+                                    <span class="relleno-violentometro" aria-hidden="true"></span>
+                                    <div class="opciones-violentometro" id="opciones-violentometro" aria-hidden="true"></div>
+                                </div>
+                                <span class="marcador-violentometro" aria-hidden="true"></span>
+                                <input type="range" class="control-violentometro" id="control-violentometro"
+                                       min="0" value="0" step="1" aria-label="Tipo de violencia"
+                                       aria-orientation="horizontal" aria-valuetext="Sin seleccionar">
+                            </div>
+                        </div>
+                        <div class="detalle-violentometro">
+                            <p id="seleccion-violentometro" class="seleccion-violentometro" hidden></p>
+                            <p id="descripcion-violentometro" hidden></p>
+                            <p id="ejemplo-violentometro" class="ejemplo-violentometro" hidden>
+                                <strong>Ejemplo</strong>
+                                <span id="texto-ejemplo-violentometro"></span>
+                            </p>
+                        </div>
+                    </div>
+                </fieldset>
+                <p id="aviso-violentometro" class="aviso-violentometro" role="status">Cargando los tipos de violencia…</p>
+                <div class="acciones-captura">
+                    <button class="btn-formulario" id="continuar-violentometro" disabled>Continuar al formulario <span aria-hidden="true">→</span></button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="../js/violentometro.js"></script>
+</body>
+</html>
