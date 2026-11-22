@@ -1,9 +1,11 @@
 const API_AUTH = '/api';
 
 function irDespuesDeAutenticar() {
-    const regreso = sessionStorage.getItem('centinela_regreso');
+    let regreso = sessionStorage.getItem('centinela_regreso');
     sessionStorage.removeItem('centinela_regreso');
-    window.location.href = ['terminos.html', 'ReporteVicAno.html', 'ReporteTesAno.html'].includes(regreso) ? regreso : 'cuenta.html';
+    if (regreso === 'terminos.html') regreso = 'comencemos_reporte.html';
+    const destinos = ['comencemos_reporte.html', 'ReporteVicAno.html', 'ReporteTesAno.html'];
+    window.location.href = destinos.includes(regreso) ? regreso : 'cuenta.html';
 }
 
 function guardarSesion(usuario, token) {
@@ -31,6 +33,25 @@ function mostrarAviso(elemento, mensaje, error = false) {
     elemento.textContent = mensaje;
     elemento.classList.toggle('aviso-error', error);
     elemento.classList.add('visible');
+}
+
+const enlaceCuenta = document.getElementById('enlace-cuenta-principal');
+if (enlaceCuenta) {
+    window.addEventListener('pageshow', async () => {
+        enlaceCuenta.hidden = true;
+        if (!sessionStorage.getItem('centinela_token')) return;
+        try {
+            const { reportes } = await apiAuth('/usuarios/me/reportes');
+            enlaceCuenta.hidden = reportes.length === 0;
+        } catch (_) {
+            enlaceCuenta.hidden = true;
+        }
+    });
+}
+
+const volverAcceso = document.getElementById('volver-acceso');
+if (volverAcceso && sessionStorage.getItem('centinela_regreso') === 'comencemos_reporte.html') {
+    volverAcceso.href = 'formulario_reporte.html';
 }
 
 const formularioLogin = document.getElementById('form-login');
