@@ -145,7 +145,11 @@ enviar.addEventListener('click', async () => {
         const resultado = await respuesta.json().catch(() => ({}));
         if (!respuesta.ok) throw new Error(resultado.error || 'No se pudo registrar el reporte.');
         sessionStorage.removeItem('centinela_flujo');
-        location.assign('confirmacion_reporte.html#folio=' + encodeURIComponent(resultado.reporte.folio));
+        const confirmacion = new URLSearchParams({
+            folio: resultado.reporte.folio,
+            modalidad: anonimo ? 'anonima' : 'registrada'
+        });
+        location.assign('confirmacion_reporte.html#' + confirmacion);
     } catch (error) {
         aviso.textContent = error.message;
         enviar.disabled = false;
