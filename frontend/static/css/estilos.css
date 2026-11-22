@@ -2632,3 +2632,277 @@ body.pagina-inicio .pantalla-ayuda,
 body.pagina-inicio .pantalla-reporte {
     background: transparent !important;
 }
+
+
+/* =========================================
+   CARRUSEL DE VIDEOS - CENTINELA DIGITAL
+========================================= */
+
+.carrusel-videos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 30px auto;
+}
+
+
+/* CONTENEDOR PRINCIPAL */
+
+.contenedor-carrusel {
+    flex: 1;
+    min-width: 0;
+
+    overflow-x: auto;
+
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+}
+
+.contenedor-carrusel::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* LISTA DE VIDEOS */
+
+.lista-videos {
+    display: flex;
+    width: 100%;
+}
+
+
+/* CADA VIDEO */
+
+.video-item {
+    flex: 0 0 100%;
+
+    min-width: 0;
+
+    padding: 5px;
+
+    box-sizing: border-box;
+
+    scroll-snap-align: start;
+}
+
+.video-item iframe {
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    height: auto;
+
+    border: none;
+
+    border-radius: 12px;
+}
+
+
+/* BOTONES DE NAVEGACION */
+
+.flecha-carrusel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #174b68;
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+                opacity 0.2s ease;
+}
+
+
+/* EFECTO AL PASAR EL CURSOR */
+
+.flecha-carrusel:hover:not(:disabled) {
+    background-color: #26769b;
+}
+
+
+/* BOTONES DESACTIVADOS */
+
+.flecha-carrusel:disabled {
+    opacity: 0.35;
+
+    cursor: not-allowed;
+}
+
+
+/* INDICADORES INFERIORES */
+
+.indicadores-videos {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 20px auto;
+}
+
+.indicador-video {
+    width: 11px;
+    height: 11px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #b8c5ce;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+                transform 0.2s ease;
+}
+
+.indicador-video.activo {
+    background-color: #174b68;
+
+    transform: scale(1.25);
+}
+
+
+/* ADAPTACION PARA CELULARES */
+
+@media (max-width: 600px) {
+
+    .carrusel-videos {
+        gap: 5px;
+    }
+
+    .flecha-carrusel {
+        width: 35px;
+        height: 35px;
+
+        font-size: 16px;
+    }
+
+    .indicadores-videos {
+        gap: 8px;
+    }
+
+}
+
+
+/* MINIATURA DE LA INFOGRAFÍA */
+
+.infografia-miniatura {
+    display: block;
+    width: 100%;
+    max-width: 350px;
+    max-height: 230px;
+    object-fit: contain;
+    margin: 20px auto;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* BOTÓN PARA AMPLIAR */
+
+.btn-ampliar-infografia {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 8px;
+    background-color: #263b70;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-ampliar-infografia:hover {
+    background-color: #17264d;
+}
+
+/* FONDO OSCURO DE LA VENTANA */
+
+.visor-infografia {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px 20px;
+}
+
+/* IMAGEN AMPLIADA */
+
+.infografia-ampliada {
+    display: block;
+    max-width: 90%;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+/* BOTÓN PARA CERRAR */
+
+.cerrar-infografia {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 42px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.cerrar-infografia:hover {
+    color: #cccccc;
+}
+
+/* AJUSTES PARA CELULARES */
+
+@media (max-width: 600px) {
+
+    .infografia-miniatura {
+        max-width: 90%;
+        max-height: 200px;
+    }
+
+    .infografia-ampliada {
+        max-width: 100%;
+        max-height: 80vh;
+    }
+
+    .cerrar-infografia {
+        top: 12px;
+        right: 18px;
+    }
+
+}
+
