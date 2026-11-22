@@ -1,13 +1,21 @@
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Sobre nosotros | Centinela Digital</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
+
 <body class="pagina-informativa">
+
+    <!-- ENCABEZADO Y MENU DE NAVEGACION -->
     <header class="barra-superior">
         <input type="checkbox" id="toggle-menu" class="toggle-menu" aria-label="Menú principal">
         <label for="toggle-menu" class="btn-hamburguesa" aria-label="Abrir menú"><span></span><span></span><span></span></label>
@@ -20,6 +28,7 @@
             <a href="formulario.html">Consultar folio</a>
             <a href="cuenta.html"><span aria-hidden="true">👤</span> Mi cuenta</a>
         </nav>
+
         <a class="logo-centro" href="principal.html">
             <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
             <span>CENTINELA DIGITAL</span>
@@ -27,22 +36,326 @@
         <div class="iconos-derecha"><button type="button" class="btn-icono" onclick="window.location.href='cuenta.html'"><span aria-hidden="true">👤</span> Mi cuenta</button></div>
     </header>
 
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="contenido-nosotros">
+
         <section class="texto-nosotros">
+
             <h1>Sobre nosotros</h1>
-            <p>Somos un proyecto que busca brindar orientación y acompañamiento a personas que viven o presencian situaciones de violencia.</p>
-            <p>Queremos que cada persona pueda encontrar información confiable, identificar alternativas de apoyo y realizar un reporte de forma clara y segura.</p>
-            <p>Centinela Digital promueve una cultura de prevención, escucha y acceso a las instituciones correspondientes.</p>
+
+            <p>
+                Somos un proyecto que busca brindar orientación y acompañamiento
+                a personas que viven o presencian situaciones de violencia.
+            </p>
+
+            <p>
+                Queremos que cada persona pueda encontrar información confiable,
+                identificar alternativas de apoyo y realizar un reporte de forma
+                clara y segura.
+            </p>
+
+            <p>
+                Centinela Digital promueve una cultura de prevención, escucha y
+                acceso a las instituciones correspondientes.
+            </p>
+
+
+            <!-- SECCION DE YOUTUBE -->
             <section class="bloque-youtube">
-                <div class="icono-youtube" aria-hidden="true">▶</div>
+
+                <div class="icono-youtube" aria-hidden="true">
+                    ▶
+                </div>
+
                 <div>
                     <h2>Conoce cómo construimos esta página</h2>
-                    <p>Visita nuestro canal de YouTube para conocer el desarrollo de Centinela Digital mediante prácticas de laboratorio.</p>
-                    <a href="https://www.youtube.com/@centineladigital-n6f" target="_blank" rel="noopener noreferrer">Ver canal de YouTube</a>
+
+                    <p>
+                        Visita nuestro canal de YouTube para conocer el desarrollo
+                        de Centinela Digital mediante prácticas de laboratorio.
+                    </p>
+
+                    <a href="https://www.youtube.com/@centineladigital-n6f"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Ver canal de YouTube
+                    </a>
                 </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- LOGOTIPO -->
         <div class="marca-nosotros">
             <img src="../img/centinela_digital.png" alt="Centinela Digital">
         </div>
+
     </main>
+
+
+    <!-- SECCION DEL CARRUSEL DE VIDEOS -->
+    <main class="videos-centinela">
+
+        <section class="videos">
+
+            <h2>Videos</h2>
+
+            <p>
+                Explora nuestros videos para conocer más sobre Centinela Digital.
+            </p>
+
+
+            <div class="carrusel-videos">
+
+                <!-- BOTON ANTERIOR -->
+                <button
+                    class="flecha-carrusel anterior"
+                    type="button"
+                    aria-label="Ver video anterior">
+
+                    &#10094;
+
+                </button>
+
+
+                <!-- CONTENEDOR DEL CARRUSEL -->
+                <div class="contenedor-carrusel" id="contenedorCarrusel">
+
+                    <div class="lista-videos">
+
+
+                        <!-- VIDEO 1 -->
+                        <div class="video-item">
+
+                            <iframe
+                                src="https://www.youtube.com/embed/CuCZOo2qfWo"
+                                title="Video 1 de Centinela Digital"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
+
+                        <!-- VIDEO 2 -->
+                        <div class="video-item">
+
+                            <iframe
+                                src="https://www.youtube.com/embed/Ck5tyBMoXDE"
+                                title="Video 2 de Centinela Digital"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
+
+                        <!-- VIDEO 3 -->
+                        <div class="video-item">
+
+                            <iframe
+                                src="https://www.youtube.com/embed/H8HwrFM7m3A"
+                                title="Video 3 de Centinela Digital"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
+
+                        <!-- VIDEO 4 -->
+                        <div class="video-item">
+
+                            <iframe
+                                src="https://www.youtube.com/embed/JUVYj15rhdA"
+                                title="Video 4 de Centinela Digital"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
+
+                        <!-- VIDEO 5 -->
+                        <div class="video-item">
+
+                            <iframe
+                                src="https://www.youtube.com/embed/1Snlg_YY8Z4"
+                                title="Video 5 de Centinela Digital"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
+
+                        <!-- VIDEO 6 -->
+                        <div class="video-item">
+
+                            <iframe
+                                src="https://www.youtube.com/embed/qKqpHmQudZs"
+                                title="Video 6 de Centinela Digital"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
+
+                        <!-- VIDEO 7 -->
+                        <div class="video-item">
+
+                            <iframe
+                                src="https://www.youtube.com/embed/JUlvW--GYM4"
+                                title="Video 7 de Centinela Digital"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTON SIGUIENTE -->
+                <button
+                    class="flecha-carrusel siguiente"
+                    type="button"
+                    aria-label="Ver siguiente video">
+
+                    &#10095;
+
+                </button>
+
+            </div>
+
+
+            <!-- INDICADORES DEL CARRUSEL -->
+            <div class="indicadores-videos" id="indicadoresVideos">
+
+                <button type="button" class="indicador-video activo" aria-label="Ir al video 1"></button>
+                <button type="button" class="indicador-video" aria-label="Ir al video 2"></button>
+                <button type="button" class="indicador-video" aria-label="Ir al video 3"></button>
+                <button type="button" class="indicador-video" aria-label="Ir al video 4"></button>
+                <button type="button" class="indicador-video" aria-label="Ir al video 5"></button>
+                <button type="button" class="indicador-video" aria-label="Ir al video 6"></button>
+                <button type="button" class="indicador-video" aria-label="Ir al video 7"></button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- JAVASCRIPT DEL CARRUSEL -->
+    <script>
+
+        const carrusel = document.getElementById("contenedorCarrusel");
+
+        const botonAnterior = document.querySelector(".flecha-carrusel.anterior");
+
+        const botonSiguiente = document.querySelector(".flecha-carrusel.siguiente");
+
+        const videos = document.querySelectorAll(".video-item");
+
+        const indicadores = document.querySelectorAll(".indicador-video");
+
+
+        // ACTUALIZAR BOTONES E INDICADORES
+        function actualizarCarrusel() {
+
+            const anchoVideo = carrusel.clientWidth;
+
+            const posicionActual = Math.round(carrusel.scrollLeft / anchoVideo);
+
+            botonAnterior.disabled = posicionActual <= 0;
+
+            botonSiguiente.disabled = posicionActual >= videos.length - 1;
+
+
+            // ACTUALIZAR INDICADOR ACTIVO
+            indicadores.forEach((indicador, indice) => {
+
+                indicador.classList.toggle("activo", indice === posicionActual);
+
+            });
+
+        }
+
+
+        // IR AL VIDEO ANTERIOR
+        botonAnterior.addEventListener("click", () => {
+
+            carrusel.scrollBy({
+
+                left: -carrusel.clientWidth,
+
+                behavior: "smooth"
+
+            });
+
+        });
+
+
+        // IR AL SIGUIENTE VIDEO
+        botonSiguiente.addEventListener("click", () => {
+
+            carrusel.scrollBy({
+
+                left: carrusel.clientWidth,
+
+                behavior: "smooth"
+
+            });
+        });
+
+        // NAVEGAR MEDIANTE LOS INDICADORES
+        indicadores.forEach((indicador, indice) => {
+
+            indicador.addEventListener("click", () => {
+
+                carrusel.scrollTo({
+
+                    left: indice * carrusel.clientWidth,
+
+                    behavior: "smooth"
+
+                });
+            });
+        });
+
+        // DETECTAR EL DESPLAZAMIENTO
+        carrusel.addEventListener("scroll", actualizarCarrusel);
+
+        // ACTUALIZAR AL CAMBIAR EL TAMAÑO DE LA PANTALLA
+        window.addEventListener("resize", actualizarCarrusel);
+
+        // ESTADO INICIAL
+        actualizarCarrusel();
+
+    </script>
+
 </body>
 </html>
+
