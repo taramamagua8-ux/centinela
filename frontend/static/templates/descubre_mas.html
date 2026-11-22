@@ -11,28 +11,38 @@
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
 
-<body class="pagina-informativa">
+<body class="pagina-descubre-mas">
 
     <!-- ENCABEZADO -->
 
+
     <header class="barra-superior">
+
         <input type="checkbox" id="toggle-menu" class="toggle-menu" aria-label="Menú principal">
-        <label for="toggle-menu" class="btn-hamburguesa" aria-label="Abrir menú"><span></span><span></span><span></span></label>
+
+        <label for="toggle-menu" class="btn-hamburguesa" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
         <nav class="menu-lateral" aria-label="Navegación principal">
             <a href="principal.html">Inicio</a>
             <a href="descubre_mas.html">Descubre más</a>
             <a href="videos.html">Videos</a>
             <a href="directorio.html">Directorio</a>
             <a href="sobre_nosotros.html">Sobre nosotros</a>
-            <a href="formulario.html">Consultar folio</a>
-            <a href="cuenta.html"><span aria-hidden="true">👤</span> Mi cuenta</a>
         </nav>
 
-        <a class="logo-centro" href="principal.html">
-            <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
-            <span>CENTINELA DIGITAL</span>
-        </a>
-        <div class="iconos-derecha"><button type="button" class="btn-icono" onclick="window.location.href='cuenta.html'"><span aria-hidden="true">👤</span> Mi cuenta</button></div>
+        <div class="logo-centro">
+            <img src="../img/logoB.png" alt="Logo Centinela Digital">
+
+            <span class="fx-pop" role="img" aria-label="CENTINELA DIGITAL">
+                <b aria-hidden="true" style="--i:0">C</b><b aria-hidden="true" style="--i:1">E</b><b aria-hidden="true" style="--i:2">N</b><b aria-hidden="true" style="--i:3">T</b><b aria-hidden="true" style="--i:4">I</b><b aria-hidden="true" style="--i:5">N</b><b aria-hidden="true" style="--i:6">E</b><b aria-hidden="true" style="--i:7">L</b><b aria-hidden="true" style="--i:8">A</b><b aria-hidden="true" style="--i:9">&nbsp;</b><b aria-hidden="true" style="--i:10">D</b><b aria-hidden="true" style="--i:11">I</b><b aria-hidden="true" style="--i:12">G</b><b aria-hidden="true" style="--i:13">I</b><b aria-hidden="true" style="--i:14">T</b><b aria-hidden="true" style="--i:15">A</b><b aria-hidden="true" style="--i:16">L</b>
+            </span>
+        </div>
+
+
     </header>
 
 
@@ -490,9 +500,10 @@
 
         <section class="material-materia-energia">
 
-            <h2>Material complementario: Materia y Energía</h2>
+            <h2>Material complementario de la clase: Materia y Energía en los organismos</h2>
 
             <p>
+                ¿Alguna ves te haz preguntado como la violencia que puedes sufrir afecta en tu organismo?
                 Consulta los siguientes recursos para conocer más sobre el tema.
             </p>
 
@@ -594,6 +605,20 @@
     <!-- JAVASCRIPT PARA AMPLIAR Y CERRAR LA INFOGRAFÍA -->
 
     <script>
+
+
+        // Envuelve cada imagen en una columna con carril y estela
+document.querySelectorAll(".bloque-violencia > .imagen-violencia").forEach(img => {
+    const columna = document.createElement("div");
+    columna.className = "columna-imagen";
+
+    const pegajosa = document.createElement("div");
+    pegajosa.className = "imagen-pegajosa";
+
+    img.replaceWith(columna);
+    columna.appendChild(pegajosa);
+    pegajosa.appendChild(img);
+});
 
         function abrirInfografia() {
 

@@ -3191,3 +3191,290 @@ body.pagina-folio {
 .lista-datos-cuenta > div { padding: .6rem .8rem; border-radius: 8px; background: #f9eff7; }
 .lista-datos-cuenta dt { font-weight: 750; }
 .lista-datos-cuenta dd { margin: .2rem 0 0; }
+
+
+/* Logo como enlace */
+.logo-centro { text-decoration: none; color: #fff; }
+
+/* Descubre más: subtítulos y listas legibles sobre blanco */
+.texto-violencia h3 {
+    margin: 12px 0 4px;
+    color: #a04b83;
+    font-size: 13px;
+}
+.texto-violencia ul { margin: 0 0 8px; padding-left: 18px; }
+.texto-violencia li {
+    color: #5f5860;
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+/* Material complementario (Descubre más) */
+.material-materia-energia {
+    width: min(100% - 40px, 980px);
+    margin: 30px auto 50px;
+    text-align: center;
+    color: #5f5860;
+}
+.material-materia-energia h2,
+.material-materia-energia h3 { color: #9a477f; }
+.material-materia-energia a {
+    color: #923b61;
+    font-weight: 700;
+}
+.botones-material {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Carrusel de videos (Sobre nosotros) */
+.videos-centinela {
+    width: min(100% - 40px, 1000px);
+    margin: 30px auto 50px;
+    text-align: center;
+}
+.videos-centinela h2 { color: #9a477f; }
+.videos-centinela p { color: #5e5360; }
+
+
+
+/* =========================================================
+   DESCUBRE MÁS: distribución en tarjetas
+   ========================================================= */
+
+.contenido-descubre {
+    width: min(100% - 40px, 1100px);
+    margin: 30px auto 60px;
+}
+
+/* Introducción */
+.intro-descubre {
+    padding: 30px 40px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #f4c5ee, #ffffff);
+    box-shadow: 0 8px 24px rgba(146, 59, 97, .12);
+}
+.intro-descubre h1 {
+    margin: 0 0 14px;
+    font-size: 32px;
+    text-align: center;
+}
+.intro-descubre p {
+    max-width: 800px;
+    margin: 10px auto;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* Lista de tarjetas */
+.lista-violencias {
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.bloque-violencia,
+.bloque-violencia.invertido {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 40px;
+    align-items: start;          /* la imagen ya no se centra en el medio */
+    padding: 36px 40px;
+    border: 1px solid #efb3e5;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(146, 59, 97, .14);
+}
+.bloque-violencia.invertido {
+    grid-template-columns: 320px 1fr;
+}
+.bloque-violencia.invertido .texto-violencia { order: 2; }
+.bloque-violencia.invertido .imagen-violencia { order: 1; }
+
+/* Imagen: grande y se queda a la vista mientras lees */
+.imagen-violencia {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(81, 35, 95, .2);
+    position: sticky;
+    top: 110px;                  /* debajo de la barra */
+    align-self: start;
+}
+
+/* Texto */
+.texto-violencia h2 {
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e9a6dd;
+    color: #923b61;
+    font-size: 26px;
+}
+.texto-violencia h3 {
+    margin: 22px 0 8px;
+    padding-left: 10px;
+    border-left: 4px solid #c56ed3;
+    color: #702283;
+    font-size: 17px;
+}
+.texto-violencia p {
+    margin: 0 0 12px;
+    color: #4e444f;
+    font-size: 15.5px;
+    line-height: 1.75;
+}
+.texto-violencia ul {
+    margin: 0 0 8px;
+    padding-left: 22px;
+}
+.texto-violencia li {
+    margin-bottom: 6px;
+    color: #4e444f;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Material complementario también como tarjeta */
+.material-materia-energia {
+    margin-top: 40px;
+    padding: 32px;
+    border: 1px solid #efb3e5;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(146, 59, 97, .14);
+}
+
+/* Tablets y celulares: una sola columna, imagen arriba */
+@media (max-width: 850px) {
+    .bloque-violencia,
+    .bloque-violencia.invertido {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        padding: 24px 20px;
+    }
+    .imagen-violencia {
+        position: static;
+        order: -1 !important;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+    .bloque-violencia .texto-violencia,
+    .bloque-violencia.invertido .texto-violencia { order: 1; }
+    .texto-violencia h2 { font-size: 22px; }
+    .intro-descubre { padding: 22px 20px; }
+}
+
+
+/* =========================================================
+   DESCUBRE MÁS: estela pegada a la imagen + cometa
+   ========================================================= */
+
+/* Columna completa de la imagen (el "carril") */
+.columna-imagen {
+    position: relative;
+    align-self: stretch;
+    isolation: isolate;
+    overflow: clip;              /* clip (no hidden) para no romper el sticky */
+    border-radius: 16px;
+}
+.bloque-violencia.invertido .columna-imagen { order: 1; }
+
+/* Fondo del carril */
+.columna-imagen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    box-sizing: border-box;
+    border: 2px dashed #e9a6dd;
+    border-radius: 16px;
+    background: #fdf3fb;
+}
+
+/* El cometa: cola + punta de flecha apuntando hacia abajo */
+.columna-imagen::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    margin-left: -22px;
+    top: -150px;
+    width: 44px;
+    height: 150px;
+    pointer-events: none;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cpath d='M4 8 L40 8 L22 40 Z' fill='%23923b61' stroke='%23923b61' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E")
+            center bottom / 44px 44px no-repeat,
+        linear-gradient(180deg, rgba(197, 110, 211, 0), #c56ed3)
+            center top / 12px 110px no-repeat;
+    animation: cometaBaja 3.2s ease-in infinite;
+}
+@keyframes cometaBaja {
+    0%   { top: -150px; }
+    75%  { top: 100%; }
+    100% { top: 100%; }          /* pausa antes de la siguiente pasada */
+}
+
+/* Imagen que sigue el scroll, con su estela detrás */
+.imagen-pegajosa {
+    position: sticky;
+    top: 110px;                  /* debajo de la barra */
+    z-index: 2;
+}
+.columna-imagen .imagen-violencia {
+    position: static;            /* el sticky ahora lo tiene el contenedor */
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* La estela sale hacia arriba desde la imagen; la columna la recorta */
+.imagen-pegajosa::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    height: 4000px;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            rgba(255, 255, 255, .22) 0 14px,
+            transparent 14px 28px
+        ),
+        linear-gradient(0deg, #923b61, rgba(220, 145, 246, 0))
+            left bottom / 100% 700px no-repeat,
+        #dc91f6;
+    animation: rayasEstela 2.5s linear infinite;
+}
+@keyframes rayasEstela {
+    from { background-position: 0 0,    left bottom, 0 0; }
+    to   { background-position: 0 28px, left bottom, 0 0; }
+}
+
+/* Celular: imagen arriba, sin carril ni estela */
+@media (max-width: 850px) {
+    .columna-imagen {
+        order: -1 !important;
+        align-self: auto;
+        overflow: visible;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+    .columna-imagen::before,
+    .columna-imagen::after,
+    .imagen-pegajosa::before { display: none; }
+    .imagen-pegajosa { position: static; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .columna-imagen::after { display: none; }
+    .imagen-pegajosa::before { animation: none; }
+}
