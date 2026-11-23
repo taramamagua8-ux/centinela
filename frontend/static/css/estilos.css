@@ -1110,20 +1110,31 @@ body.pagina-informativa {
 }
 
 .form-cuenta input {
+    color-scheme: light;
     width: 100%;
     box-sizing: border-box;
     padding: 13px 14px;
     border: 1px solid #d5b6dd;
     border-radius: 9px;
-    color: #3b1d4a;
-    background: #fffaff;
+    color: #24132e;
+    caret-color: currentColor;
+    background: #fff;
     font: inherit;
 }
 
+.form-cuenta input::placeholder {
+    color: #695571;
+    opacity: 1;
+}
+
 .form-cuenta input:focus {
-    outline: none;
+    outline: 2px solid #923b61;
+    outline-offset: 2px;
     border-color: #923b61;
-    box-shadow: 0 0 0 3px rgba(146, 59, 97, .14);
+}
+
+.form-cuenta input:-webkit-autofill {
+    -webkit-text-fill-color: #24132e;
 }
 
 .aviso-cuenta {
