@@ -41,8 +41,8 @@ if (enlaceCuenta) {
         enlaceCuenta.hidden = true;
         if (!sessionStorage.getItem('centinela_token')) return;
         try {
-            const { reportes } = await apiAuth('/usuarios/me/reportes');
-            enlaceCuenta.hidden = reportes.length === 0;
+            await apiAuth('/auth/sesion');
+            enlaceCuenta.hidden = false;
         } catch (_) {
             enlaceCuenta.hidden = true;
         }

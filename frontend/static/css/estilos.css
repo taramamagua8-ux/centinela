@@ -1120,6 +1120,7 @@ body.pagina-informativa {
     caret-color: currentColor;
     background: #fff;
     font: inherit;
+    font-weight: 700;
 }
 
 .form-cuenta input::placeholder {
@@ -1151,7 +1152,23 @@ body.pagina-informativa {
 .aviso-cuenta.aviso-error { background: #fff0f5; color: #a5154e; }
 .texto-cuenta-secundario { margin: 18px 0 4px; }
 .datos-cuenta { overflow-wrap: anywhere; }
-.form-editar-cuenta { border-top: 1px solid #ecc9e6; padding-top: 18px; }
+.form-editar-cuenta {
+    margin-top: 20px;
+    padding: 18px;
+    border: 1px solid #d5b6dd;
+    border-radius: 14px;
+    background: #fbf4fb;
+    text-align: left;
+}
+
+.form-editar-cuenta input {
+    border-color: #927198;
+}
+
+.form-editar-cuenta label {
+    color: #24132e;
+    font-weight: 700;
+}
 .form-editar-cuenta h2 { margin: 0 0 4px; color: #923b61; font-size: 18px; }
 .boton-peligro {
     width: 100%;
