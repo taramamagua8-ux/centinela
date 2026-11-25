@@ -638,7 +638,7 @@ body.pagina-inicio {
     margin: 0;
 }
 .btn-reportar {
-    background: linear-gradient(135deg, #702283, #511361);
+    background: linear-gradient(135deg, #c10495, #511361);
     color: #ffffff;
     padding: 16px 60px;
     border: none;
@@ -649,7 +649,7 @@ body.pagina-inicio {
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(112, 34, 131, 0.4);
+    box-shadow: 0 4px 15px rgba(160, 34, 192, 0.4);
     
     /* 1. Claves para que funcione el brillo dentro del botón */
     position: relative;
@@ -1666,7 +1666,7 @@ body.pagina-inicio {
     gap: 5px;
 
     color: #ffffff;
-    font-size: 12px;
+    font-size: 40x;
     font-weight: 600;
     opacity: 0.85;
 }
@@ -1795,7 +1795,7 @@ body.pagina-inicio {
     margin: 0 auto 30px;
 
     color: #f1e4f7;
-    font-size: 16px;
+    font-size: 100px;
     line-height: 1.8;
 }
 
@@ -3489,3 +3489,886 @@ body.pagina-folio {
     .columna-imagen::after { display: none; }
     .imagen-pegajosa::before { animation: none; }
 }
+
+
+
+
+/* Asegura que la tarjeta morada sirva de referencia y los elementos principales queden encima */
+.pantalla-bienvenida,
+.galeria-flotante {
+    overflow: visible;
+}
+
+.bloque-mensaje,
+.indicacion-deslizar1 {
+    position: relative;
+    z-index: 2;
+}
+
+/* Estilo base y efecto de zoom para las 8 ilustraciones */
+.img-flotante {
+    position: absolute;
+    border-radius: 14px;
+    object-fit: cover;
+    /* Borde fino luminoso + brillo exterior suave que combina con el fondo */
+    border: 1.5px solid rgba(255, 255, 255, 0.38);
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.25),
+        0 0 14px rgba(240, 171, 252, 0.45);
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
+                box-shadow 0.35s ease, 
+                border-color 0.35s ease;
+    z-index: 3;
+    cursor: pointer;
+    transform-origin: center center;
+}
+
+
+/* Efecto de zoom al pasar el mouse (igual que el video) */
+.img-flotante:hover {
+    transform: scale(1.5);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 
+        0 20px 45px rgba(0, 0, 0, 0.55),
+        0 0 26px rgba(255, 255, 255, 0.75);
+    z-index: 999;
+}
+/* --- POSICIONES DE LOS 8 CUADROS SEGÚN TU BOCETO --- */
+
+/* 1. Recuadro blanco grande arriba a la izquierda (montado sobre la esquina del video) */
+.pos-1 {
+    top: 3%;
+    left: 51%;
+    width: 200px;
+    height: 155px;
+    z-index: 4; /* Queda por encima de la esquina del video */
+    transform-origin: top left; /* Crece hacia abajo y a la derecha sin salirse por arriba */
+}
+
+.pos-1:hover {
+    transform: scale(1.3); /* Crece exactamente a 1.3 al pasar el mouse */
+}
+
+/* 2. Ilustración roja arriba al centro (se mantiene en su sitio) */
+.pos-2 {
+    top: 4%;
+    left: 65%;
+    width: 95px;
+    height: 60px;
+}
+
+/* 3. Ilustración superior derecha (arriba del recuadro blanco pequeño) */
+.pos-3 {
+    top: 7%;
+    right: 11%;
+    width: 55px;
+    height: 32px;
+        transform-origin: right bottom;
+
+}
+
+/* 4. Recuadro blanco pequeño en la esquina superior derecha del video */
+.pos-4 {
+    top: 14%;
+    right: 9.5%;
+    width: 100px;
+    height: 100px;
+    z-index: 4;    transform-origin: right bottom;
+
+}
+
+/* 5. Ilustración roja pequeña a la izquierda del video (se mantiene igual) */
+.pos-5 {
+    top: 45%;
+    left: 48%;
+    width: 70px;
+    height: 78px;
+        transform-origin: left center;
+
+}
+
+/* 6. Recuadro blanco horizontal en la esquina inferior izquierda del video */
+.pos-6 {
+    top: 59%;
+    left: 48%;
+    width: 150px;
+    height: 100px;
+    z-index: 4;
+        transform-origin: left center;
+
+}
+
+/* 7. Recuadro blanco mediano justo debajo del video (centro-derecha) */
+.pos-7 {
+    top: 68%;
+    left: 65%;
+    width: 95px;
+    height: 55px;
+    z-index: 4;
+}
+
+/* 8. Recuadro blanco grande en la esquina inferior derecha */
+.pos-8 {
+    top:70%;
+    bottom: 4%;
+    right: 6%;
+    width: 195px;
+    height: 120px;
+    z-index: 4;
+        transform-origin: right bottom;
+
+}
+
+/* Ocultar las flotantes en pantallas pequeñas para que no tapen el texto en celular */
+@media (max-width: 900px) {
+    .galeria-flotante {
+        display: none;
+    }
+}
+
+
+.pantalla-ayuda {
+    position: relative;
+    overflow: visible;
+}
+
+.bloque-ayuda,
+.indicacion-deslizar {
+    position: relative;
+    z-index: 2;
+}
+
+/* Brillo adaptado al fondo claro de la Pantalla 2 */
+.pantalla-ayuda .img-flotante {
+    border: 2px solid rgba(168, 85, 247, 0.35);
+    box-shadow: 
+        0 10px 24px rgba(0, 0, 0, 0.16),
+        0 0 15px rgba(168, 85, 247, 0.3);
+}
+
+.pantalla-ayuda .img-flotante:hover {
+    border-color: rgba(168, 85, 247, 0.85);
+    box-shadow: 
+        0 20px 45px rgba(0, 0, 0, 0.3),
+        0 0 24px rgba(192, 132, 252, 0.7);
+}
+
+/* --- POSICIONES ALREDEDOR DE LA TARJETA NARANJA (LADO IZQUIERDO) --- */
+
+/* 1. Cuadro grande arriba a la izquierda */
+/* --- POSICIONES CALIBRADAS ALREDEDOR DE LA TARJETA NARANJA --- */
+
+/* 1. Arriba izquierda (montada ligeramente en la esquina superior izquierda) */
+.ayuda-pos-1 {
+    top: 17%;
+    left: 11.5%;
+    width: 155px;
+    height: 105px;
+    z-index: 4;
+    transform-origin: top left;
+}
+
+.ayuda-pos-1:hover {
+    transform: scale(1.3);
+}
+
+/* 2. Arriba centro-derecha (flotando sobre el borde superior) */
+.ayuda-pos-2 {
+    top: 19%;
+    left: 31%;
+    width: 105px;
+    height: 62px;
+    z-index: 4;
+}
+
+/* 3. Esquina superior derecha de la tarjeta */
+.ayuda-pos-3 {
+    top: 23%;
+    left: 41.5%;
+    width: 65px;
+    height: 65px;
+    z-index: 4;
+}
+
+/* 4. Centro-derecha (entre la tarjeta y el título morado) */
+.ayuda-pos-4 {
+    top: 41%;
+    left: 43.5%;
+    width: 85px;
+    height: 55px;
+    z-index: 4;
+}
+
+/* 5. Esquina inferior derecha de la tarjeta */
+.ayuda-pos-5 {
+    top: 56%;
+    left: 41%;
+    width: 62px;
+    height: 58px;
+    z-index: 4;
+}
+
+/* 6. Abajo derecha (justo debajo de la zona oscura de la tarjeta) */
+.ayuda-pos-6 {
+    top: 67%;
+    left: 31%;
+    width: 110px;
+    height: 62px;
+    z-index: 4;
+}
+
+/* 7. Abajo centro-izquierda (cuadro pequeño junto al borde inferior) */
+.ayuda-pos-7 {
+    top: 68%;
+    left: 23%;
+    width: 65px;
+    height: 45px;
+    z-index: 4;
+}
+
+/* 8. Abajo izquierda (cuadro mediano debajo de la esquina inferior izquierda) */
+.ayuda-pos-8 {
+    top: 66%;
+    left: 12.5%;
+    width: 120px;
+    height: 85px;
+    z-index: 4;
+    transform-origin: bottom left;
+}
+
+.ayuda-pos-8:hover {
+    transform: scale(1.35);
+}
+
+
+
+/* Alinea a la derecha todo el bloque de texto de la Pantalla 2 */
+.texto-ayuda {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Asegura que los párrafos no se corten antes del margen derecho */
+.texto-ayuda .titulo-inicio,
+.texto-ayuda .descripcion-inicio {
+    text-align: right;
+}
+
+/* En celulares se mantiene alineado a la izquierda para facilitar la lectura */
+@media (max-width: 900px) {
+    .texto-ayuda,
+    .texto-ayuda .titulo-inicio,
+    .texto-ayuda .descripcion-inicio {
+        text-align: left;
+        align-items: flex-start;
+    }
+}
+
+/* --- PANTALLA 3: TÍTULO ARRIBA + TARJETA IZQUIERDA + TEXTO Y BOTÓN DERECHA --- */
+
+.pantalla-reporte .contenido-reporte {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas iguales: Izquierda (tarjeta) y Derecha (texto/botón) */
+    column-gap: 55px;
+    row-gap: 20px;
+    align-items: center;
+    max-width: 1120px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* 1. TÍTULO CENTRADO ARRIBA EN BLANCO */
+.pantalla-reporte .titulo-reporte {
+    grid-column: 1 / -1; /* Ocupa todo el ancho arriba */
+    text-align: center;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 3.2vw, 2.7rem);
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 16px rgba(74, 14, 78, 0.28);
+    margin-bottom: 18px;
+}
+
+/* 2. RECUADRO BLANCO (IZQUIERDA): Tarjeta morada "¿Qué puedes hacer?" */
+.pantalla-reporte .tarjeta-reporte {
+    grid-column: 1;
+    grid-row: 2 / 5; /* Ocupa el alto de los 3 elementos de la derecha */
+    width: 100%;
+    max-width: 480px;
+    justify-self: end;
+    text-align: left;
+    padding: 34px 36px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 18px 40px rgba(59, 13, 66, 0.28);
+    margin: 0;
+}
+
+.pantalla-reporte .tarjeta-reporte h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    margin-bottom: 18px;
+}
+
+.pantalla-reporte .tarjeta-reporte ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.pantalla-reporte .tarjeta-reporte li {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    margin-bottom: 10px;
+}
+
+/* 3. LÍNEAS AZULES (DERECHA ARRIBA): Descripción */
+.pantalla-reporte .descripcion-reporte {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: left;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* 4. RECTÁNGULO VERDE (DERECHA MEDIO): ¿Estás listo para realizar tu reporte? */
+.pantalla-reporte .texto-cta {
+    grid-column: 2;
+    grid-row: 3;
+    text-align: left;
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    margin: 6px 0 0 0;
+}
+
+/* 5. RECUADRO ROSA (DERECHA ABAJO): Botón REALIZAR MI REPORTE */
+.pantalla-reporte .btn-reportar {
+    grid-column: 2;
+    grid-row: 4;
+    justify-self: start; /* Alineado a la izquierda de la columna derecha (o usa 'stretch' para que ocupe todo el ancho rosa) */
+    padding: 16px 42px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    box-shadow: 0 10px 24px rgba(59, 13, 66, 0.35);
+    margin: 0;
+}
+
+/* Diseño responsivo para celulares */
+@media (max-width: 900px) {
+    .pantalla-reporte .contenido-reporte {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .pantalla-reporte .tarjeta-reporte,
+    .pantalla-reporte .descripcion-reporte,
+    .pantalla-reporte .texto-cta,
+    .pantalla-reporte .btn-reportar {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: center;
+        text-align: center;
+    }
+}
+
+/* --- PANTALLA 3: EXTENDIDA A LOS LADOS, TÍTULO BLANCO ANIMADO Y BOTÓN GRANDE --- */
+
+/* Asegura que el contenedor padre permita que el contenido vaya hacia los lados */
+.pantalla-reporte .bloque-reporte {
+    width: 100%;
+    max-width: 100%;
+}
+
+.pantalla-reporte .contenido-reporte {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr; /* La columna izquierda (cuadro morado) tiene más ancho */
+    column-gap: 75px; /* Mayor separación hacia los lados */
+    row-gap: 22px;
+    align-items: center;
+    max-width: 1360px; /* Se extiende mucho más hacia ambos lados de la pantalla */
+    width: 92%;
+    margin: 0 auto;
+}
+
+/* 1. TÍTULO CENTRADO EN BLANCO PURO CON ANIMACIÓN DE REBOTE */
+.pantalla-reporte .titulo-reporte,
+.pantalla-reporte .titulo-reporte .fx-pop,
+.pantalla-reporte .titulo-reporte .fx-pop b {
+    color: #ffffff !important;
+}
+
+.pantalla-reporte .titulo-reporte {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 3.4vw, 2.9rem);
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 18px rgba(59, 13, 66, 0.35);
+    margin-bottom: 24px;
+}
+
+/* 2. CUADRO MORADO EXTENDIDO HACIA LA IZQUIERDA */
+.pantalla-reporte .tarjeta-reporte {
+    grid-column: 1;
+    grid-row: 2 / 5;
+    width: 100%;
+    max-width: 640px; /* Más ancho hacia la izquierda */
+    justify-self: stretch; /* Ocupa todo el ancho disponible de la columna izquierda */
+    text-align: left;
+    padding: 40px 44px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 18px 40px rgba(59, 13, 66, 0.28);
+    margin: 0;
+}
+.pantalla-reporte .tarjeta-reporte h3 {
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 1.75rem; /* Subió de 1.45rem a 1.75rem */
+    margin-bottom: 24px;
+}
+
+.pantalla-reporte .tarjeta-reporte ul {
+    padding-left: 22px;
+    margin: 0;
+}
+
+.pantalla-reporte .tarjeta-reporte h3 {
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 1.75rem; /* Subió de 1.45rem a 1.75rem */
+    margin-bottom: 24px;
+}
+
+
+/* 3. DESCRIPCIÓN EN LA COLUMNA DERECHA */
+.pantalla-reporte .descripcion-reporte {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: left;
+    color: #ffffff !important;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 1.75;
+    margin: 0;
+}
+
+/* 4. PREGUNTA ¿ESTÁS LISTO PARA REALIZAR TU REPORTE? */
+.pantalla-reporte .texto-cta {
+    grid-column: 2;
+    grid-row: 3;
+    text-align: left;
+    color: #ffffff !important;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    margin: 8px 0 0 0;
+}
+
+/* 5. BOTÓN MÁS GRANDE Y CON MAYOR PRESENCIA */
+.pantalla-reporte .btn-reportar {
+    grid-column: 2;
+    grid-row: 4;
+    justify-self: stretch;
+    text-align: center;
+    padding: 25px 52px; /* Más alto y robusto */
+    font-size: 1.35rem; /* Letra del botón más grande (antes 1.15rem) */
+    border-radius: 16px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    box-shadow: 0 14px 32px rgba(59, 13, 66, 0.45);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    margin-top: 6px;
+}
+
+.pantalla-reporte .btn-reportar:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 16px 34px rgba(59, 13, 66, 0.55);
+}
+
+/* Diseño responsivo para celulares */
+@media (max-width: 900px) {
+    .pantalla-reporte .contenido-reporte {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .pantalla-reporte .tarjeta-reporte,
+    .pantalla-reporte .descripcion-reporte,
+    .pantalla-reporte .texto-cta,
+    .pantalla-reporte .btn-reportar {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: center;
+        text-align: center;
+    }
+}
+
+
+/* --- BOTÓN FOLIO: CÍRCULO CON ICONO QUE SE EXPANDE CON EL TEXTO --- */
+
+.btn-folio-animado {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px; /* Empieza como círculo exacto (38x38) */
+    min-width: 38px;
+    height: 38px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 999px;
+    transition: width 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
+                padding 0.45s cubic-bezier(0.25, 1, 0.5, 1), 
+                background-color 0.3s ease;
+    animation: expandirBotonFolio 6s infinite ease-in-out;
+}
+
+/* Icono blanco centrado dentro del círculo */
+.btn-folio-animado .folio-icono {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    animation: alternarIconoFolio 6s infinite ease-in-out;
+}
+
+/* Texto "¿Tienes un folio?" */
+.btn-folio-animado .folio-texto {
+    display: inline-block;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    animation: alternarTextoFolio 6s infinite ease-in-out;
+}
+
+/* Al pasar el mouse, se expande y se queda fijo mostrando el texto para hacer clic */
+.btn-folio-animado:hover {
+    animation: none;
+    width: 158px;
+    padding: 0 16px;
+}
+
+.btn-folio-animado:hover .folio-icono {
+    animation: none;
+    opacity: 0;
+    transform: scale(0.6);
+}
+
+.btn-folio-animado:hover .folio-texto {
+    animation: none;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animación 0: Cambia la forma del botón de círculo (38px) a píldora (158px) */
+@keyframes expandirBotonFolio {
+    0%, 38% {
+        width: 38px;
+        padding: 0;
+    }
+    46%, 90% {
+        width: 158px; /* Ancho exacto para "¿Tienes un folio?" */
+        padding: 0 16px;
+    }
+    97%, 100% {
+        width: 38px;
+        padding: 0;
+    }
+}
+
+/* Animación 1: Muestra el icono blanco cuando el botón es un círculo */
+@keyframes alternarIconoFolio {
+    0%, 36% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    43%, 91% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    98%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animación 2: Muestra el texto cuando el botón se expande */
+@keyframes alternarTextoFolio {
+    0%, 42% {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    48%, 88% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    94%, 100% {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+}
+/* Contenedor de los botones a la derecha */
+.iconos-derecha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- ESTILO BASE DE AMBOS BOTONES --- */
+.btn-folio-animado,
+.btn-cuenta-animado {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 999px;
+    /* Transición sedosa para ancho, relleno, elevación y sombra */
+    transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s ease,
+                background-color 0.35s ease;
+}
+
+.btn-folio-animado {
+    animation: expandirBotonFolio 12s infinite ease-in-out;
+}
+
+.btn-cuenta-animado {
+    animation: expandirBotonCuenta 12s infinite ease-in-out;
+}
+
+/* --- ICONO BLANCO CON TRANSICIÓN PROPIA --- */
+.btn-folio-animado .folio-icono,
+.btn-cuenta-animado .folio-icono {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: alternarIconoFolio 12s infinite ease-in-out;
+}
+
+/* --- TEXTO CON TRANSICIÓN PROPIA --- */
+.btn-folio-animado .folio-texto,
+.btn-cuenta-animado .folio-texto {
+    display: inline-block;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: alternarTextoFolio 12s infinite ease-in-out;
+}
+
+/* --- HOVER SUAVE SIN CORTES BRUSCOS --- */
+.btn-folio-animado:hover {
+    width: 158px !important;
+    padding: 0 16px !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(45, 10, 54, 0.38);
+}
+
+.btn-cuenta-animado:hover {
+    width: 132px !important;
+    padding: 0 16px !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(45, 10, 54, 0.38);
+}
+
+/* El icono se encoge y gira suavemente al desaparecer */
+.btn-folio-animado:hover .folio-icono,
+.btn-cuenta-animado:hover .folio-icono {
+    opacity: 0 !important;
+    transform: scale(0.5) rotate(-12deg) !important;
+}
+
+/* El texto entra deslizando suavemente */
+.btn-folio-animado:hover .folio-texto,
+.btn-cuenta-animado:hover .folio-texto {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+/* --- KEYFRAMES DE LA ANIMACIÓN AUTOMÁTICA --- */
+@keyframes expandirBotonFolio {
+    0%, 38% { width: 38px; padding: 0; }
+    46%, 90% { width: 158px; padding: 0 16px; }
+    97%, 100% { width: 38px; padding: 0; }
+}
+
+@keyframes expandirBotonCuenta {
+    0%, 38% { width: 38px; padding: 0; }
+    46%, 90% { width: 132px; padding: 0 16px; }
+    97%, 100% { width: 38px; padding: 0; }
+}
+
+@keyframes alternarIconoFolio {
+    0%, 36% { opacity: 1; transform: scale(1); }
+    43%, 91% { opacity: 0; transform: scale(0.5); }
+    98%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes alternarTextoFolio {
+    0%, 42% { opacity: 0; transform: translateY(8px); }
+    48%, 88% { opacity: 1; transform: translateY(0); }
+    94%, 100% { opacity: 0; transform: translateY(-8px); }
+}
+
+/* --- PANTALLA 4: AUTORIDADES COMPETENTES (AISLADA PARA NO AFECTAR EL DEGRADADO ANTERIOR) --- */
+
+.pantalla-autoridades {
+    position: relative;
+    /* Fondo claro suave independiente que no altera .contenido-inicio ni las secciones anteriores */
+    background: linear-gradient(180deg, #faf5ff 0%, #ffffff 45%, #f3e8ff 100%) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 90px 5% 60px 5%;
+    z-index: 2;
+}
+
+.contenido-autoridades {
+    max-width: 920px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Insignia superior */
+.etiqueta-autoridad {
+    display: inline-block;
+    background-color: rgba(107, 33, 168, 0.12);
+    color: #6b21a8;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+}
+
+/* Título oscuro de alto contraste sobre el fondo claro */
+.titulo-autoridades {
+    color: #4a0e4e;
+    font-weight: 800;
+    font-size: clamp(2rem, 3.2vw, 2.7rem);
+    letter-spacing: -0.02em;
+    margin: 0 0 16px 0;
+}
+
+/* Descripción en tono gris oscuro legible */
+.descripcion-autoridades {
+    color: #374151;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    max-width: 760px;
+    margin: 0 auto 30px auto;
+}
+
+/* Tarjeta informativa con borde morado sutil */
+.tarjeta-autoridades {
+    background-color: #ffffff;
+    border: 1.5px solid rgba(134, 25, 143, 0.22);
+    border-radius: 22px;
+    padding: 30px 38px;
+    text-align: left;
+    max-width: 720px;
+    margin: 0 auto 32px auto;
+    box-shadow: 0 14px 34px rgba(74, 14, 78, 0.09);
+}
+
+.tarjeta-autoridades h3 {
+    color: #5b1865;
+    font-weight: 800;
+    font-size: 1.3rem;
+    margin: 0 0 16px 0;
+}
+
+.tarjeta-autoridades ul {
+    padding-left: 20px;
+    margin: 0;
+}
+
+.tarjeta-autoridades li {
+    color: #374151;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    margin-bottom: 10px;
+}
+
+/* Contenedor de botones de acción */
+.botones-autoridades {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-autoridad-principal {
+    display: inline-block;
+    background-color: #5b1865;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    padding: 16px 34px;
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(91, 24, 101, 0.28);
+    transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.btn-autoridad-principal:hover {
+    background-color: #43104b;
+    transform: translateY(-2px);
+}
+
+.btn-autoridad-secundario {
+    display: inline-block;
+    background-color: transparent;
+    color: #5b1865;
+    border: 2px solid #5b1865;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    padding: 14px 30px;
+    border-radius: 14px;
+    transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.btn-autoridad-secundario:hover {
+    background-color: rgba(91, 24, 101, 0.08);
+    transform: translateY(-2px);
+}
+
