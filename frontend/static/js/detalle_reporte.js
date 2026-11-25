@@ -66,6 +66,9 @@ async function consultar() {
 
     mostrarDato('Tipo de violencia', reporte.tipos?.map(tipo => tipo.nombre).join(', '));
     mostrarDato('Fecha del incidente', reporte.detalle?.fecha);
+    mostrarDato('Hora aproximada', reporte.detalle?.hora);
+    if (reporte.ocurrio_en_escuela != null) mostrarDato('Ocurrió en una escuela', reporte.ocurrio_en_escuela ? 'Sí' : 'No');
+    mostrarDato('Hubo testigos', reporte.detalle?.huboTestigos);
     mostrarDato('Lugar', reporte.detalle?.lugar);
     mostrarDato('Ayuda inmediata', reporte.detalle?.ayudaInmediata);
     mostrarDato('¿Había ocurrido anteriormente?', reporte.detalle?.haOcurrido);
@@ -73,6 +76,85 @@ async function consultar() {
     document.getElementById('panel-detalle-reporte').hidden = !resumen.childElementCount;
 
     mostrarOrientacion(reporte);
+    for (const item of reporte.instituciones_canalizadas || []) {
+        respuestaInstitucion.append(parrafo(
+            [item.nombre, item.telefono].filter(Boolean).join(' · '),
+            'contacto-institucional-reporte'
+        ));
+    }
+    const history = document.getElementById('historial-folio');
+    if (reporte.historial?.length) {
+        history.hidden = false;
+        const list = history.querySelector('ol');
+        for (const event of reporte.historial) {
+            const row = document.createElement('li');
+            row.textContent = [event.estado, new Date(event.fecha_actualizacion).toLocaleString('es-MX'), event.observaciones]
+                .filter(Boolean).join(' · ');
+            list.append(row);
+        }
+    }
+    if (reporte.comprobante) {
+        const closure = document.getElementById('comprobante-cierre');
+        closure.hidden = false;
+        closure.addEventListener('click', () => {
+            const {folio, estado, fecha, codigo} = reporte.comprobante;
+            const verification = new URL('/api/comprobantes/' + codigo, location.origin);
+            const doc = 'Centinela Digital\nComprobante de conclusión\n' + folio + '\n' +
+                estado + '\n' + new Date(fecha).toLocaleString('es-MX') + '\nCódigo de verificación: ' +
+                codigo + '\nVerificar en ' + verification.href + '\n';
+            const url = URL.createObjectURL(new Blob([doc], {type: 'text/plain;charset=utf-8'}));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = folio + '-cierre.txt';
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+    }
+    const supplemental = document.getElementById('ampliar-reporte');
+    if (reporte.puede_ampliar) {
+        supplemental.hidden = false;
+        supplemental.addEventListener('submit', async event => {
+            event.preventDefault();
+            const status = document.getElementById('aviso-evaluacion');
+            try {
+                const detail = new FormData(supplemental).get('detalle');
+                event.submitter.disabled = true;
+                const response = await fetch('/api/reportes/consulta/ampliacion', {
+                    method: 'POST', headers, body: JSON.stringify({folio: reporte.folio, detalle: detail})
+                });
+                if (!response.ok) throw new Error((await response.json()).error);
+                supplemental.reset();
+                status.textContent = 'Información adicional enviada.';
+            } catch (error) {
+                status.textContent = error.message || 'No se pudo enviar la información.';
+            } finally {
+                event.submitter.disabled = false;
+            }
+        });
+    }
+    const feedback = document.getElementById('evaluar-servicio');
+    if (reporte.puede_evaluar) {
+        feedback.hidden = false;
+        feedback.addEventListener('submit', async event => {
+            event.preventDefault();
+            const status = document.getElementById('aviso-evaluacion');
+            const button = event.submitter;
+            button.disabled = true;
+            try {
+                const fields = Object.fromEntries(new FormData(feedback));
+                const response = await fetch('/api/reportes/consulta/evaluacion', {
+                    method: 'POST', headers, body: JSON.stringify({...fields, folio: reporte.folio, calificacion: Number(fields.calificacion)})
+                });
+                if (!response.ok) throw new Error((await response.json()).error);
+                status.textContent = 'Gracias. Tu evaluación quedó registrada.';
+                feedback.hidden = true;
+            } catch (error) {
+                status.textContent = error.message || 'No se pudo registrar la evaluación.';
+            } finally {
+                button.disabled = false;
+            }
+        });
+    }
     aviso.hidden = true;
     document.getElementById('contenido-seguimiento').hidden = false;
 }

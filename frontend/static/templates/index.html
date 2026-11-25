@@ -55,6 +55,8 @@
             box-shadow: 0 5px 14px rgba(77, 18, 68, .3);
             transition: transform .2s, background .2s;
         }
+        .splash-acciones { display: grid; gap: .85rem; justify-items: center; width: 100%; }
+        .splash-acciones nav { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; }
         .btn-visitar-sitio:hover { background: #631363; transform: translateY(-2px); }
 
         @media (max-width: 650px) {
@@ -127,7 +129,13 @@
             </div>
             <!-- BOTÓN: texto y enlace -->
 
-            <a class="btn-visitar-sitio" href="principal.html">VISITAR CENTINELA DIGITAL</a>
+            <div class="splash-acciones">
+                <a class="btn-visitar-sitio" href="principal.html">VISITAR CENTINELA DIGITAL</a>
+                <nav class="accesos-navbar" aria-label="Accesos de Centinela Digital">
+                    <a href="formulario.html">Consultar folio</a>
+                    <a href="cuenta.html">Mi cuenta</a>
+                </nav>
+            </div>
         </section>
     </main>
 

@@ -129,9 +129,9 @@ Los avisos por correo a reportantes requieren SMTP y ejecución periódica del c
 | PF-93 | 50 | Modificación de datos de una actividad | Ausente | Se incorporó. |
 | PF-94 | 50 | Eliminar una actividad registrada | Ausente | Se incorporó. |
 | PF-95 | 50 | Establecer fecha límite de atención técnica | Ausente | Se incorporó. |
-| PF-96 | 51 | Generación automática de alertas de vencimiento | Ausente | Indicador de atraso al cargar el panel, calculado con fecha del servidor. |
+| PF-96 | 51 | Generación automática de alertas de vencimiento | Ausente | Alertas para actividades vencidas y para las que vencen en los próximos tres días. |
 | PF-97 | 51 | Registro del resultado final de intervención | Ausente | Se incorporó. |
-| PF-98 | 51 | Programación de mantenimiento preventivo | Ausente | Seguimiento preventivo recurrente. Se genera la siguiente tarea al completar la actual. |
+| PF-98 | 51 | Programación de mantenimiento preventivo | Ausente | Se generan las tareas de la serie al guardar la frecuencia y la última fecha de la programación preventiva. |
 | PF-99 | 52 | Reapertura de un caso cerrado | Ausente | Se incorporó. |
 | PF-100 | 52 | Visualización de actividades pendientes globales | Ausente | Se incorporó. |
 
@@ -158,7 +158,7 @@ Los avisos por correo a reportantes requieren SMTP y ejecución periódica del c
 | PF-117 | 58 | Registro de propuestas de mejora o recomendaciones | Ausente | Se incorporó. |
 | PF-118 | 58 | Clasificación de comentarios para organización de datos | Ausente | Clasificación por tema seleccionado. |
 | PF-119 | 59 | Consulta del historial global de cierres y evaluaciones | Ausente | Se incorporó. |
-| PF-120 | 59 | Generación de reportes enfocados en hallar mejoras | Ausente | Informe por temas ordenados por cantidad de calificaciones de 1 a 3. |
+| PF-120 | 59 | Generación de reportes enfocados en hallar mejoras | Ausente | Botón para generar un informe CSV por tema, con promedio y número de calificaciones de 1 a 3. |
 
 ## Verificación
 

@@ -128,12 +128,14 @@ enviar.addEventListener('click', async () => {
     enviar.disabled = true;
     aviso.textContent = '';
     const detalle = Object.fromEntries(new FormData(form));
+    const ocurrio_en_escuela = detalle.ocurrio_en_escuela === "Sí";
+    delete detalle.ocurrio_en_escuela;
     delete detalle.archivo;
     delete detalle.tipoViolencia;
     const datos = new FormData();
     datos.append('reporte', JSON.stringify({
         rol, es_anonimo: anonimo, terminos: true, tipo_violencia: Number(tipo.value),
-        clave_envio: claveEnvio, detalle
+        clave_envio: claveEnvio, ocurrio_en_escuela, detalle
     }));
     if (evidencia.files[0]) datos.append('archivo', evidencia.files[0]);
     try {

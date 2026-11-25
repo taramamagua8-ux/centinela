@@ -1157,7 +1157,10 @@ def case_files(report_id):
 
 def case_tasks(report_id=None, authority_id=None):
     return many(
-        "SELECT t.*,r.folio,a.nombre AS responsable,(t.vence<CURRENT_DATE AND t.estado='pendiente') AS vencida "
+        "SELECT t.id_actividad,t.id_reporte,t.responsable_id,t.descripcion,t.vence::text AS vence,"
+        "t.recurrencia_dias,t.estado,t.resultado,t.fecha,r.folio,a.nombre AS responsable,"
+        "(t.vence<CURRENT_DATE AND t.estado='pendiente') AS vencida, "
+        "(t.vence BETWEEN CURRENT_DATE AND CURRENT_DATE+3 AND t.estado='pendiente') AS proxima_a_vencer "
         "FROM actividades_caso t JOIN reportes r USING (id_reporte) JOIN autoridades a "
         "ON a.id_autoridad=t.responsable_id WHERE t.estado<>'eliminada' "
         "AND (%s::bigint IS NULL OR t.id_reporte=%s) AND (%s::bigint IS NULL OR t.responsable_id=%s) "
@@ -1379,24 +1382,32 @@ def save_case_activity(report_id):
         title = input_text(item, "descripcion", 2000)
         owner = worker or item.get("responsable_id")
         recurrence = item.get("recurrencia_dias")
+        series_end = item.get("fin_recurrencia")
         try:
             due = date.fromisoformat(item.get("vence"))
+            series_end = date.fromisoformat(series_end) if series_end else None
         except (TypeError, ValueError):
             return fail("Escribe una fecha límite válida.")
         if not title or not active_authority_for_case(report_id, owner) or (
             recurrence is not None and (type(recurrence) is not int or not 1 <= recurrence <= 365)
         ):
             return fail("Revisa la actividad, el responsable y la frecuencia.")
+        if series_end and (activity or not recurrence or not 0 < (series_end - due).days <= 366):
+            return fail("Programa la serie nueva por un periodo de hasta un año después de la primera cita.")
         if activity:
             run("UPDATE actividades_caso SET descripcion=%s,responsable_id=%s,vence=%s,recurrencia_dias=%s "
                 "WHERE id_actividad=%s", (title, owner, due, recurrence, activity_id))
+        elif series_end:
+            run("INSERT INTO actividades_caso (id_reporte,responsable_id,descripcion,vence) "
+                "SELECT %s,%s,%s,%s::date + n * %s FROM generate_series(0,%s) AS series(n)",
+                (report_id, owner, title, due, recurrence, (series_end - due).days // recurrence))
         else:
             run("INSERT INTO actividades_caso (id_reporte,responsable_id,descripcion,vence,recurrencia_dias) "
                 "VALUES (%s,%s,%s,%s,%s)", (report_id, owner, title, due, recurrence))
         if not activity or activity["responsable_id"] != owner:
             run("INSERT INTO avisos (id_reporte,id_autoridad,mensaje) VALUES (%s,%s,%s)",
                 (report_id, owner, "Se te asignó una actividad de seguimiento."))
-        note = ("Actividad actualizada: " if activity else "Actividad programada: ") + title
+        note = ("Actividad actualizada: " if activity else "Serie programada: " if series_end else "Actividad programada: ") + title
     elif action == "completar":
         result = input_text(item, "resultado", 8000)
         if not result:
