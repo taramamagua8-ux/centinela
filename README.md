@@ -33,21 +33,31 @@ Abre [Centinela Digital](http://127.0.0.1:5000/).
 
 ## Seguimiento institucional
 
-Con `DATABASE_URL` configurada, crea el usuario interno sin escribir su contraseña en la línea de comandos:
+Crea el primer administrador con DATABASE_URL configurada. El comando solicita la contraseña y muestra el folio administrativo que se necesita para iniciar sesión junto con el correo y la contraseña.
 
-```powershell
+~~~powershell
 .\.venv\Scripts\python.exe -m backend.crear_admin "Nombre del personal" "correo@institucion.example"
-```
+~~~
 
-El panel se abre en [Gestión de reportes](http://127.0.0.1:5000/static/templates/administracion_reportes.html). Permite publicar una respuesta para el seguimiento y asignar estatus y nivel de riesgo. El riesgo inicial es **Por evaluar**.
+Para generar un folio para una cuenta previa, ejecuta el mismo comando con la opción --renovar-folio. La renovación cierra las sesiones previas.
 
-Para el correo automático, registra una institución activa con su correo oficial en `centinela.instituciones` y vincúlala al tipo de violencia en `centinela.canalizacion_tipos`. El catálogo de tipos está en `centinela.tipos_violencia`. Configura en el entorno del servidor:
+Desde el inicio, abre **Acceso de administrador** en el menú. En **Canalización** puedes aprobar cuentas de autoridad, crear administradores, registrar instituciones, revisar evaluaciones y publicar respuestas. En **Expedientes** puedes asignar responsables, registrar atenciones y evidencias, gestionar actividades, cerrar casos y consultar informes.
 
-- `CENTINELA_SMTP_HOST` y `CENTINELA_SMTP_PORT` (587 por defecto, con STARTTLS).
-- `CENTINELA_SMTP_FROM` como remitente y dirección de respuesta.
-- `CENTINELA_SMTP_USER` y `CENTINELA_SMTP_PASSWORD` cuando el proveedor exija autenticación.
+Las solicitudes de autoridad se crean en **Registrarse como autoridad** desde la página principal. Un administrador verifica y aprueba la solicitud. El orientador recibe casos marcados como escolares. Los especialistas reciben casos del tipo de violencia asignado. Los reportes antiguos sin respuesta escolar quedan con el dato desconocido.
 
-El aviso contiene el tipo de violencia y una referencia interna. Si el SMTP falla, el reporte queda guardado y el servidor registra el error. Las respuestas se incorporan al seguimiento desde el panel. Mientras tanto, se muestra orientación según el tipo de violencia y un enlace al directorio.
+Registra los destinos con sus correos oficiales desde Canalización. Puedes seleccionarlos al aprobar cada solicitud. También puedes configurar destinos predeterminados por tipo en las tablas centinela.canalizacion_tipos y centinela.instituciones.
+
+- CENTINELA_SMTP_HOST y CENTINELA_SMTP_PORT (587 por defecto, con STARTTLS).
+- CENTINELA_SMTP_FROM como dirección de remitente y respuesta.
+- CENTINELA_SMTP_USER y CENTINELA_SMTP_PASSWORD si el proveedor exige autenticación.
+
+El correo a instituciones se intenta al aprobar o reasignar. Si falla, el panel conserva los estados de entrega y permite reintentar los destinos pendientes. La institución recibe únicamente el tipo de violencia y una referencia interna. Los avisos de estado, solicitud de datos y cierre para usuarios registrados se guardan en cola. Para entregarlos automáticamente, programa la ejecución periódica de este comando en un proceso con las mismas variables de entorno.
+
+~~~powershell
+.\.venv\Scripts\python.exe -m flask --app backend.main enviar-avisos
+~~~
+
+La [matriz funcional](docs/revision-funcional.md) cubre las 120 pruebas del plan técnico.
 
 ## Plan gratuito
 
