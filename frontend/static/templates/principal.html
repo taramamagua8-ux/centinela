@@ -41,10 +41,41 @@
             </span>
         </div>
 
-        <div class="iconos-derecha">
-            <a class="enlace-barra-inicio" href="formulario.html">Folio</a>
-            <a class="enlace-barra-inicio" id="enlace-cuenta-principal" href="cuenta.html" hidden>Cuenta</a>
-        </div>
+       <div class="iconos-derecha">
+    <!-- Botón 1: Folio -->
+    <a class="enlace-barra-inicio btn-folio-animado" href="formulario.html" aria-label="¿Tienes un folio?">
+        <!-- Icono blanco de documento/folio -->
+        <span class="folio-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="9" y1="13" x2="15" y2="13"></line>
+                <line x1="9" y1="17" x2="13" y2="17"></line>
+            </svg>
+        </span>
+
+        <!-- Texto que alterna con el icono -->
+        <span class="folio-texto">¿Tienes un folio?</span>
+    </a>
+
+    <!-- Botón 2: Crear cuenta -->
+    <a class="enlace-barra-inicio btn-cuenta-animado" id="enlace-crear-cuenta" href="cuenta.html" aria-label="Crear cuenta">
+        <!-- Icono blanco de usuario nuevo -->
+        <span class="folio-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+                <line x1="20" y1="8" x2="20" y2="14"></line>
+                <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+        </span>
+
+        <!-- Texto que alterna con el icono -->
+        <span class="folio-texto">Crear cuenta</span>
+    </a>
+</div>
+
+
     </header>
 
 
@@ -54,16 +85,23 @@
         <!-- PANTALLA 1: MENSAJE DE BIENVENIDA -->
         <section class="pantalla-inicio pantalla-bienvenida">
 
+
+            
+
             <div class="bloque-mensaje">
 
                 <div class="texto-mensaje">
 
                     <h1 class="titulo-inicio">
-                        Si sufres algún tipo de violencia,
-                        no calles, no tengas miedo.
+    Si sufres algún tipo de violencia,
+    no calles, no tengas miedo.
 
-                        <span>¡PUEDES SER ESCUCHADO!</span>
-                    </h1>
+    <span class="fx-pop" aria-label="¡PUEDES SER ESCUCHADO!">
+        <b aria-hidden="true" style="--i:0">¡</b><b aria-hidden="true" style="--i:1">P</b><b aria-hidden="true" style="--i:2">U</b><b aria-hidden="true" style="--i:3">E</b><b aria-hidden="true" style="--i:4">D</b><b aria-hidden="true" style="--i:5">E</b><b aria-hidden="true" style="--i:6">S</b><b aria-hidden="true" style="--i:7">&nbsp;</b><b aria-hidden="true" style="--i:8">S</b><b aria-hidden="true" style="--i:9">E</b><b aria-hidden="true" style="--i:10">R</b>
+        <br>
+        <b aria-hidden="true" style="--i:11">E</b><b aria-hidden="true" style="--i:12">S</b><b aria-hidden="true" style="--i:13">C</b><b aria-hidden="true" style="--i:14">U</b><b aria-hidden="true" style="--i:15">C</b><b aria-hidden="true" style="--i:16">H</b><b aria-hidden="true" style="--i:17">A</b><b aria-hidden="true" style="--i:18">D</b><b aria-hidden="true" style="--i:19">O</b><b aria-hidden="true" style="--i:20">!</b>
+    </span>
+</h1>
 
                     <p class="descripcion-inicio">
                         Tu voz es importante y tienes derecho a recibir ayuda.
@@ -85,6 +123,28 @@
 </div>
 
             </div>
+            <!-- GALERÍA DE 8 ILUSTRACIONES FLOTANTES -->
+<div class="galeria-flotante">
+    <!-- 4 cuadros de arriba -->
+    <img src="../img/principalIMG1.webp" alt="Ilustración 1" class="img-flotante pos-1">
+    <img src="../img/principalIMG2.webp" alt="Ilustración 2" class="img-flotante pos-2">
+    <img src="../img/principalIMG3.webp" alt="Ilustración 3" class="img-flotante pos-3">
+    <img src="../img/principalIMG4.webp" alt="Ilustración 4" class="img-flotante pos-4">
+
+    <!-- 2 cuadros de en medio (izquierda del video) -->
+    <img src="../img/principalIMG5.webp" alt="Ilustración 5" class="img-flotante pos-5">
+    <img src="../img/principalIMG6.webp" alt="Ilustración 6" class="img-flotante pos-6">
+
+    <!-- 2 cuadros de abajo -->
+    <img src="../img/principalIMG7.webp" alt="Ilustración 7" class="img-flotante pos-7">
+    <img src="../img/principalIMG8.webp" alt="Ilustración 8" class="img-flotante pos-8">
+</div>
+
+
+
+
+
+
 
             <div class="indicacion-deslizar1">
                 <span>Desliza para descubrir cómo podemos ayudarte</span>
@@ -131,6 +191,20 @@
                 </div>
 
             </div>
+            <!-- GALERÍA FLOTANTE DE LA PANTALLA 2 (SIN LAS 2 IMÁGENES LATERALES) -->
+<div class="galeria-flotante">
+    <!-- Arriba de la tarjeta naranja -->
+    <img src="../img/principalIMG8.webp" alt="Ilustración 8" class="img-flotante ayuda-pos-1">
+    <img src="../img/principalIMG6.webp" alt="Ilustración 6" class="img-flotante ayuda-pos-2">
+    <img src="../img/principalIMG4.webp" alt="Ilustración 4" class="img-flotante ayuda-pos-3">
+
+    <!-- Abajo de la tarjeta naranja -->
+    <img src="../img/principalIMG7.webp" alt="Ilustración 7" class="img-flotante ayuda-pos-6">
+    <img src="../img/principalIMG3.webp" alt="Ilustración 3" class="img-flotante ayuda-pos-7">
+    <img src="../img/principalIMG1.webp" alt="Ilustración 1" class="img-flotante ayuda-pos-8">
+</div>
+
+            
 
             <div class="indicacion-deslizar">
                 <span>Continúa para conocer cómo realizar tu reporte</span>
@@ -139,8 +213,7 @@
 
         </section>
 
-
-        <!-- PANTALLA 3: REALIZAR UN REPORTE -->
+   <!-- PANTALLA 3: REALIZAR UN REPORTE -->
         <section class="pantalla-inicio pantalla-reporte">
 
             <div class="bloque-reporte">
@@ -148,7 +221,9 @@
                 <div class="contenido-reporte">
 
                     <h2 class="titulo-reporte">
-                        ¡TU VOZ PUEDE HACER LA DIFERENCIA!
+                        <span class="fx-pop" aria-label="¡TU VOZ PUEDE HACER LA DIFERENCIA!">
+                            <b aria-hidden="true" style="--i:0">¡</b><b aria-hidden="true" style="--i:1">T</b><b aria-hidden="true" style="--i:2">U</b><b aria-hidden="true" style="--i:3">&nbsp;</b><b aria-hidden="true" style="--i:4">V</b><b aria-hidden="true" style="--i:5">O</b><b aria-hidden="true" style="--i:6">Z</b><b aria-hidden="true" style="--i:7">&nbsp;</b><b aria-hidden="true" style="--i:8">P</b><b aria-hidden="true" style="--i:9">U</b><b aria-hidden="true" style="--i:10">E</b><b aria-hidden="true" style="--i:11">D</b><b aria-hidden="true" style="--i:12">E</b><b aria-hidden="true" style="--i:13">&nbsp;</b><b aria-hidden="true" style="--i:14">H</b><b aria-hidden="true" style="--i:15">A</b><b aria-hidden="true" style="--i:16">C</b><b aria-hidden="true" style="--i:17">E</b><b aria-hidden="true" style="--i:18">R</b><b aria-hidden="true" style="--i:19">&nbsp;</b><b aria-hidden="true" style="--i:20">L</b><b aria-hidden="true" style="--i:21">A</b><b aria-hidden="true" style="--i:22">&nbsp;</b><b aria-hidden="true" style="--i:23">D</b><b aria-hidden="true" style="--i:24">I</b><b aria-hidden="true" style="--i:25">F</b><b aria-hidden="true" style="--i:26">E</b><b aria-hidden="true" style="--i:27">R</b><b aria-hidden="true" style="--i:28">E</b><b aria-hidden="true" style="--i:29">N</b><b aria-hidden="true" style="--i:30">C</b><b aria-hidden="true" style="--i:31">I</b><b aria-hidden="true" style="--i:32">A</b><b aria-hidden="true" style="--i:33">!</b>
+                        </span>
                     </h2>
 
                     <p class="descripcion-reporte">
@@ -187,7 +262,55 @@
 
             </div>
 
+            
+            <!-- INDICACIÓN ACTUALIZADA HACIA ABAJO -->
+            <div class="indicacion-autoridades">
+                <span>Espera, ¿eres alguna autoridad competente y deseas evaluar casos de violencia? Desliza hacia abajo para saber cómo hacerlo</span>
+                <span class="flecha-deslizar" aria-hidden="true">↓</span>
+            </div>
+
         </section>
+
+        <!-- PANTALLA 4: ACCESO PARA AUTORIDADES COMPETENTES (NUEVA SECCIÓN VERTICAL) -->
+        <section class="pantalla-inicio pantalla-autoridades">
+
+            <div class="contenido-autoridades">
+
+                <span class="etiqueta-autoridad">PORTAL INSTITUCIONAL</span>
+
+                <h2 class="titulo-autoridades">
+                    ¿Eres una autoridad competente?
+                </h2>
+
+                <p class="descripcion-autoridades">
+                    Si perteneces a una institución encargada de brindar atención, seguimiento o protección, 
+                    puedes iniciar sesión como autoridad tras completar tu registro oficial para evaluar 
+                    y atender casos relacionados con violencia de manera segura.
+                </p>
+
+                <div class="tarjeta-autoridades">
+                    <h3>¿Qué podrás gestionar en tu panel?</h3>
+                    <ul>
+                        <li>Consultar y dar seguimiento a los folios asignados a tu institución.</li>
+                        <li>Evaluar el nivel de riesgo y clasificar los reportes recibidos.</li>
+                        <li>Actualizar el estatus de atención para mantener informada a la persona usuaria.</li>
+                        <li>Coordinar la canalización con redes de apoyo autorizadas.</li>
+                    </ul>
+                </div>
+
+                <div class="botones-autoridades">
+                    <a href="cuenta.html" class="btn-autoridad-principal">
+                        INICIAR SESIÓN COMO AUTORIDAD
+                    </a>
+                    <a href="cuenta.html" class="btn-autoridad-secundario">
+                        SOLICITAR REGISTRO INSTITUCIONAL
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
 
     </main>
 
