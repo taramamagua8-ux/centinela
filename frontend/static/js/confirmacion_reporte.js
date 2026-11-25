@@ -16,16 +16,3 @@ copiar.addEventListener('click', async () => {
         aviso.textContent = 'Selecciona el folio y cópialo manualmente.';
     }
 });
-
-const cuentaConfirmacion = document.getElementById('cuenta-confirmacion');
-const tokenConfirmacion = sessionStorage.getItem('centinela_token');
-
-if (tokenConfirmacion && confirmacion.get('modalidad') !== 'anonima') {
-    fetch('/api/auth/sesion', {headers: {Authorization: 'Bearer ' + tokenConfirmacion}})
-        .then(respuesta => {
-            if (!respuesta.ok) return;
-            document.getElementById('folio-acceso-confirmacion').hidden = true;
-            cuentaConfirmacion.hidden = false;
-        })
-        .catch(() => { cuentaConfirmacion.hidden = true; });
-}

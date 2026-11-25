@@ -27,7 +27,7 @@
       <p class="disclaimer" id="ayuda-captura">Completa los campos marcados con *.</p>
 
       <form id="reportForm" class="campos-captura">
-        
+
         <p id="tipo-elegido" class="tipo-elegido campo-ancho" hidden>
           <span>Tipo de violencia</span>
           <strong id="nombre-tipo-elegido"></strong>
@@ -45,6 +45,11 @@
           <div class="input-wrapper">
             <input type="date" id="fecha" name="fecha" class="custom-input" required>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="hora">Hora aproximada del incidente</label>
+          <input type="time" id="hora" name="hora" class="custom-input">
         </div>
 
         <!-- Pregunta 3 -->
@@ -95,11 +100,31 @@
         </div>
 
         <!-- Pregunta 6 -->
+            <div class="form-group">
+                <label class="form-label" for="ocurrio-en-escuela">¿Ocurrió dentro de una escuela?</label>
+                <select id="ocurrio-en-escuela" name="ocurrio_en_escuela" required>
+                    <option value="">Selecciona una respuesta</option>
+                    <option value="Sí">Sí</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
         <div class="form-group campo-ancho">
           <label class="form-label" for="descripcion">Describe lo ocurrido *</label>
           <div class="input-wrapper">
             <textarea id="descripcion" name="descripcion" maxlength="10000" class="custom-textarea" rows="4" placeholder="Describe brevemente lo que ocurrió..." required></textarea>
           </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="hubo-testigos">¿Hubo testigos?</label>
+          <select class="custom-select" id="hubo-testigos" name="huboTestigos">
+            <option value="">No tengo certeza</option>
+            <option>Sí</option><option>No</option>
+          </select>
+        </div>
+        <div class="form-group campo-ancho" data-contacto hidden>
+          <label class="form-label" for="testigos">Información de testigos (opcional)</label>
+          <textarea id="testigos" name="testigos" maxlength="2000" class="custom-textarea"></textarea>
         </div>
         <div class="form-group" data-contacto hidden>
           <label class="form-label" for="nombre-reportante">10. Nombre</label>

@@ -3,6 +3,9 @@ import io
 import os
 import unittest
 from urllib.parse import urlparse
+from unittest.mock import patch
+
+from werkzeug.security import generate_password_hash
 
 import psycopg
 
@@ -10,8 +13,8 @@ url = os.environ.get('DATABASE_URL', '')
 if urlparse(url).hostname not in ('localhost', '127.0.0.1'):
     raise RuntimeError('Use a disposable local database for integration tests.')
 
-from backend.database import initialize
-from backend.main import app
+from backend.database import connect, initialize
+from backend.main import app, token_hash
 
 
 class IntegrationTests(unittest.TestCase):
@@ -26,11 +29,145 @@ class IntegrationTests(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client()
 
+    def test_institutional_case_lifecycle(self):
+        c = self.client
+        password = "password-para-prueba"
+        with connect() as db:
+            db.execute("INSERT INTO administradores (nombre,correo,contrasena_hash,folio_hash) VALUES (%s,%s,%s,%s)",
+                       ("Admin prueba", "admin@example.invalid", generate_password_hash(password), token_hash("ADM-PRUEBA")))
+            destinations = [db.execute("INSERT INTO instituciones (nombre,correo) VALUES (%s,%s) RETURNING id_institucion",
+                                       (name, email)).fetchone()["id_institucion"] for name, email in (
+                                           ("Institución A", "a@example.invalid"), ("Institución B", "b@example.invalid"))]
+
+        def post(path, body=None, headers=None, status=200):
+            result = c.post("/api" + path, json=body, headers=headers)
+            self.assertEqual(result.status_code, status, result.get_data(as_text=True))
+            return result.json
+
+        def auth(role, email, **extra):
+            result = post("/auth/" + role, {"correo": email, "contrasena": password, **extra})
+            return {"Authorization": "Bearer " + result["token"]}
+
+        def get(path, headers):
+            response = c.get("/api" + path, headers=headers)
+            self.assertEqual(response.status_code, 200, response.get_data(as_text=True))
+            return response.json
+
+        post("/auth/admin", {"correo": "admin@example.invalid", "contrasena": password}, status=401)
+        admin = auth("admin", "admin@example.invalid", folio="ADM-PRUEBA")
+        extra_admin = post("/canalizacion/administradores", {
+            "nombre": "Admin alterno", "correo": "admin2@example.invalid", "contrasena": password,
+        }, admin, 201)
+        auth("admin", "admin2@example.invalid", folio=extra_admin["folio"])
+        institution_data = {"nombre": "Institución C", "correo": "c@example.invalid"}
+        post("/canalizacion/instituciones", institution_data, status=401)
+        post("/canalizacion/instituciones", institution_data, admin, 201)
+        post("/canalizacion/instituciones", institution_data, admin, 409)
+        staff = {}
+        for role in ("orientador", "especialista"):
+            email = role + "@example.invalid"
+            post("/auth/autoridades/registro", {"nombre": role, "correo": email, "contrasena": password,
+                "institucion": "Prueba", "cargo": role, "tipo_autoridad": role, "id_tipo_violencia": 2}, status=201)
+            post("/auth/autoridad", {"correo": email, "contrasena": password}, status=401)
+            request = get("/canalizacion/autoridades", admin)["autoridades"][0]
+            staff[role] = request["id_autoridad"]
+            self.assertEqual(c.patch("/api/canalizacion/autoridades/" + str(staff[role]),
+                                     headers=admin, json={"aprobar": True}).status_code, 200)
+        orientation = auth("autoridad", "orientador@example.invalid")
+        specialist = auth("autoridad", "especialista@example.invalid")
+
+        def create(school, kind):
+            return post("/reportes", {"rol": "victima", "es_anonimo": True, "terminos": True,
+                "tipo_violencia": kind, "ocurrio_en_escuela": school, "detalle": {
+                    "fecha": "2026-11-10", "hora": "11:15", "lugar": "Lugar ficticio",
+                    "haOcurrido": "NO", "descripcion": "Descripción ficticia", "huboTestigos": "Sí",
+                }}, status=201)["reporte"]
+
+        school = create(True, 1)
+        external = create(False, 2)
+        external_path = f"/expedientes/{external['id_reporte']}"
+        post(external_path + "/actividad", {"accion": "crear", "descripcion": "Calendario preventivo",
+             "responsable_id": staff["especialista"], "vence": "2026-12-01", "recurrencia_dias": 30,
+             "fin_recurrencia": "2027-02-01"}, admin)
+        self.assertEqual([task["vence"] for task in get(external_path, admin)["actividades"]],
+                         ["2026-12-01", "2026-12-31", "2027-01-30"])
+        self.assertEqual([x["folio"] for x in get("/autoridad/casos", orientation)["casos"]], [school["folio"]])
+        self.assertEqual([x["folio"] for x in get("/autoridad/casos", specialist)["casos"]], [external["folio"]])
+        report_id = school["id_reporte"]
+        review = f"/autoridad/casos/{report_id}"
+        intake = f"/canalizacion/{report_id}"
+        case = f"/expedientes/{report_id}"
+        post(review + "/abrir", headers=specialist, status=404)
+        result = post(review + "/abrir", headers=orientation)
+        self.assertEqual(result["caso"]["detalle"]["hora"], "11:15")
+        payload = {"valoracion": "Caso ficticio", "propuesta": "Atención de prueba", "nivel_riesgo": "Medio",
+                   "prioridad": "Alta", "nivel_atencion": "Escolar", "factores": "Factores ficticios",
+                   "informacion_suficiente": False, "riesgo_inmediato": True, "solicitud_datos": "Hora de salida"}
+        post(review + "/enviar", payload, orientation)
+        folio = {"folio": school["folio"]}
+        self.assertTrue(post("/reportes/consulta", folio)["reporte"]["puede_ampliar"])
+        post("/reportes/consulta/ampliacion", {**folio, "detalle": "Información de prueba"}, status=201)
+        self.assertEqual(len(post(review + "/abrir", headers=orientation)["caso"]["ampliaciones"]), 1)
+        payload["informacion_suficiente"] = True
+        post(review + "/enviar", payload, orientation)
+        referrals = get("/canalizacion", admin)["casos"]
+        self.assertTrue(referrals[0]["folio_canalizacion"].startswith("CAN-"))
+        post(intake + "/decision", {"accion": "devolver", "observaciones": "Revisar datos"}, admin)
+        self.assertEqual(post(review + "/abrir", headers=orientation)["caso"]["evaluacion"]["observaciones"], "Revisar datos")
+        self.assertNotIn("Revisar datos", str(post("/reportes/consulta", folio)))
+        post(review + "/enviar", payload, orientation)
+        with patch.dict(os.environ, {"CENTINELA_SMTP_HOST": "example.invalid", "CENTINELA_SMTP_FROM": "alert@example.invalid"}):
+            with patch("backend.main.deliver_email", side_effect=[OSError("error simulado"), None, None, None]) as mail:
+                approval = {"accion": "aprobar", "instituciones": destinations}
+                post(intake + "/decision", approval, admin, 502)
+                post(intake + "/decision", approval, admin)
+                self.assertEqual(mail.call_count, 3)
+                self.assertNotIn("Descripción ficticia", mail.call_args.args[1].get_content())
+                self.assertNotIn(school["folio"], mail.call_args.args[1].get_content())
+
+        post(intake + "/respuestas", {"id_institucion": destinations[0], "mensaje": "Interno",
+            "resumen_publico": "Respuesta pública"}, admin, 201)
+        published = post("/reportes/consulta", folio)["reporte"]
+        self.assertEqual(published["respuesta_institucion"], "Respuesta pública")
+        self.assertEqual([item["nombre"] for item in published["instituciones_canalizadas"]],
+                         ["Institución A", "Institución B"])
+        post(case + "/asignar", {"responsable_id": staff["orientador"]}, admin)
+        event = post(case + "/acciones", {"clase": "atencion", "detalle": "Atención de prueba"}, orientation, 201)
+        attachment = c.post("/api" + case + "/evidencias", headers=admin,
+                            data={"archivo": (io.BytesIO(b"prueba"), "prueba.txt"), "uso": "atencion",
+                                  "id_evento": event["id_evento"]})
+        self.assertEqual(attachment.status_code, 201)
+        info = get(case, admin)
+        evidence = info["evidencias"][0]["id_evidencia"]
+        self.assertEqual(c.get(f"/api/autoridad/casos/{report_id}/evidencias/{evidence}", headers=orientation).data, b"prueba")
+        self.assertEqual(c.get(f"/api/autoridad/casos/{report_id}/evidencias/{evidence}", headers=specialist).status_code, 404)
+        post(case + "/actividad", {"accion": "crear", "descripcion": "Seguimiento", "vence": "2025-11-25"}, orientation)
+        activity = get(case, admin)["actividades"][0]
+        self.assertTrue(activity["vencida"])
+        close = {"confirmar": True, "motivo": "Concluido", "resultado": "Atención completada"}
+        post(intake + "/atendido", close, admin, 409)
+        post(case + "/actividad", {"accion": "completar", "id_actividad": activity["id_actividad"], "resultado": "Listo"}, orientation)
+        post(intake + "/atendido", close, admin)
+        track = post("/reportes/consulta", folio)["reporte"]
+        self.assertEqual(track["estado"], "Atendido")
+        self.assertTrue(track["puede_evaluar"])
+        receipt = get("/comprobantes/" + track["comprobante"]["codigo"], {})
+        self.assertEqual(receipt["comprobante"]["terminacion"], school["folio"][-6:])
+        self.assertNotIn(school["folio"], str(receipt))
+        self.assertNotIn("Interno", str(track))
+        post("/reportes/consulta/evaluacion", {**folio, "calificacion": 5, "categoria": "Atención",
+             "comentario": "Buena atención", "sugerencia": "Más horarios"}, status=201)
+        post("/reportes/consulta/evaluacion", {**folio, "calificacion": 1, "categoria": "Otro"}, status=409)
+        post(case + "/acciones", {"clase": "nota", "detalle": "No debe guardarse"}, admin, 409)
+        self.assertEqual(get("/expedientes", admin)["evaluaciones"][0]["calificacion"], 5)
+        post(case + "/estado", {"id_estado": 9, "motivo": "Revisión posterior"}, admin)
+        self.assertEqual(post("/reportes/consulta", folio)["reporte"]["estado"], "Abierto en seguimiento")
+
     def test_workflows(self):
         c = self.client
         self.assertEqual(c.get('/api/health').status_code, 200)
         self.assertEqual(len(c.get('/api/tipos-violencia').json['tipos']), 5)
-        self.assertEqual(c.get('/api/instituciones').json, {'instituciones': []})
+        self.assertEqual(c.get('/api/instituciones').status_code, 200)
         user = {'nombre': 'Prueba local', 'correo': 'local@example.invalid', 'contrasena': 'local-test-password'}
         self.assertEqual(c.post('/api/auth/registro', json=user).status_code, 201)
         self.assertEqual(c.post('/api/auth/registro', json=user).status_code, 409)

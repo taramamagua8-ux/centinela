@@ -193,3 +193,14 @@ body.pagina-directorio {
   .nombre-cuenta-directorio { display: none; }
   .campo-busqueda { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Mantener legibles la búsqueda y la navegación en pantallas estrechas. */
+.pagina-directorio :is(a, button, input):focus-visible {
+  outline: 3px solid #9c527f;
+  outline-offset: 3px;
+}
+.pagina-directorio .barra-superior a:focus-visible { outline-color: #fff; }
+@media (max-width: 390px) {
+  .pagina-directorio .campo-busqueda { grid-template-columns: 1fr; }
+  .pagina-directorio .boton-directorio { width: 100%; }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expedientes | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/institucional.css">
+    <script src="../js/institucional.js" defer></script>
+    <script src="../js/expedientes.js" defer></script>
+</head>
+<body class="pagina-institucional" data-pagina="expedientes">
+    <header class="barra-superior">
+        <input type="checkbox" id="menu-institucional" class="toggle-menu" aria-label="Menú principal">
+        <label for="menu-institucional" class="btn-hamburguesa"><span></span><span></span><span></span></label>
+        <nav class="menu-lateral" aria-label="Navegación principal">
+            <a href="principal.html">Inicio</a>
+            <a href="descubre_mas.html">Descubre más</a>
+            <a href="videos.html">Videos</a>
+            <a href="directorio.html">Directorio</a>
+            <a href="sobre_nosotros.html">Sobre nosotros</a>
+            <a href="acceso_autoridad.html">Acceso de autoridad</a>
+            <a href="acceso_admin.html">Acceso de administrador</a>
+        </nav>
+        <div class="logo-centro"><img src="../img/logoB.png" alt=""><span>CENTINELA DIGITAL</span></div>
+        <div class="iconos-derecha accesos-navbar">
+            <a href="formulario.html">Consultar folio</a>
+            <a href="cuenta.html">Mi cuenta</a>
+        </div>
+    </header>
+    <main class="institucional">
+        <h1>Expedientes</h1>
+        <p id="aviso-institucional" role="status" aria-live="polite"></p>
+        <p><a href="administracion_reportes.html">Volver a canalización</a></p>
+        <button id="cerrar-sesion" class="boton-secundario">Cerrar sesión</button>
+        <details class="panel-institucional">
+            <summary>Nuevo expediente</summary>
+            <form class="formulario-institucional" id="crear-expediente">
+                <label>Nombre de la persona afectada <input name="nombre" maxlength="150"></label>
+                <label>Contacto de la persona afectada <input name="contacto" maxlength="150"></label>
+                <label>Narración de apertura <textarea name="descripcion" maxlength="10000" required></textarea></label>
+                <label>Tipo de violencia <select name="tipo_violencia" required></select></label>
+                <label class="casilla-institucional"><input name="ocurrio_en_escuela" type="checkbox"> Ocurrió en una escuela</label>
+                <button>Crear expediente</button>
+            </form>
+        </details>
+        <section class="panel-institucional">
+            <h2>Historial de reportes y expedientes</h2>
+            <form class="formulario-institucional filtros-expedientes" id="filtros-expediente">
+                <label>Folio <input name="folio" type="search"></label>
+                <label>Estado <select name="estado"><option value="">Todos</option></select></label>
+                <label>Tipo de violencia <select name="tipo"><option value="">Todos</option></select></label>
+                <label>Responsable <select name="responsable"><option value="">Todos</option></select></label>
+                <label>Desde <input name="desde" type="date"></label>
+                <label>Hasta <input name="hasta" type="date"></label>
+                <label>Periodo según <select name="periodo"><option value="registro">Registro</option><option value="cierre">Cierre</option></select></label>
+                <button>Filtrar</button>
+            </form>
+            <div id="registro-expedientes" class="lista-institucional"></div>
+        </section>
+        <section class="panel-institucional" id="detalle-expediente" hidden></section>
+        <details class="panel-institucional"><summary>Actividades pendientes y vencidas</summary><div id="agenda-global"></div></details>
+        <details class="panel-institucional"><summary>Avisos de nuevos reportes</summary><div id="avisos-global"></div></details>
+        <details class="panel-institucional" open><summary>Informes y satisfacción</summary><div id="informes-global"></div></details>
+    </main>
+</body>
+</html>

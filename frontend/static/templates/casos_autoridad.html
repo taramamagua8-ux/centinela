@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Casos de autoridad | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/institucional.css">
+    <script src="../js/institucional.js" defer></script>
+</head>
+<body class="pagina-institucional" data-pagina="casos_autoridad">
+    <header class="barra-superior">
+        <input type="checkbox" id="menu-institucional" class="toggle-menu" aria-label="Menú principal">
+        <label for="menu-institucional" class="btn-hamburguesa"><span></span><span></span><span></span></label>
+        <nav class="menu-lateral" aria-label="Navegación principal">
+            <a href="principal.html">Inicio</a>
+            <a href="descubre_mas.html">Descubre más</a>
+            <a href="videos.html">Videos</a>
+            <a href="directorio.html">Directorio</a>
+            <a href="sobre_nosotros.html">Sobre nosotros</a>
+            <a href="acceso_autoridad.html">Acceso de autoridad</a>
+            <a href="acceso_admin.html">Acceso de administrador</a>
+        </nav>
+        <div class="logo-centro"><img src="../img/logoB.png" alt=""><span>CENTINELA DIGITAL</span></div>
+        <div class="iconos-derecha accesos-navbar">
+            <a href="formulario.html">Consultar folio</a>
+            <a href="cuenta.html">Mi cuenta</a>
+        </div>
+    </header>
+    <main class="institucional">
+        <h1>Casos de autoridad</h1>
+        <p id="aviso-institucional" role="status" aria-live="polite"></p>
+        <button id="cerrar-sesion" class="boton-secundario">Cerrar sesión</button>
+        <div class="columnas-institucionales">
+            <section class="panel-institucional">
+                <h2>Casos que puedes revisar</h2>
+                <label><input type="checkbox" id="solo-pendientes"> Solo pendientes de evaluación</label>
+                <div id="avisos-autoridad"></div>
+                <div id="lista-casos" class="lista-institucional"></div>
+            </section>
+            <section id="detalle-caso" class="panel-institucional" hidden>
+                <h2 id="folio-caso" tabindex="-1"></h2>
+                <div id="datos-caso"></div>
+                <form id="evaluacion" class="formulario-institucional" hidden>
+                    <label>Valoración del caso <textarea name="valoracion" maxlength="8000" required></textarea></label>
+                    <label>Nivel de riesgo
+                        <select name="nivel_riesgo" required>
+                            <option value="">Selecciona el nivel</option>
+                            <option>Bajo</option><option>Medio</option><option>Alto</option>
+                        </select>
+                    </label>
+                    <label>Propuesta de atención <textarea name="propuesta" maxlength="8000" required></textarea></label>
+                    <label>Prioridad
+                        <select name="prioridad" required><option>Normal</option><option>Alta</option><option>Urgente</option></select>
+                    </label>
+                    <label>Nivel de atención
+                        <select name="nivel_atencion" required><option value="">Selecciona el nivel</option>
+                            <option>Escolar</option><option>Especializada</option><option>Institucional</option>
+                        </select>
+                    </label>
+                    <label>Factores de riesgo <textarea name="factores" maxlength="8000" required></textarea></label>
+                    <label>Observaciones de evaluación <textarea name="observaciones_evaluacion" maxlength="8000"></textarea></label>
+                    <label class="casilla-institucional"><input type="checkbox" name="riesgo_inmediato"> Hay riesgo inmediato</label>
+                    <label>¿La información es suficiente?
+                        <select name="informacion_suficiente" required><option value="">Selecciona una respuesta</option>
+                            <option value="true">Sí</option><option value="false">No</option>
+                        </select>
+                    </label>
+                    <label id="solicitud-datos" hidden>Datos adicionales que se necesitan
+                        <textarea name="solicitud_datos" maxlength="1000"></textarea>
+                    </label>
+                    <button>Guardar evaluación</button>
+                </form>
+                <div id="actividades-autoridad"></div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

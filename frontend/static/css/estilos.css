@@ -4372,3 +4372,38 @@ body.pagina-folio {
     transform: translateY(-2px);
 }
 
+
+/* Accesos visibles en las barras de navegación. */
+.barra-superior > .accesos-navbar { flex-wrap: wrap; justify-content: flex-end; gap: .35rem; }
+.accesos-navbar a {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    padding: .25rem .65rem;
+    border: 1px solid #ffffff88;
+    border-radius: .55rem;
+    color: #fff;
+    background: #54283f;
+    font-size: .83rem;
+    line-height: 1.15;
+    font-weight: 700;
+    text-decoration: none;
+}
+.accesos-navbar a:hover, .accesos-navbar a:focus-visible { background: #371729; }
+@media (max-width: 680px) {
+    body .barra-superior:has(> .accesos-navbar) { grid-template-columns: auto minmax(0, 1fr) auto; gap: .4rem; }
+    .barra-superior:has(> .accesos-navbar) .logo-centro { min-width: 0; justify-content: center; }
+    .barra-superior:has(> .accesos-navbar) .logo-centro span { display: none; }
+    .barra-superior > .accesos-navbar { flex-wrap: nowrap; }
+    .accesos-navbar a { font-size: .77rem; padding-inline: .45rem; }
+}
+
+@media (max-width: 680px) {
+    body.pagina-inicio .pantalla-reporte .btn-reportar {
+        box-sizing: border-box;
+        max-width: 100%;
+        min-width: 0;
+        white-space: normal;
+    }
+    .material-materia-energia { box-sizing: border-box; max-width: 100%; }
+}

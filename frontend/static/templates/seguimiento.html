@@ -7,6 +7,7 @@
     <title>Seguimiento de reporte | Centinela Digital</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/institucional.css">
 </head>
 <body class="pagina-folio pagina-detalle-reporte">
     <main class="pagina-seguimiento">
@@ -52,6 +53,38 @@
         </div>
 
         <footer class="pie-detalle-reporte">
+            <section id="historial-folio" hidden>
+                <h2>Historial de estados</h2>
+                <ol></ol>
+            </section>
+            <button type="button" id="comprobante-cierre" class="btn-volver" hidden>Descargar comprobante de cierre</button>
+            <form id="ampliar-reporte" class="formulario-institucional" hidden>
+                <h2>Agregar la información solicitada</h2>
+                <label>Información adicional <textarea name="detalle" maxlength="8000" required></textarea></label>
+                <button class="btn-volver">Enviar información adicional</button>
+            </form>
+            <form id="evaluar-servicio" class="formulario-institucional" hidden>
+                <h2>Evalúa la atención recibida</h2>
+                <label>Calificación
+                    <select name="calificacion" required>
+                        <option value="">Selecciona una calificación</option>
+                        <option value="1">1 · Muy insatisfecho</option><option value="2">2 · Insatisfecho</option>
+                        <option value="3">3 · Neutral</option><option value="4">4 · Satisfecho</option>
+                        <option value="5">5 · Muy satisfecho</option>
+                    </select>
+                </label>
+                <label>Tema
+                    <select name="categoria" required>
+                        <option value="">Selecciona un tema</option>
+                        <option>Atención</option><option>Tiempo de respuesta</option><option>Comunicación</option>
+                        <option>Accesibilidad</option><option>Otro</option>
+                    </select>
+                </label>
+                <label>Comentario o inconformidad <textarea name="comentario" maxlength="4000"></textarea></label>
+                <label>Propuesta de mejora <textarea name="sugerencia" maxlength="4000"></textarea></label>
+                <button class="btn-volver">Enviar evaluación</button>
+            </form>
+            <p id="aviso-evaluacion" role="status"></p>
             <a class="btn-volver" href="formulario.html">Consultar otro folio <span aria-hidden="true">→</span></a>
         </footer>
     </main>
