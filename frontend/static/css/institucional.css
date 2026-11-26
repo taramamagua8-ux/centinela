@@ -1,6 +1,14 @@
+@keyframes luzMovil {
+    0%   { background-position: 0% 0%; }
+    50%  { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
 body.pagina-institucional {
+background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
     display: block;
-    background: #faf3f8;
     color: #462039;
     animation: none;
 }
@@ -63,3 +71,169 @@ body.pagina-institucional {
 .pagina-detalle-reporte [hidden] { display: none !important; }
 .pagina-detalle-reporte #historial-folio { padding: 1rem 0; }
 .pagina-detalle-reporte #historial-folio li { margin-block: .5rem; }
+
+
+/* ==========================================================================
+   PÁGINAS DE ACCESO (sin navbar): estilo de tarjeta como "Mi cuenta"
+   Se activa con la clase  pagina-acceso  en el <body>
+   ========================================================================== */
+
+body.pagina-institucional.pagina-acceso {
+    min-height: 100svh;
+    margin: 0;
+    padding: 0 0 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+    color: #4e3f50;
+}
+
+/* ---------- Botón volver (arriba a la izquierda) ---------- */
+.pagina-acceso .barra-volver {
+    padding: 18px clamp(16px, 4vw, 32px) 0;
+}
+.pagina-acceso .btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+.pagina-acceso .btn-volver:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+/* ---------- Tarjeta centrada ---------- */
+.pagina-acceso .institucional {
+    box-sizing: border-box;
+    width: min(100% - 32px, 460px);
+    margin: auto;                     /* la centra en el espacio que queda */
+    padding: clamp(28px, 6vw, 40px) clamp(22px, 5vw, 34px);
+    border: 1px solid #efb3e5;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #f7d0f1, #ffffff);
+    box-shadow: 0 12px 28px rgba(146, 59, 97, .35);
+    animation: acceso-entrada .5s ease-out both;
+}
+
+/* Logo con flote y brillo */
+.pagina-acceso .logo-acceso {
+    display: block;
+    width: 120px;
+    max-width: 60%;
+    height: auto;
+    margin: 0 auto 14px;
+    animation: acceso-flota 5s ease-in-out infinite,
+               acceso-brillo 5s ease-in-out infinite;
+}
+
+.pagina-acceso .institucional h1 {
+    margin: 0 0 6px;
+    text-align: center;
+    color: #602270;
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+}
+.pagina-acceso .subtitulo-acceso {
+    margin: 0;
+    text-align: center;
+    color: #6e5a70;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Aviso de mensajes */
+.pagina-acceso #aviso-institucional {
+    margin: 12px 0 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+.pagina-acceso #aviso-institucional:not(:empty) {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fff0f5;
+    color: #a5154e;
+}
+
+/* ---------- Formulario ---------- */
+.pagina-acceso .formulario-institucional {
+    max-width: none;
+    margin: 20px 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    gap: 14px;
+}
+.pagina-acceso .formulario-institucional label {
+    gap: 8px;
+    color: #5e3b69;
+    font-size: 14px;
+    font-weight: 700;
+}
+.pagina-acceso .formulario-institucional input {
+    color-scheme: light;
+    padding: 13px 14px;
+    border: 1px solid #d5b6dd;
+    border-radius: 9px;
+    color: #24132e;
+    caret-color: currentColor;
+    background: #fff;
+}
+.pagina-acceso .formulario-institucional input:focus {
+    outline: 2px solid #923b61;
+    outline-offset: 2px;
+    border-color: #923b61;
+}
+.pagina-acceso .formulario-institucional input:-webkit-autofill {
+    -webkit-text-fill-color: #24132e;
+}
+
+/* Botón principal */
+.pagina-acceso .institucional button {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 6px;
+    padding: 13px 20px;
+    border: 0;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(112, 34, 131, .4);
+    transition: transform .3s, box-shadow .3s, background .3s;
+}
+.pagina-acceso .institucional button:hover:not(:disabled),
+.pagina-acceso .institucional button:focus-visible {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(216, 27, 96, .5);
+}
+
+/* ---------- Animaciones ---------- */
+@keyframes acceso-entrada {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes acceso-flota {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+@keyframes acceso-brillo {
+    0%, 100% { filter: drop-shadow(0 4px 10px rgba(146, 59, 97, .25)); }
+    50%      { filter: drop-shadow(0 6px 20px rgba(197, 110, 211, .8)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-institucional.pagina-acceso,
+    .pagina-acceso .institucional,
+    .pagina-acceso .logo-acceso { animation: none; }
+    .pagina-acceso .institucional button { transition: none; }
+}

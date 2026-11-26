@@ -4407,3 +4407,887 @@ body.pagina-folio {
     }
     .material-materia-energia { box-sizing: border-box; max-width: 100%; }
 }
+/* ===== Folio y Cuenta: círculo con icono → se abre a texto → se cierra ===== */
+.barra-superior > .accesos-navbar {
+    grid-column: 3;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.accesos-navbar a.btn-nav {
+    position: relative;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: 38px;
+    height: 38px;
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .55);
+    border-radius: 999px;
+    background: #54283f;
+    color: #fff;
+    font-size: .875rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    animation: nav-abre-cierra 12s ease-in-out infinite;
+    transition: background .3s, transform .3s, box-shadow .3s;
+}
+
+/* Ancho al estar abierto (ajústalo si cambias el texto) */
+.accesos-navbar a.btn-nav-folio  { --ancho: 9.75rem; }
+.accesos-navbar a.btn-nav-cuenta { --ancho: 7.25rem; }
+
+/* Icono y texto ocupan el mismo lugar y se intercambian */
+.btn-nav .nav-icono,
+.btn-nav .nav-texto { grid-area: 1 / 1; }
+
+.btn-nav .nav-icono {
+    font-size: 1.1rem;
+    animation: nav-icono 12s ease-in-out infinite;
+}
+.btn-nav .nav-texto {
+    opacity: 0;
+    animation: nav-texto 12s ease-in-out infinite;
+}
+
+/* Cuenta arranca un poco después que Folio (los 3 con el mismo retraso) */
+.btn-nav-cuenta,
+.btn-nav-cuenta .nav-icono,
+.btn-nav-cuenta .nav-texto { animation-delay: .6s; }
+
+@keyframes nav-abre-cierra {
+    0%, 38%   { width: 38px; }
+    46%, 90%  { width: var(--ancho); }
+    97%, 100% { width: 38px; }
+}
+@keyframes nav-icono {
+    0%, 36%   { opacity: 1; transform: scale(1); }
+    43%, 91%  { opacity: 0; transform: scale(.5); }
+    98%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes nav-texto {
+    0%, 42%   { opacity: 0; transform: translateY(8px); }
+    48%, 88%  { opacity: 1; transform: translateY(0); }
+    94%, 100% { opacity: 0; transform: translateY(-8px); }
+}
+
+/* Con el teclado se queda abierto */
+.accesos-navbar a.btn-nav:focus-visible {
+    animation: none;
+    width: var(--ancho);
+    background: #371729;
+}
+.btn-nav:focus-visible .nav-icono { animation: none; opacity: 0; transform: scale(.5); }
+.btn-nav:focus-visible .nav-texto { animation: none; opacity: 1; transform: none; }
+
+/* Con el mouse se queda abierto (solo dispositivos con mouse) */
+@media (hover: hover) {
+    .accesos-navbar a.btn-nav:hover {
+        animation: none;
+        width: var(--ancho);
+        background: #371729;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(45, 10, 54, .38);
+    }
+    .btn-nav:hover .nav-icono { animation: none; opacity: 0; transform: scale(.5); }
+    .btn-nav:hover .nav-texto { animation: none; opacity: 1; transform: none; }
+}
+
+/* Celular: solo círculos con icono, sin animación */
+@media (max-width: 680px) {
+    .accesos-navbar a.btn-nav,
+    .accesos-navbar a.btn-nav:hover { animation: none; width: 38px; }
+    .btn-nav .nav-texto { display: none; }
+    .btn-nav .nav-icono { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .accesos-navbar a.btn-nav,
+    .btn-nav .nav-icono,
+    .btn-nav .nav-texto { animation: none; }
+}
+
+
+.btn-nav .nav-icono svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+/* Icono y texto centrados dentro del círculo, sin depender del ancho del texto */
+.accesos-navbar a.btn-nav .nav-icono,
+.accesos-navbar a.btn-nav .nav-texto {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-area: auto;
+}
+
+.accesos-navbar a.btn-nav .nav-icono svg {
+    width: 20px;
+    height: 20px;
+    color: #fff;
+}
+
+/* ===== Pantalla autoridades: imagen izquierda / contenido derecha ===== */
+.pantalla-autoridades .contenido-autoridades {
+    max-width: 1150px;
+}
+
+.autoridades-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(30px, 5vw, 70px);
+    margin-bottom: 36px;
+}
+
+.autoridades-texto {
+    text-align: left;
+}
+
+.autoridades-texto .descripcion-autoridades,
+.autoridades-texto .tarjeta-autoridades {
+    max-width: none;
+    margin: 0 0 24px 0;
+}
+.autoridades-texto .tarjeta-autoridades { margin-bottom: 0; }
+
+/* Imagen sin el fondo oscuro de .contenedor-imagen */
+.pantalla-autoridades .imagen-autoridades {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 16px;
+    background: transparent;
+    box-shadow: 0 12px 30px rgba(81, 35, 95, .16);
+}
+
+/* Celular y tablet: imagen arriba, texto abajo */
+@media (max-width: 850px) {
+    .autoridades-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+    .pantalla-autoridades .imagen-autoridades { max-width: 380px; }
+    .autoridades-texto { text-align: center; }
+}
+/* Quita la franja rosa al final de la página */
+body.pagina-inicio .contenido-inicio {
+    padding-bottom: 0 !important;
+}
+
+
+/* ==========================================================================
+   SOBRE NOSOTROS: texto, botón de YouTube, logo animado y carrusel
+   ========================================================================== */
+
+/* ---------- Texto ---------- */
+body.pagina-sobre-nosotros .texto-nosotros {
+    color: #4e444f;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    animation: entrada-nosotros .6s ease-out both;
+}
+body.pagina-sobre-nosotros .texto-nosotros h1 {
+    display: inline-block;
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e9a6dd;
+    color: #923b61;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+}
+@keyframes entrada-nosotros {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Bloque de YouTube ---------- */
+body.pagina-sobre-nosotros .bloque-youtube {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 30px;
+    padding: 20px 22px;
+    border: 1px solid #efb3e5;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #fff7fd, #f4c5ee);
+    box-shadow: 0 10px 26px rgba(146, 59, 97, .16);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+body.pagina-sobre-nosotros .bloque-youtube:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px rgba(146, 59, 97, .26);
+}
+
+/* Franja de luz que cruza el bloque (reutiliza tu @keyframes pasarBrillo) */
+body.pagina-sobre-nosotros .bloque-youtube::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.6), rgba(255,255,255,0));
+    transform: skewX(-25deg);
+    pointer-events: none;
+    animation: pasarBrillo 7s infinite ease-in-out;
+}
+
+body.pagina-sobre-nosotros .bloque-youtube h2 {
+    margin: 0 0 6px;
+    color: #923b61;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+body.pagina-sobre-nosotros .bloque-youtube p {
+    margin: 0 0 14px;
+    color: #5e5360;
+    font-size: .9rem;
+    line-height: 1.55;
+}
+
+/* Icono de play con onda */
+body.pagina-sobre-nosotros .icono-youtube {
+    position: relative;
+    flex-shrink: 0;
+    min-width: 64px;
+    height: 46px;
+    padding-left: 3px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #ff3b30, #d4150d);
+    font-size: 20px;
+    box-shadow: 0 6px 16px rgba(230, 33, 23, .4);
+}
+body.pagina-sobre-nosotros .icono-youtube::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(230, 33, 23, .55);
+    border-radius: inherit;
+    animation: onda-youtube 2.4s ease-out infinite;
+}
+@keyframes onda-youtube {
+    0%   { transform: scale(1);    opacity: .8; }
+    70%, 100% { transform: scale(1.55); opacity: 0; }
+}
+
+/* El enlace se ve como botón */
+body.pagina-sobre-nosotros .bloque-youtube a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #702283, #511361);
+    color: #fff;
+    font-size: .875rem;
+    font-weight: 800;
+    letter-spacing: .3px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(112, 34, 131, .4);
+    transition: transform .3s, box-shadow .3s, background .3s;
+}
+body.pagina-sobre-nosotros .bloque-youtube a::after {
+    content: "→";
+    transition: transform .3s;
+}
+body.pagina-sobre-nosotros .bloque-youtube a:hover,
+body.pagina-sobre-nosotros .bloque-youtube a:focus-visible {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(216, 27, 96, .5);
+}
+body.pagina-sobre-nosotros .bloque-youtube a:hover::after { transform: translateX(4px); }
+
+/* ---------- Logo: flota, brilla, halo y anillo que gira ---------- */
+body.pagina-sobre-nosotros .marca-nosotros {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    padding: 24px 0;
+    animation: logo-flota 5s ease-in-out infinite;
+}
+body.pagina-sobre-nosotros .marca-nosotros img {
+    cursor: pointer;
+    animation: logo-brillo 5s ease-in-out infinite;
+    transition: transform .45s cubic-bezier(.25, .8, .25, 1);
+}
+body.pagina-sobre-nosotros .marca-nosotros:hover img {
+    transform: scale(1.07) rotate(-3deg);
+}
+
+/* Halo de luz detrás del logo */
+body.pagina-sobre-nosotros .marca-nosotros::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    width: 90%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,145,246,.55) 0%, rgba(220,145,246,0) 70%);
+    transform: translate(-50%, -50%);
+    animation: logo-halo 4s ease-in-out infinite;
+}
+/* Anillo punteado que gira (mismo estilo punteado que Descubre más) */
+body.pagina-sobre-nosotros .marca-nosotros::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    width: min(100%, 360px);
+    aspect-ratio: 1;
+    border: 2px dashed #e9a6dd;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: logo-orbita 26s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes logo-flota {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+@keyframes logo-brillo {
+    0%, 100% { filter: drop-shadow(0 6px 14px rgba(146, 59, 97, .25)); }
+    50%      { filter: drop-shadow(0 8px 26px rgba(197, 110, 211, .8)); }
+}
+@keyframes logo-halo {
+    0%, 100% { transform: translate(-50%, -50%) scale(.9);  opacity: .6; }
+    50%      { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+}
+@keyframes logo-orbita {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ---------- Carrusel de videos como tarjeta, con la paleta del sitio ---------- */
+body.pagina-sobre-nosotros .videos-centinela {
+    box-sizing: border-box;
+    padding: clamp(22px, 4vw, 36px);
+    border: 1px solid #efb3e5;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 10px 28px rgba(146, 59, 97, .14);
+}
+body.pagina-sobre-nosotros .videos-centinela h2 {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #e9a6dd;
+    color: #923b61;
+    font-size: 1.7rem;
+    font-weight: 800;
+}
+body.pagina-sobre-nosotros .video-item { padding: 12px; }
+body.pagina-sobre-nosotros .video-item iframe {
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(81, 35, 95, .25);
+}
+
+body.pagina-sobre-nosotros .flecha-carrusel {
+    background: linear-gradient(135deg, #702283, #511361);
+    box-shadow: 0 4px 12px rgba(112, 34, 131, .35);
+    transition: transform .25s, box-shadow .25s, background .25s, opacity .2s;
+}
+body.pagina-sobre-nosotros .flecha-carrusel:hover:not(:disabled) {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    transform: scale(1.1);
+    box-shadow: 0 6px 18px rgba(216, 27, 96, .45);
+}
+body.pagina-sobre-nosotros .flecha-carrusel:focus-visible,
+body.pagina-sobre-nosotros .indicador-video:focus-visible {
+    outline: 2px solid #923b61;
+    outline-offset: 3px;
+}
+body.pagina-sobre-nosotros .indicador-video {
+    background: #e9c8e4;
+    transition: background-color .25s, width .3s;
+}
+body.pagina-sobre-nosotros .indicador-video.activo {
+    width: 28px;
+    border-radius: 999px;
+    background: #923b61;
+    transform: none;
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 520px) {
+    body.pagina-sobre-nosotros .bloque-youtube {
+        flex-direction: column;
+        text-align: center;
+    }
+    body.pagina-sobre-nosotros .bloque-youtube a {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+}
+
+/* ---------- Sin animaciones si el usuario las desactiva ---------- */
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-sobre-nosotros .texto-nosotros,
+    body.pagina-sobre-nosotros .marca-nosotros,
+    body.pagina-sobre-nosotros .marca-nosotros::before,
+    body.pagina-sobre-nosotros .marca-nosotros::after,
+    body.pagina-sobre-nosotros .marca-nosotros img,
+    body.pagina-sobre-nosotros .icono-youtube::before,
+    body.pagina-sobre-nosotros .bloque-youtube::after { animation: none; }
+}
+
+
+
+/* ==========================================================================
+   CONSULTA DE FOLIO: mismo estilo que las pantallas de acceso
+   ========================================================================== */
+
+/* Fondo morado animado (igual que acceso) */
+body.pagina-folio {
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+}
+
+/* Tarjeta más angosta, como la de acceso (no afecta al detalle del reporte) */
+body.pagina-folio:not(.pagina-detalle-reporte) .pagina-seguimiento {
+    width: min(92%, 600px);
+}
+
+/* Título sobre el fondo */
+body.pagina-folio .titulo-seguimiento {
+    text-shadow: 0 2px 12px rgba(59, 13, 66, .35);
+}
+
+/* Tarjeta con degradado lila y borde rosa; sin los círculos decorativos */
+body.pagina-folio .tarjeta-seguimiento {
+    border: 1px solid #efb3e5;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #f7d0f1, #ffffff);
+    box-shadow: 0 12px 28px rgba(146, 59, 97, .35);
+}
+body.pagina-folio .tarjeta-seguimiento::before,
+body.pagina-folio .tarjeta-seguimiento::after { display: none; }
+
+/* Textos con los mismos colores */
+body.pagina-folio .etiqueta-folio { color: #602270; font-weight: 800; }
+body.pagina-folio .ayuda-folio    { color: #6e5a70; }
+
+/* Logo con flote y brillo */
+body.pagina-folio .marca-folio {
+    animation: folio-flota 5s ease-in-out infinite,
+               folio-brillo 5s ease-in-out infinite;
+}
+@keyframes folio-flota {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+@keyframes folio-brillo {
+    0%, 100% { filter: drop-shadow(0 4px 10px rgba(146, 59, 97, .25)); }
+    50%      { filter: drop-shadow(0 6px 20px rgba(197, 110, 211, .8)); }
+}
+
+/* Campo: sin caja rosa alrededor, con el mismo foco guinda */
+body.pagina-folio .recuadro-folio {
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+body.pagina-folio .campo-folio {
+    padding: 13px 14px;
+    border: 1px solid #d5b6dd;
+    border-radius: 9px;
+    color: #24132e;
+    background: #fff;
+}
+body.pagina-folio .campo-folio::placeholder { color: #695571; opacity: 1; }
+body.pagina-folio .campo-folio:focus {
+    outline: 2px solid #923b61;
+    outline-offset: 2px;
+    border-color: #923b61;
+    box-shadow: none;
+}
+
+/* Botones con el mismo degradado y hover rosa */
+body.pagina-folio .btn-principal,
+body.pagina-folio .btn-secundario { border-radius: 9px; }
+
+body.pagina-folio .btn-principal {
+    background: linear-gradient(135deg, #702283, #923b61);
+}
+body.pagina-folio .btn-principal:hover:not(:disabled),
+body.pagina-folio .btn-principal:focus-visible {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-folio,
+    body.pagina-folio .marca-folio { animation: none; }
+}
+
+
+
+/* ==========================================================================
+   FORMULARIO DE REPORTE (¿Víctima o testigo? ¿Anónima o registrada?)
+   Usa la base de body.pagina-folio (fondo, tarjeta, logo, botones)
+   ========================================================================== */
+
+body.pagina-formulario-reporte .selecciones-reporte {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    min-width: 0;
+    margin: 0 0 26px;
+    padding: 0;
+    border: 0;
+    text-align: left;
+}
+
+body.pagina-formulario-reporte .selecciones-reporte legend {
+    margin: 0 auto 14px;
+    padding: 0;
+    color: #602270;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+/* Cada opción es una tarjeta seleccionable */
+body.pagina-formulario-reporte .selecciones-reporte label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+/* El radio se oculta pero sigue siendo accesible con teclado */
+body.pagina-formulario-reporte .selecciones-reporte input[type="radio"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+body.pagina-formulario-reporte .selecciones-reporte span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 56px;
+    padding: 12px 14px;
+    border: 2px solid #d9c3e3;
+    border-radius: 12px;
+    background: #fff;
+    color: #602270;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: transform .25s ease, box-shadow .25s ease,
+                border-color .25s ease, background .25s ease, color .25s ease;
+}
+
+body.pagina-formulario-reporte .selecciones-reporte label:hover span {
+    border-color: #c56ed3;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(146, 59, 97, .18);
+}
+
+/* Opción elegida */
+body.pagina-formulario-reporte .selecciones-reporte input:checked + span {
+    border-color: transparent;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(112, 34, 131, .4);
+}
+body.pagina-formulario-reporte .selecciones-reporte input:checked + span::before {
+    content: "✓";
+    font-weight: 800;
+}
+
+/* Foco con teclado */
+body.pagina-formulario-reporte .selecciones-reporte input:focus-visible + span {
+    outline: 2px solid #923b61;
+    outline-offset: 3px;
+}
+
+/* Botón y aviso */
+body.pagina-formulario-reporte .botones-seguimiento { margin-top: 6px; }
+
+body.pagina-formulario-reporte #aviso-seleccion-reporte {
+    margin: 16px 0 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+body.pagina-formulario-reporte #aviso-seleccion-reporte:not(:empty) {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #fff0f5;
+    color: #a5154e;
+}
+
+@media (max-width: 420px) {
+    body.pagina-formulario-reporte .selecciones-reporte { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-formulario-reporte .selecciones-reporte span { transition: none; }
+    body.pagina-formulario-reporte .selecciones-reporte label:hover span { transform: none; }
+}
+
+/* ==========================================================================
+   COMENCEMOS TU REPORTE: texto, enlace a términos y casilla de aceptación
+   ========================================================================== */
+
+body.pagina-formulario-reporte .texto-reporte {
+    margin: 0 0 14px;
+    color: #4e3f50;
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+/* Enlace a términos con aspecto de botón secundario */
+body.pagina-formulario-reporte .enlace-terminos {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border: 2px solid #923b61;
+    border-radius: 9px;
+    background: #fff;
+    color: #923b61;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .3s, transform .3s;
+}
+body.pagina-formulario-reporte .enlace-terminos::before { content: "📄"; font-size: 1rem; }
+body.pagina-formulario-reporte .enlace-terminos:hover,
+body.pagina-formulario-reporte .enlace-terminos:focus-visible {
+    background: #f9eaf2;
+    transform: translateY(-2px);
+}
+
+/* Casilla de aceptación como tarjeta */
+body.pagina-formulario-reporte .casilla-reporte {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 22px 0 6px;
+    padding: 16px 18px;
+    border: 2px solid #d9c3e3;
+    border-radius: 12px;
+    background: #fff;
+    color: #4e3f50;
+    font-size: .95rem;
+    line-height: 1.55;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+body.pagina-formulario-reporte .casilla-reporte:hover {
+    border-color: #c56ed3;
+    box-shadow: 0 8px 18px rgba(146, 59, 97, .15);
+}
+body.pagina-formulario-reporte .casilla-reporte input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    margin: 2px 0 0;
+    accent-color: #702283;
+    cursor: pointer;
+}
+/* Al marcarla se resalta la tarjeta */
+body.pagina-formulario-reporte .casilla-reporte:has(input:checked) {
+    border-color: #923b61;
+    background: #fdf3fb;
+}
+body.pagina-formulario-reporte .casilla-reporte:has(input:focus-visible) {
+    outline: 2px solid #923b61;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-formulario-reporte .casilla-reporte,
+    body.pagina-formulario-reporte .enlace-terminos { transition: none; }
+}
+
+
+/* ==========================================================================
+   TÉRMINOS Y CONDICIONES: estilos emparejados con el flujo de reporte
+   ========================================================================== */
+
+body.pagina-terminos .flujo-reporte {
+    text-align: left;
+}
+
+/* Párrafos de lectura (emparejados con .texto-reporte) */
+body.pagina-terminos .flujo-reporte p {
+    margin: 0 0 14px;
+    color: #4e3f50;
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+/* Subtítulos numerados */
+body.pagina-terminos .flujo-reporte h2 {
+    margin: 26px 0 10px;
+    color: #5b2069;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Botón "Volver al inicio" (emparejado con .enlace-terminos) */
+body.pagina-terminos #volver-terminos {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 11px 22px;
+    border: 2px solid #923b61;
+    border-radius: 9px;
+    background: #fff;
+    color: #923b61;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .3s, transform .3s;
+}
+
+body.pagina-terminos #volver-terminos::before {
+    content: "←";
+    font-size: 1rem;
+}
+
+body.pagina-terminos #volver-terminos:hover,
+body.pagina-terminos #volver-terminos:focus-visible {
+    background: #f9eaf2;
+    transform: translateY(-2px);
+}
+
+body.pagina-terminos #volver-terminos:focus-visible {
+    outline: 2px solid #923b61;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-terminos #volver-terminos {
+        transition: none;
+    }
+}
+
+
+
+/* ==========================================================================
+   CENTINELA DIGITAL - DISEÑO DE TÉRMINOS Y CONDICIONES
+   Adaptación visual al estilo general de la plataforma
+   ========================================================================== */
+
+/* ---------- Fondo de la página ---------- */
+
+body.pagina-terminos {
+    min-height: 100vh;
+    display: block;
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+    color: #4e3f50;
+    padding: 1px 0;
+}
+
+/* ---------- Contenedor principal ---------- */
+
+body.pagina-terminos .container {
+    width: 92%;
+    max-width: 950px;
+    margin: 45px auto;
+    box-sizing: border-box;
+}
+
+/* ---------- Encabezado ---------- */
+
+body.pagina-terminos .header {
+    padding: 25px 30px;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(180deg, #f4c5ee, #ffffff);
+    text-align: center;
+    box-shadow: 0 5px 18px rgba(146, 59, 97, .12);
+}
+
+body.pagina-terminos .header h1 {
+    margin: 0;
+    color: #923b61;
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 800;
+}
+
+/* ---------- Tarjeta de contenido ---------- */
+
+body.pagina-terminos .form-card {
+    padding: 35px 40px;
+    border: 1px solid #efb3e5;
+    border-top: none;
+    border-radius: 0 0 18px 18px;
+    background: #ffffff;
+    box-shadow: 0 15px 35px rgba(81, 35, 95, .20);
+    box-sizing: border-box;
+}
+
+/* ---------- Subtítulos ---------- */
+
+body.pagina-terminos .flujo-reporte h2 {
+    padding-bottom: 9px;
+    border-bottom: 2px solid #efb3e5;
+}
+
+/* ---------- Botón volver ---------- */
+
+body.pagina-terminos #volver-terminos {
+    box-shadow: 0 4px 12px rgba(146, 59, 97, .12);
+}
+
+/* ---------- Adaptación a celulares ---------- */
+
+@media (max-width: 600px) {
+
+    body.pagina-terminos .container {
+        width: 94%;
+        margin: 20px auto;
+    }
+
+    body.pagina-terminos .header {
+        padding: 22px 16px;
+    }
+
+    body.pagina-terminos .form-card {
+        padding: 25px 20px;
+    }
+
+    body.pagina-terminos .flujo-reporte h2 {
+        font-size: 1.15rem;
+    }
+}
+
+/* ---------- Movimiento reducido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-terminos {
+        animation: none;
+    }
+}

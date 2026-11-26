@@ -5,24 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="referrer" content="no-referrer">
     <title>Comencemos tu reporte | Centinela Digital</title>
-    <link rel="stylesheet" href="../css/reporte.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/estilos.css">
 </head>
-<body>
-    <main class="container">
-        <header class="header"><h1>Comencemos tu reporte</h1></header>
-        <section class="form-card flujo-reporte">
-            <p>Antes de continuar es importante que conozcas la información relacionada
-            con tu reporte (Te recomendamos leer los terminos y condiciones)</p>
-            <p><a href="terminos.html?desde=reporte">Leer términos y condiciones</a></p>
+<body class="pagina-folio pagina-formulario-reporte">
+    <main class="pagina-seguimiento">
+
+        <header class="encabezado-seguimiento">
+            <a class="btn-volver" href="formulario_reporte.html">← Volver</a>
+            <h1 class="titulo-seguimiento">Comencemos tu reporte</h1>
+        </header>
+
+        <section class="tarjeta-seguimiento flujo-reporte">
+            <div class="marca-folio">
+                <img src="../img/Copia de LEO.jpg" alt="Centinela Digital" class="logo-seguimiento">
+            </div>
+
+            <p class="texto-reporte">
+                Antes de continuar es importante que conozcas la información relacionada
+                con tu reporte (Te recomendamos leer los términos y condiciones)
+            </p>
+
+            <p class="texto-reporte">
+                <a class="enlace-terminos" href="terminos.html?desde=reporte">Leer términos y condiciones</a>
+            </p>
+
             <form id="inicio-reporte">
-                <label><input type="checkbox" required> Estoy consciente de que la información proporcionada sera utilizada
-                    para generar un reporte dentro de Centinela Digital.</label>
-                <div class="acciones-reporte">
-                    <a href="formulario_reporte.html">Volver</a>
-                    <button class="btn-formulario" type="submit">Continuar</button>
+                <label class="casilla-reporte">
+                    <input type="checkbox" required>
+                    <span>Estoy consciente de que la información proporcionada será utilizada
+                    para generar un reporte dentro de Centinela Digital.</span>
+                </label>
+
+                <div class="botones-seguimiento acciones-reporte">
+                    <button class="btn-principal" type="submit">Continuar <span aria-hidden="true">→</span></button>
                 </div>
             </form>
         </section>
+
     </main>
     <script src="../js/comencemos_reporte.js"></script>
 </body>

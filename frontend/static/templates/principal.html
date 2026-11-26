@@ -42,12 +42,26 @@
             </span>
         </div>
 
-
-
         <div class="iconos-derecha accesos-navbar">
-            <a href="formulario.html">Consultar folio</a>
-            <a href="cuenta.html">Mi cuenta</a>
-        </div>
+    <a href="formulario.html" class="btn-nav btn-nav-folio" title="Consultar folio">
+        <span class="nav-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+        </span>
+        <span class="nav-texto">Consultar folio</span>
+    </a>
+    <a href="cuenta.html" class="btn-nav btn-nav-cuenta" title="Mi cuenta">
+        <span class="nav-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+        </span>
+        <span class="nav-texto">Mi cuenta</span>
+    </a>
+</div>
     </header>
 
 
@@ -243,46 +257,58 @@
 
         </section>
 
-        <!-- PANTALLA 4: ACCESO PARA AUTORIDADES COMPETENTES (NUEVA SECCIÓN VERTICAL) -->
-        <section class="pantalla-inicio pantalla-autoridades">
+        <!-- PANTALLA 4: ACCESO PARA AUTORIDADES COMPETENTES -->
+<section class="pantalla-inicio pantalla-autoridades">
 
-            <div class="contenido-autoridades">
+    <div class="contenido-autoridades">
 
-                <span class="etiqueta-autoridad">PORTAL INSTITUCIONAL</span>
+        <div class="autoridades-grid">
+
+            <!-- IZQUIERDA: imagen -->
+            <div class="contenedor-imagen imagen-autoridades">
+<img src="../img/autoridad.webp" alt="Autoridades competentes" class="imagen-fluida">            </div>
+
+            <!-- DERECHA: texto -->
+            <div class="autoridades-texto">
 
                 <h2 class="titulo-autoridades">
                     ¿Eres una autoridad competente?
                 </h2>
 
                 <p class="descripcion-autoridades">
-                    Si perteneces a una institución encargada de brindar atención, seguimiento o protección, 
-                    puedes iniciar sesión como autoridad tras completar tu registro oficial para evaluar 
+                    Si eres alguien capacitado para afrontar y dar seguimiento a los casos asignados en esta aplicacion,
+                    puedes iniciar sesión como autoridad tras completar tu registro oficial para evaluar
                     y atender casos relacionados con violencia de manera segura.
                 </p>
 
                 <div class="tarjeta-autoridades">
                     <h3>¿Qué podrás gestionar en tu panel?</h3>
                     <ul>
-                        <li>Consultar y dar seguimiento a los folios asignados a tu institución.</li>
+                        <li>Consultar y dar seguimiento a los folios asignados a tu institución o tipo de violencia.</li>
                         <li>Evaluar el nivel de riesgo y clasificar los reportes recibidos.</li>
                         <li>Actualizar el estatus de atención para mantener informada a la persona usuaria.</li>
                         <li>Coordinar la canalización con redes de apoyo autorizadas.</li>
                     </ul>
                 </div>
 
-                <div class="botones-autoridades">
-                    <a href="acceso_autoridad.html" class="btn-autoridad-principal">
-                        INICIAR SESIÓN COMO AUTORIDAD
-                    </a>
-                    <a href="registro_autoridad.html" class="btn-autoridad-secundario">
-                        SOLICITAR REGISTRO INSTITUCIONAL
-                    </a>
-                    <a href="acceso_admin.html" class="btn-autoridad-secundario">Entrar como administrador</a>
-                </div>
-
             </div>
 
-        </section>
+        </div>
+        <!-- aquí termina el grid: los botones van FUERA -->
+
+        <div class="botones-autoridades">
+            <a href="acceso_autoridad.html" class="btn-autoridad-principal">
+                INICIAR SESIÓN COMO AUTORIDAD
+            </a>
+            <a href="registro_autoridad.html" class="btn-autoridad-secundario">
+                SOLICITAR REGISTRO INSTITUCIONAL
+            </a>
+            <a href="acceso_admin.html" class="btn-autoridad-secundario">Entrar como administrador</a>
+        </div>
+
+    </div>
+
+</section>
 
 
     </main>

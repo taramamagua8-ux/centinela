@@ -4,8 +4,41 @@ const escala = document.getElementById('escala-violentometro');
 const opciones = document.getElementById('opciones-violentometro');
 const control = document.getElementById('control-violentometro');
 const nombreSeleccion = document.getElementById('seleccion-violentometro');
-const paletaViolentometro = ['#24a35a', '#73b82f', '#e8be18', '#eb771e', '#db3738'];
+const paletaViolentometro = [
+    '#F9D94A', // Amarillo
+    '#F5A623', // Amarillo naranja
+    '#F07832', // Naranja
+    '#E84B35', // Rojo anaranjado
+    '#C62828'  // Rojo intenso
+];
 
+function ordenarTiposViolencia(lista) {
+    const orden = [
+        'psicologica',
+        'economica',
+        'patrimonial',
+        'fisica',
+        'sexual'
+    ];
+
+    function normalizar(texto) {
+        return texto
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    return [...lista].sort((a, b) => {
+        const nombreA = normalizar(a.nombre);
+        const nombreB = normalizar(b.nombre);
+
+        const posicionA = orden.findIndex(tipo => nombreA.includes(tipo));
+        const posicionB = orden.findIndex(tipo => nombreB.includes(tipo));
+
+        return (posicionA === -1 ? 999 : posicionA) -
+               (posicionB === -1 ? 999 : posicionB);
+    });
+}
 function colorCategoria(indice) {
     const avance = Math.max(0, indice) / Math.max(1, tipos.length - 1);
     return paletaViolentometro[Math.round(avance * (paletaViolentometro.length - 1))];
@@ -13,13 +46,62 @@ function colorCategoria(indice) {
 const descripcion = document.getElementById('descripcion-violentometro');
 const ejemplo = document.getElementById('ejemplo-violentometro');
 const textoEjemplo = document.getElementById('texto-ejemplo-violentometro');
-const ejemplosPorTipo = new Map([
-    [1, 'Una persona ridiculiza a su pareja frente a otras personas y la insulta para hacerla sentir menos.'],
-    [2, 'Durante una discusión, una persona empuja a otra o la sujeta del brazo para impedir que se aleje.'],
-    [3, 'Una persona toca íntimamente a otra sin su consentimiento.'],
-    [4, 'Una persona controla el sueldo de su pareja y le impide usar su propio dinero para gastos básicos.'],
-    [5, 'Una persona retiene los documentos personales de su pareja o destruye sus pertenencias.']
+
+const identificacionPorTipo = new Map([
+    [1, {
+        lista: [
+            'Insultos, burlas o humillaciones constantes.',
+            'Amenazas, intimidación o chantaje emocional.',
+            'Control de amistades, actividades o decisiones personales.',
+            'Hacer sentir culpable a la persona o minimizar sus emociones.'
+        ],
+        ejemplo: 'Una persona ridiculiza a su pareja frente a otras personas y la insulta para hacerla sentir menos.'
+    }],
+
+    [2, {
+        lista: [
+            'Empujones, golpes o bofetadas.',
+            'Sujetar a alguien por la fuerza.',
+            'Lanzar objetos contra una persona.',
+            'Impedir físicamente que alguien se retire de un lugar.'
+        ],
+        ejemplo: 'Durante una discusión, una persona empuja a otra o la sujeta del brazo para impedir que se aleje.'
+    }],
+
+    [3, {
+        lista: [
+            'Tocar el cuerpo de alguien sin su consentimiento.',
+            'Presionar o forzar a una persona a realizar actos sexuales.',
+            'Realizar comentarios o insinuaciones sexuales no deseadas.',
+            'Ignorar o no respetar los límites personales.'
+        ],
+        ejemplo: 'Una persona toca íntimamente a otra sin su consentimiento.'
+    }],
+
+    [4, {
+        lista: [
+            'Controlar el dinero o el sueldo de la pareja.',
+            'Impedir que alguien trabaje o estudie para obtener ingresos.',
+            'Negar dinero para necesidades básicas.',
+            'Obligar a entregar ingresos o controlar los gastos personales.'
+        ],
+        ejemplo: 'Una persona controla el sueldo de su pareja y le impide usar su propio dinero para gastos básicos.'
+    }],
+
+    [5, {
+        lista: [
+            'Retener documentos personales sin autorización.',
+            'Destruir, esconder o dañar pertenencias.',
+            'Apropiarse de objetos o bienes de otra persona.',
+            'Impedir que alguien utilice sus pertenencias o propiedades.'
+        ],
+        ejemplo: 'Una persona retiene los documentos personales de su pareja o destruye sus pertenencias.'
+    }]
 ]);
+
+const identificacion = document.getElementById('identificacion-violentometro');
+const listaIdentificacion = document.getElementById('lista-identificacion-violentometro');
+
 let tipos = [];
 let segmentos = [];
 let puntero = null;
@@ -40,8 +122,27 @@ function actualizarSeleccion(indice, posicion) {
     nombreSeleccion.hidden = !tipo;
     descripcion.textContent = tipo?.descripcion || '';
     descripcion.hidden = !descripcion.textContent;
-    textoEjemplo.textContent = ejemplosPorTipo.get(Number(tipo?.id_tipo_violencia)) || '';
-    ejemplo.hidden = !textoEjemplo.textContent;
+    
+const informacion = identificacionPorTipo.get(Number(tipo?.id_tipo_violencia));
+
+listaIdentificacion.replaceChildren();
+
+if (informacion) {
+    informacion.lista.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        listaIdentificacion.append(li);
+    });
+
+    identificacion.hidden = false;
+    textoEjemplo.textContent = informacion.ejemplo;
+    ejemplo.hidden = false;
+} else {
+    identificacion.hidden = true;
+    ejemplo.hidden = true;
+    textoEjemplo.textContent = '';
+}
+
     escala.style.setProperty('--color-violentometro', colorCategoria(indice));
     escala.style.setProperty('--posicion-violentometro', (posicion ?? posicionCentro) * 100 + '%');
     segmentos.forEach((segmento, index) => segmento.classList.toggle('seleccionado', index === indice));
@@ -60,6 +161,7 @@ async function cargarViolentometro() {
     const respuesta = await fetch('/api/tipos-violencia');
     if (!respuesta.ok) throw new Error('No se pudieron cargar los tipos de violencia.');
     ({tipos} = await respuesta.json());
+tipos = ordenarTiposViolencia(tipos);
     if (!tipos.length) throw new Error('Por el momento no hay tipos de violencia disponibles.');
 
     segmentos = tipos.map((tipo, indice) => {

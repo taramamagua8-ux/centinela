@@ -1,50 +1,49 @@
+/* ==========================================================================
+   DIRECTORIO DE APOYO — mismo estilo que el resto de Centinela Digital
+   (requiere que estilos.css se cargue antes que este archivo)
+   ========================================================================== */
+
 body.pagina-directorio {
-  --ciruela: #632747;
-  --ciruela-oscuro: #462039;
-  --borde-rosa: #ead4e2;
+  --morado: #702283;
+  --morado-osc: #511361;
+  --guinda: #923b61;
+  --borde: #efb3e5;
+  --suave: #fdf3fb;
+  --texto: #4e444f;
   display: block;
-  background: #faf3f8;
-  color: var(--ciruela-oscuro);
+  background: #fefcff;
+  color: var(--texto);
   animation: none;
 }
-.pagina-directorio *, .pagina-directorio *::before, .pagina-directorio *::after { box-sizing: border-box; }
-.pagina-directorio .barra-superior {
-  grid-template-columns: 1fr auto 1fr;
-  gap: .5rem;
-  background: #713456;
-  animation: none;
-}
-.pagina-directorio .logo-centro {
-  font-size: clamp(.74rem, 2.4vw, 1.05rem);
-  gap: .45rem;
-}
-.pagina-directorio .logo-centro img { width: auto; height: clamp(30px, 6vw, 42px); animation: none; }
-.pagina-directorio .btn-icono {
-  display: flex;
-  align-items: center;
-  gap: .4rem;
-  min-height: 42px;
-  text-decoration: none;
-  white-space: nowrap;
-  font-size: .85rem;
-}
-.pagina-directorio .menu-lateral [aria-current="page"] { background: #ffffff24; }
+.pagina-directorio *,
+.pagina-directorio *::before,
+.pagina-directorio *::after { box-sizing: border-box; }
+
+/* La navbar ya no se sobrescribe: se ve igual que en las demás páginas */
+.pagina-directorio .menu-lateral [aria-current="page"] { background: rgba(255, 255, 255, .18); }
+
+/* ---------- Contenedor ---------- */
 .contenido-directorio {
   display: grid;
-  gap: clamp(1.8rem, 4vw, 3rem);
-  width: min(92%, 1120px);
-  margin-inline: auto;
-  padding-block: clamp(1.3rem, 4vw, 3rem) clamp(2.5rem, 6vw, 4.5rem);
+  gap: 30px;
+  width: min(100% - 40px, 1100px);
+  margin: 30px auto 60px;
 }
+
+/* ---------- Cabecera: texto a la izquierda, buscador a la derecha ---------- */
 .cabecera-directorio {
   position: relative;
   isolation: isolate;
   z-index: 1;
-  padding: clamp(1.25rem, 5vw, 3rem);
-  border-radius: clamp(16px, 3vw, 26px);
-  background: linear-gradient(125deg, #683255, #8e4b78);
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  align-items: center;
+  gap: clamp(25px, 5vw, 70px);
+  padding: clamp(28px, 5vw, 60px) clamp(25px, 6vw, 70px);
+  border-radius: 22px;
+  background: linear-gradient(115deg, #923b61 0%, #b45c9d 50%, #dc91f6 100%);
   color: #fff;
-  box-shadow: 0 10px 24px #63274725;
+  box-shadow: 0 14px 35px rgba(146, 59, 97, .2);
 }
 .cabecera-directorio::after {
   content: "";
@@ -52,133 +51,213 @@ body.pagina-directorio {
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: repeating-radial-gradient(circle at 100% 0, transparent 0 26px, #ffffff13 27px 28px, transparent 29px 48px);
+  background: repeating-radial-gradient(circle at 100% 0, transparent 0 26px, rgba(255, 255, 255, .12) 27px 28px, transparent 29px 48px);
   mask-image: linear-gradient(to left, #000, transparent 72%);
   pointer-events: none;
 }
 .introduccion-directorio h1 {
   margin: 0;
-  font-size: clamp(1.75rem, 5vw, 3.4rem);
-  line-height: 1.12;
-  letter-spacing: -.035em;
+  color: #fff;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.03em;
 }
-.introduccion-directorio p { max-width: 48ch; margin: .7rem 0 0; line-height: 1.6; }
+.introduccion-directorio p {
+  max-width: 50ch;
+  margin: 14px 0 0;
+  color: #f9e9fb;
+  font-size: clamp(.95rem, 1.3vw, 1.1rem);
+  line-height: 1.75;
+}
+
+/* ---------- Buscador ---------- */
 .buscador-directorio {
   position: relative;
-  max-width: 730px;
-  margin-top: clamp(1rem, 3vw, 1.6rem);
-  padding: clamp(.85rem, 2vw, 1.15rem);
-  border-radius: 14px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: clamp(16px, 2.5vw, 24px);
+  border-radius: 16px;
   background: #fff;
-  color: var(--ciruela-oscuro);
-  box-shadow: 0 8px 18px #43152e2a;
+  color: var(--texto);
+  box-shadow: 0 10px 28px rgba(81, 35, 95, .25);
 }
-.buscador-directorio label { display: block; font-weight: 750; margin-bottom: .55rem; font-size: .93rem; }
-.campo-busqueda { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .55rem; }
-.campo-busqueda input, .boton-directorio {
+.buscador-directorio label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--guinda);
+  font-size: .95rem;
+  font-weight: 800;
+}
+.campo-busqueda { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+.campo-busqueda input,
+.boton-directorio {
   min-width: 0;
   min-height: 46px;
-  border-radius: 9px;
-  padding: .65rem .85rem;
+  padding: .65rem .9rem;
+  border-radius: 10px;
   font: inherit;
 }
-.campo-busqueda input { width: 100%; border: 1px solid #cda9c0; background: #fbf6fa; color: var(--ciruela-oscuro); font-size: .9rem; }
-.boton-directorio {
-  border: 1px solid transparent;
-  background: var(--ciruela);
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  transition: background-color .2s;
+.campo-busqueda input {
+  width: 100%;
+  border: 1px solid #d5b6dd;
+  background: #fff;
+  color: #24132e;
+  font-size: .92rem;
 }
-.boton-directorio:hover { background: var(--ciruela-oscuro); }
+.campo-busqueda input::placeholder { color: #695571; opacity: 1; }
+.campo-busqueda input:focus {
+  outline: 2px solid var(--guinda);
+  outline-offset: 2px;
+  border-color: var(--guinda);
+}
+.boton-directorio {
+  border: 0;
+  background: linear-gradient(135deg, var(--morado), var(--morado-osc));
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(112, 34, 131, .4);
+  transition: transform .3s, box-shadow .3s, background .3s;
+}
+.boton-directorio:hover {
+  background: linear-gradient(135deg, #d81b60, #ad1457);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(216, 27, 96, .5);
+}
+
 .sugerencias-directorio {
   position: absolute;
   z-index: 3;
-  inset: 100% .75rem auto;
-  margin: .3rem 0 0;
-  padding: .25rem;
+  inset: 100% 16px auto;
+  margin: 6px 0 0;
+  padding: 4px;
   list-style: none;
   max-height: 15rem;
   overflow: auto;
-  border: 1px solid var(--borde-rosa);
-  border-radius: 10px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
   background: #fff;
-  box-shadow: 0 8px 20px #43152e2c;
+  box-shadow: 0 10px 24px rgba(81, 35, 95, .22);
 }
 .sugerencias-directorio button {
   width: 100%;
-  padding: .65rem .75rem;
+  padding: .65rem .8rem;
   text-align: left;
   font: inherit;
   border: 0;
-  border-radius: 6px;
+  border-radius: 8px;
   background: transparent;
-  color: var(--ciruela-oscuro);
+  color: var(--texto);
   cursor: pointer;
 }
-.sugerencias-directorio button:hover { background: #f7eaf3; }
-.seccion-directorio h2 { margin: 0 0 .9rem; color: var(--ciruela); font-size: clamp(1.27rem, 2.8vw, 1.65rem); }
-.categorias-directorio, .instituciones-directorio {
+.sugerencias-directorio button:hover { background: var(--suave); }
+
+/* ---------- Secciones como tarjetas ---------- */
+.seccion-directorio {
+  padding: clamp(22px, 4vw, 36px);
+  border: 1px solid var(--borde);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(146, 59, 97, .14);
+}
+.seccion-directorio h2 {
+  margin: 0 0 22px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #e9a6dd;
+  color: var(--guinda);
+  font-size: clamp(1.3rem, 2.8vw, 1.65rem);
+  font-weight: 800;
+}
+
+.categorias-directorio,
+.instituciones-directorio {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-  gap: .75rem;
+  gap: 16px;
 }
+.instituciones-directorio { gap: 20px; }
+
+/* Categorías */
 .tarjeta-categoria {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .6rem;
-  min-height: 56px;
-  padding: .7rem .9rem;
-  border: 1px solid var(--borde-rosa);
-  border-radius: 11px;
+  gap: 10px;
+  min-height: 58px;
+  padding: 12px 18px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
   text-align: left;
-  background: #fff;
-  color: var(--ciruela);
+  background: linear-gradient(145deg, #fffaff, #f7d9f3);
+  color: var(--guinda);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  transition: border-color .2s, background-color .2s, transform .2s;
+  box-shadow: 0 4px 12px rgba(146, 59, 97, .1);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
-.tarjeta-categoria:hover { border-color: #b678a1; background: #fcf5fa; transform: translateY(-2px); }
-.instituciones-directorio { gap: 1rem; }
+.tarjeta-categoria:hover {
+  transform: translateY(-4px);
+  border-color: #c56ed3;
+  box-shadow: 0 12px 22px rgba(146, 59, 97, .22);
+}
+
+/* Instituciones */
 .tarjeta-institucion-directorio {
   display: flex;
   flex-direction: column;
-  gap: .7rem;
-  padding: clamp(.95rem, 3vw, 1.4rem);
-  border: 1px solid var(--borde-rosa);
-  border-top: 3px solid #ac6a95;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 6px 16px #6327470e;
-  transition: box-shadow .2s, transform .2s;
+  gap: 12px;
+  padding: clamp(18px, 3vw, 24px);
+  border: 1px solid var(--borde);
+  border-top: 4px solid #c56ed3;
+  border-radius: 16px;
+  background: var(--suave);
+  box-shadow: 0 6px 16px rgba(146, 59, 97, .1);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-.tarjeta-institucion-directorio:hover { box-shadow: 0 10px 22px #63274720; transform: translateY(-3px); }
-.tarjeta-institucion-directorio h3 { margin: 0; color: var(--ciruela); font-size: 1.13rem; line-height: 1.32; }
-.tarjeta-institucion-directorio p { margin: 0; color: #674b5f; line-height: 1.55; }
-.tarjeta-institucion-directorio > div { display: flex; flex-wrap: wrap; gap: .35rem; }
+.tarjeta-institucion-directorio:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px rgba(146, 59, 97, .2);
+}
+.tarjeta-institucion-directorio h3 {
+  margin: 0;
+  color: var(--guinda);
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+.tarjeta-institucion-directorio p { margin: 0; color: var(--texto); line-height: 1.65; }
+.tarjeta-institucion-directorio > div { display: flex; flex-wrap: wrap; gap: 6px; }
 .tarjeta-institucion-directorio .etiqueta {
-  padding: .23rem .55rem;
+  padding: 4px 12px;
   border-radius: 999px;
-  background: #f5e7f0;
-  color: var(--ciruela);
+  background: #f4c5ee;
+  color: var(--morado);
   font-size: .75rem;
   font-weight: 700;
 }
 .enlace-institucion-directorio {
   align-self: flex-start;
   margin-top: auto;
-  padding-block: .45rem .2rem;
-  color: var(--ciruela);
-  font-weight: 750;
+  padding-block: 8px 2px;
+  color: var(--guinda);
+  font-weight: 700;
   text-underline-offset: .22em;
 }
-.pagina-directorio :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.enlace-institucion-directorio:hover { color: var(--morado); }
+
+/* ---------- Accesibilidad ---------- */
+.pagina-directorio :is(a, button, input):focus-visible {
+  outline: 2px solid var(--guinda);
+  outline-offset: 3px;
+}
+.pagina-directorio .barra-superior a:focus-visible { outline-color: #fff; }
+
+/* ---------- Animación de entrada ---------- */
 @keyframes entrada-directorio {
   from { opacity: 0; transform: translateY(9px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @media (prefers-reduced-motion: no-preference) {
   .cabecera-directorio { animation: entrada-directorio .35s ease-out both; }
@@ -186,21 +265,21 @@ body.pagina-directorio {
   .seccion-directorio:last-child { animation-delay: .15s; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pagina-directorio *, .pagina-directorio *::before, .pagina-directorio *::after { transition: none; }
-  .tarjeta-categoria:hover, .tarjeta-institucion-directorio:hover { transform: none; }
+  .pagina-directorio *,
+  .pagina-directorio *::before,
+  .pagina-directorio *::after { transition: none; }
+  .tarjeta-categoria:hover,
+  .tarjeta-institucion-directorio:hover,
+  .boton-directorio:hover { transform: none; }
+}
+
+/* ---------- Tablet y celular ---------- */
+@media (max-width: 850px) {
+  .cabecera-directorio { grid-template-columns: 1fr; gap: 24px; }
 }
 @media (max-width: 520px) {
   .nombre-cuenta-directorio { display: none; }
   .campo-busqueda { grid-template-columns: minmax(0, 1fr); }
-}
-
-/* Mantener legibles la búsqueda y la navegación en pantallas estrechas. */
-.pagina-directorio :is(a, button, input):focus-visible {
-  outline: 3px solid #9c527f;
-  outline-offset: 3px;
-}
-.pagina-directorio .barra-superior a:focus-visible { outline-color: #fff; }
-@media (max-width: 390px) {
-  .pagina-directorio .campo-busqueda { grid-template-columns: 1fr; }
-  .pagina-directorio .boton-directorio { width: 100%; }
+  .boton-directorio { width: 100%; }
+  .seccion-directorio { padding: 20px 16px; }
 }
