@@ -1,4 +1,5 @@
-const folio = new URLSearchParams(location.hash.slice(1)).get('folio');
+const confirmacion = new URLSearchParams(location.hash.slice(1));
+const folio = confirmacion.get('folio');
 const verReporte = document.getElementById('ver-reporte');
 const copiar = document.getElementById('copiar-folio');
 document.getElementById('folio-confirmacion').textContent = folio || 'Folio no disponible';
@@ -15,3 +16,16 @@ copiar.addEventListener('click', async () => {
         aviso.textContent = 'Selecciona el folio y cópialo manualmente.';
     }
 });
+
+const cuentaConfirmacion = document.getElementById('cuenta-confirmacion');
+const tokenConfirmacion = sessionStorage.getItem('centinela_token');
+
+if (tokenConfirmacion && confirmacion.get('modalidad') !== 'anonima') {
+    fetch('/api/auth/sesion', {headers: {Authorization: 'Bearer ' + tokenConfirmacion}})
+        .then(respuesta => {
+            if (!respuesta.ok) return;
+            document.getElementById('folio-acceso-confirmacion').hidden = true;
+            cuentaConfirmacion.hidden = false;
+        })
+        .catch(() => { cuentaConfirmacion.hidden = true; });
+}

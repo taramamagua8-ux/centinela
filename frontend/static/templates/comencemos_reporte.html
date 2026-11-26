@@ -1,9 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=formulario_reporte.html">
-    <title>Continuar con tu reporte | Centinela Digital</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <title>Comencemos tu reporte | Centinela Digital</title>
+    <link rel="stylesheet" href="../css/reporte.css">
 </head>
-<body><a href="formulario_reporte.html">Continuar con tu reporte</a></body>
+<body>
+    <main class="container">
+        <header class="header"><h1>Comencemos tu reporte</h1></header>
+        <section class="form-card flujo-reporte">
+            <p>Antes de continuar es importante que conozcas la información relacionada
+            con tu reporte (Te recomendamos leer los terminos y condiciones)</p>
+            <p><a href="terminos.html?desde=reporte">Leer términos y condiciones</a></p>
+            <form id="inicio-reporte">
+                <label><input type="checkbox" required> Estoy consciente de que la información proporcionada sera utilizada
+                    para generar un reporte dentro de Centinela Digital.</label>
+                <div class="acciones-reporte">
+                    <a href="formulario_reporte.html">Volver</a>
+                    <button class="btn-formulario" type="submit">Continuar</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="../js/comencemos_reporte.js"></script>
+</body>
 </html>
