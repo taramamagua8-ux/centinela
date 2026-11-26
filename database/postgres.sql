@@ -228,3 +228,13 @@ CREATE TABLE IF NOT EXISTS comprobantes_cierre (
     fecha TIMESTAMPTZ NOT NULL
 );
 CREATE INDEX IF NOT EXISTS comprobantes_cierre_reporte_idx ON comprobantes_cierre (id_reporte, fecha DESC);
+
+CREATE TABLE IF NOT EXISTS comprobantes_autoridad (
+    id_autoridad BIGINT PRIMARY KEY REFERENCES autoridades ON DELETE CASCADE,
+    nombre VARCHAR(255) NOT NULL,
+    contenido BYTEA NOT NULL,
+    fecha TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revisado_por BIGINT REFERENCES administradores,
+    fecha_revision TIMESTAMPTZ,
+    observaciones TEXT
+);

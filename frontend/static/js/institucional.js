@@ -77,8 +77,7 @@ if (byId('registro-autoridad')) {
         tipos.forEach(item => type.add(new Option(item.nombre, item.id_tipo_violencia)));
     }).catch(error => { notice.textContent = error.message; });
     handle(form, 'submit', async () => {
-        const payload = values(form);
-        payload.id_tipo_violencia = Number(payload.id_tipo_violencia) || null;
+        const payload = new FormData(form);
         const response = await api('/auth/autoridades/registro', 'POST', payload);
         form.reset();
         updateType();
@@ -284,14 +283,31 @@ if (page === 'administracion_reportes' && sessionStorage.getItem(sessionKey)) {
             appendField(card, 'Correo', item.correo);
             appendField(card, 'Institución y cargo', item.institucion + ' · ' + item.cargo);
             appendField(card, 'Perfil', item.violencia || 'Orientador escolar');
+            appendField(card, 'Estado', 'En revisión');
+            const path = '/canalizacion/autoridades/' + item.id_autoridad;
+            const confirmed = node('input');
+            confirmed.type = 'checkbox';
+            const label = node('label', ' Confirmo que el documento acredita a la autoridad.');
+            label.prepend(confirmed);
+            if (item.comprobante) {
+                card.append(action('Descargar comprobante', () => downloadFile(path + '/comprobante', item.comprobante)), label);
+            } else {
+                appendField(card, 'Comprobante', 'Pendiente de adjuntar');
+            }
             const buttons = node('div');
             buttons.className = 'acciones-institucionales';
             for (const [label, aprobar] of [['Aprobar acceso', true], ['Rechazar acceso', false]]) {
-                buttons.append(action(label, async () => {
-                    await api('/canalizacion/autoridades/' + item.id_autoridad, 'PATCH', {aprobar});
+                const decision = action(label, async () => {
+                    await api(path, 'PATCH', {aprobar, comprobante_validado: confirmed.checked,
+                        version_comprobante: item.fecha_comprobante});
                     await loadApplications();
                     notice.textContent = aprobar ? 'Acceso aprobado.' : 'Acceso rechazado.';
-                }));
+                });
+                if (aprobar) {
+                    decision.disabled = true;
+                    confirmed.addEventListener('change', () => { decision.disabled = !confirmed.checked; });
+                }
+                buttons.append(decision);
             }
             card.append(buttons);
             return card;
@@ -452,12 +468,42 @@ if (page === 'administracion_reportes' && sessionStorage.getItem(sessionKey)) {
         await loadCases();
         notice.textContent = 'Institución registrada.';
     });
+    async function loadAdministrators() {
+        const {administradores} = await api('/canalizacion/administradores');
+        replaceList(byId('lista-administradores'), administradores, item => {
+            const card = node('article');
+            card.append(node('h3', item.nombre));
+            appendField(card, 'Correo', item.correo);
+            appendField(card, 'Estado', item.activo === 1 ? 'Activo' : 'Desactivado');
+            if (item.activo !== 1 || item.cuenta_actual) return card;
+            const output = node('output');
+            const actions = node('div');
+            actions.className = 'acciones-institucionales';
+            for (const [label, accion] of [['Renovar folio', 'renovar_folio'], ['Desactivar acceso', 'desactivar']]) {
+                actions.append(action(label, async () => {
+                    if (!confirm(label + ' para ' + item.nombre + '? Sus sesiones se cerrarán.')) return;
+                    const reply = await api('/canalizacion/administradores/' + item.id_administrador, 'PATCH', {accion});
+                    if (reply.folio) {
+                        output.textContent = 'Nuevo folio de acceso · ' + reply.folio;
+                        notice.textContent = 'Folio renovado.';
+                    } else {
+                        await loadAdministrators();
+                        notice.textContent = 'Acceso administrativo desactivado.';
+                    }
+                }));
+            }
+            card.append(actions, output);
+            return card;
+        }, 'No hay administradores registrados.');
+    }
+
     handle(adminForm, 'submit', async () => {
         byId('folio-admin').textContent = '';
         const result = await api('/canalizacion/administradores', 'POST', values(adminForm));
         adminForm.reset();
         byId('folio-admin').textContent = 'Folio de acceso · ' + result.folio;
         notice.textContent = 'Administrador creado. Guarda su folio de acceso.';
+        await loadAdministrators();
     });
-    Promise.all([loadApplications(), loadCases()]).catch(error => { notice.textContent = error.message; });
+    Promise.all([loadApplications(), loadCases(), loadAdministrators()]).catch(error => { notice.textContent = error.message; });
 }

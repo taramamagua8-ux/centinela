@@ -33,7 +33,7 @@
         <p><a href="expedientes.html">Gestionar expedientes, actividades e informes</a></p>
         <button id="cerrar-sesion" class="boton-secundario">Cerrar sesión</button>
         <details class="panel-institucional">
-            <summary>Agregar administrador</summary>
+            <summary>Administradores</summary>
             <form id="nuevo-admin" class="formulario-institucional">
             <label>Nombre completo <input name="nombre" maxlength="150" autocomplete="name" required></label>
             <label>Correo electrónico <input type="email" name="correo" maxlength="150" autocomplete="username" required></label>
@@ -41,6 +41,7 @@
                 <button>Crear administrador</button>
                 <output id="folio-admin"></output>
             </form>
+            <div id="lista-administradores" class="lista-institucional"></div>
         </details>
         <details class="panel-institucional" open>
             <summary>Solicitudes de acceso de autoridades</summary>

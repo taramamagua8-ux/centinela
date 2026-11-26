@@ -357,38 +357,43 @@ const instituciones = {
 const parametros = new URLSearchParams(window.location.search);
 const id = parametros.get("id");
 
-const institucion = instituciones[id];
+function mostrarInstitucion(institucion) {
+    if (institucion) {
 
-if (institucion) {
+        document.getElementById("nombreInstitucion").textContent = institucion.nombre;
+        document.getElementById("resumenInstitucion").textContent = institucion.resumen;
+        document.getElementById("ubicacionInstitucion").textContent = institucion.ubicacion;
+        document.getElementById("descripcionInstitucion").textContent = institucion.descripcion;
+        document.getElementById("telefonoInstitucion").textContent = institucion.telefono;
+        document.getElementById("horarioInstitucion").textContent = institucion.horario;
+        document.getElementById("sitioInstitucion").textContent = institucion.sitio;
 
-    document.getElementById("nombreInstitucion").textContent = institucion.nombre;
-    document.getElementById("resumenInstitucion").textContent = institucion.resumen;
-    document.getElementById("ubicacionInstitucion").textContent = institucion.ubicacion;
-    document.getElementById("descripcionInstitucion").textContent = institucion.descripcion;
-    document.getElementById("telefonoInstitucion").textContent = institucion.telefono;
-    document.getElementById("horarioInstitucion").textContent = institucion.horario;
-    document.getElementById("sitioInstitucion").textContent = institucion.sitio;
+        if (institucion.correo) {
+            document.getElementById("correoInstitucion").textContent = institucion.correo;
+            document.getElementById("filaCorreo").hidden = false;
+        }
 
-    if (institucion.correo) {
-        document.getElementById("correoInstitucion").textContent = institucion.correo;
-        document.getElementById("filaCorreo").hidden = false;
+        const lista = document.getElementById("serviciosInstitucion");
+
+        institucion.servicios.forEach(function(servicio) {
+
+            const elemento = document.createElement("li");
+            elemento.textContent = servicio;
+
+            lista.appendChild(elemento);
+
+        });
+
+    } else {
+
+        document.getElementById("nombreInstitucion").textContent = "Institución no encontrada";
+        document.getElementById("resumenInstitucion").textContent = "No se encontró información para esta institución.";
+        document.getElementById("descripcionInstitucion").textContent = "Regresa al directorio e intenta realizar otra búsqueda.";
+
     }
-
-    const lista = document.getElementById("serviciosInstitucion");
-
-    institucion.servicios.forEach(function(servicio) {
-
-        const elemento = document.createElement("li");
-        elemento.textContent = servicio;
-
-        lista.appendChild(elemento);
-
-    });
-
+}
+if (catalogoInstituciones.esRegistro(id)) {
+    catalogoInstituciones.obtener(id).then(mostrarInstitucion).catch(() => mostrarInstitucion(null));
 } else {
-
-    document.getElementById("nombreInstitucion").textContent = "Institución no encontrada";
-    document.getElementById("resumenInstitucion").textContent = "No se encontró información para esta institución.";
-    document.getElementById("descripcionInstitucion").textContent = "Regresa al directorio e intenta realizar otra búsqueda.";
-
+    mostrarInstitucion(Object.hasOwn(instituciones, id) ? instituciones[id] : null);
 }

@@ -293,79 +293,89 @@ function coincide(contenido, palabra) {
     return contenido.includes(palabra);
 }
 
-const encontrados = instituciones.filter(function(institucion) {
+function renderizarResultados(catalogo) {
+    listaResultados.replaceChildren();
+    const nombresCatalogo = new Set(catalogo.map(item => normalizar(item.nombre)));
+    const referencias = instituciones.filter(item => !nombresCatalogo.has(normalizar(item.nombre)));
+    const encontrados = [...catalogo, ...referencias].filter(function(institucion) {
 
-    const contenido = normalizar(
-        institucion.nombre + " " +
-        institucion.descripcion + " " +
-        institucion.ubicacion + " " +
-        institucion.servicios.join(" ") + " " +
-        institucion.palabras
-    );
+        const contenido = normalizar(
+            institucion.nombre + " " +
+            institucion.descripcion + " " +
+            institucion.ubicacion + " " +
+            institucion.servicios.join(" ") + " " +
+            institucion.palabras
+        );
 
-    return palabrasBusqueda.every(function(palabra) {
-        return coincide(contenido, palabra);
+        return palabrasBusqueda.every(function(palabra) {
+            return coincide(contenido, palabra);
+        });
+
     });
 
-});
+    cantidad.textContent = encontrados.length + " instituciones encontradas";
 
-cantidad.textContent = encontrados.length + " instituciones encontradas";
+    if (encontrados.length === 0) {
 
-if (encontrados.length === 0) {
+        mensaje.hidden = false;
 
-    mensaje.hidden = false;
+    } else {
 
-} else {
+        mensaje.hidden = true;
 
-    mensaje.hidden = true;
+        encontrados.forEach(function(institucion) {
 
-    encontrados.forEach(function(institucion) {
+            const tarjeta = document.createElement("article");
+            tarjeta.className = "tarjeta-resultado";
 
-        const tarjeta = document.createElement("article");
-        tarjeta.className = "tarjeta-resultado";
+            const informacion = document.createElement("div");
+            informacion.className = "informacion";
 
-        const informacion = document.createElement("div");
-        informacion.className = "informacion";
+            const nombre = document.createElement("h2");
+            nombre.textContent = institucion.nombre;
 
-        const nombre = document.createElement("h2");
-        nombre.textContent = institucion.nombre;
+            const descripcion = document.createElement("p");
+            descripcion.textContent = institucion.descripcion;
 
-        const descripcion = document.createElement("p");
-        descripcion.textContent = institucion.descripcion;
+            const ubicacion = document.createElement("p");
+            ubicacion.textContent = "Ubicación: " + institucion.ubicacion;
 
-        const ubicacion = document.createElement("p");
-        ubicacion.textContent = "Ubicación: " + institucion.ubicacion;
+            const etiquetas = document.createElement("div");
 
-        const etiquetas = document.createElement("div");
+            institucion.servicios.forEach(function(servicio) {
 
-        institucion.servicios.forEach(function(servicio) {
+                const etiqueta = document.createElement("span");
+                etiqueta.className = "etiqueta";
+                etiqueta.textContent = servicio;
 
-            const etiqueta = document.createElement("span");
-            etiqueta.className = "etiqueta";
-            etiqueta.textContent = servicio;
+                etiquetas.appendChild(etiqueta);
 
-            etiquetas.appendChild(etiqueta);
+            });
+
+            const boton = document.createElement("a");
+            boton.className = "boton-ver";
+            boton.href = "detalle_institucion.html?id=" + institucion.id;
+            boton.textContent = "Ver más";
+
+            informacion.appendChild(nombre);
+            informacion.appendChild(descripcion);
+            informacion.appendChild(ubicacion);
+            informacion.appendChild(etiquetas);
+
+            tarjeta.appendChild(informacion);
+            tarjeta.appendChild(boton);
+
+            listaResultados.appendChild(tarjeta);
 
         });
 
-        const boton = document.createElement("a");
-        boton.className = "boton-ver";
-        boton.href = "detalle_institucion.html?id=" + institucion.id;
-        boton.textContent = "Ver más";
-
-        informacion.appendChild(nombre);
-        informacion.appendChild(descripcion);
-        informacion.appendChild(ubicacion);
-        informacion.appendChild(etiquetas);
-
-        tarjeta.appendChild(informacion);
-        tarjeta.appendChild(boton);
-
-        listaResultados.appendChild(tarjeta);
-
-    });
+    }
 
 }
+renderizarResultados([]);
+catalogoInstituciones.listar().then(renderizarResultados).catch(() => {
+    /* Mostrar las referencias incluso si la API del catálogo está fuera de servicio. */
+});
 
 document.getElementById("formularioResultados").addEventListener("submit", function(evento) {
 

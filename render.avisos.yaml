@@ -1,0 +1,16 @@
+services:
+  - type: cron
+    name: centinela-avisos
+    runtime: python
+    schedule: "*/10 * * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m flask --app backend.main enviar-avisos
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL
+        sync: false
+      - key: CENTINELA_SMTP_FROM
+        sync: false
+      - key: CENTINELA_RESEND_API_KEY
+        sync: false

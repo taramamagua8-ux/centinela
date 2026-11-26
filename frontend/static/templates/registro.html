@@ -15,13 +15,13 @@
             <p>Regístrate para administrar tus datos y consultar tus reportes.</p>
             <form id="form-registro" class="form-cuenta">
                 <label for="nombre">Nombre completo</label>
-                <input id="nombre" name="nombre" type="text" required autocomplete="name">
+                <input id="nombre" name="nombre" maxlength="150" type="text" required autocomplete="name">
                 <label for="correo">Correo electrónico</label>
-                <input id="correo" name="correo" type="email" required autocomplete="email">
+                <input id="correo" name="correo" maxlength="150" type="email" required autocomplete="email">
                 <label for="contrasena">Contraseña</label>
-                <input id="contrasena" name="contrasena" type="password" minlength="6" required autocomplete="new-password">
+                <input id="contrasena" name="contrasena" type="password" minlength="8" maxlength="128" required autocomplete="new-password">
                 <label for="confirmar_contrasena">Confirmar contraseña</label>
-                <input id="confirmar_contrasena" name="confirmar_contrasena" type="password" minlength="6" required autocomplete="new-password">
+                <input id="confirmar_contrasena" name="confirmar_contrasena" type="password" minlength="8" maxlength="128" required autocomplete="new-password">
                 <div id="aviso-auth" class="aviso-cuenta" role="alert"></div>
                 <button class="boton-cuenta" type="submit">Crear cuenta</button>
             </form>

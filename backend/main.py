@@ -1,6 +1,7 @@
 """API de Centinela Digital conectada a PostgreSQL."""
 from datetime import date, datetime
 from uuid import UUID
+from urllib.request import Request, urlopen
 import hashlib, io, json, os, secrets, threading
 from functools import wraps
 from pathlib import Path
@@ -14,6 +15,7 @@ import psycopg
 from backend.database import connect, initialize
 from flask import Flask, g, jsonify, request, send_from_directory, redirect, send_file
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 FRONTEND = Path(__file__).resolve().parent.parent / "frontend" / "static"
 app = Flask(__name__, static_folder=str(FRONTEND), static_url_path="/static")
@@ -171,11 +173,24 @@ def health():
     one("SELECT 1")
     return jsonify({"ok": True, "servicio": "Centinela Digital"})
 
+def account_fields(item):
+    name = input_text(item, "nombre", 150)
+    email = input_text(item, "correo", 150)
+    if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
+        email = ""
+    password = item.get("contrasena")
+    if not isinstance(password, str) or not 8 <= len(password) <= 128:
+        password = ""
+    return name, email, password
+
+
 @app.post("/api/auth/registro")
 def register():
     item = data()
-    if not all(item.get(key) for key in ("nombre", "correo", "contrasena")):
-        return fail("nombre, correo y contrasena son obligatorios.")
+    name, email, password = account_fields(item)
+    if not name or not email or not password:
+        return fail("Escribe un nombre, un correo válido y una contraseña de 8 a 128 caracteres.")
+    item = {"nombre": name, "correo": email, "contrasena": password}
     if one("SELECT id_usuario FROM usuarios WHERE correo=%s", (item["correo"],)):
         return fail("El correo ya está registrado.", 409)
     user_id = run(
@@ -235,14 +250,18 @@ def session_info():
 @user_required
 def update_user():
     user_id, item = g.user_id, data()
+    name, email, password = account_fields(item)
+    validated = {"nombre": name, "correo": email}
+    if any(key in item and not validated[key] for key in validated) or ("contrasena" in item and not password):
+        return fail("Revisa el nombre, correo o contraseña. La contraseña admite de 8 a 128 caracteres.")
     fields, values = [], []
     for key in ("nombre", "correo"):
         if key in item:
             fields.append(f"{key}=%s")
-            values.append(item[key])
-    if item.get("contrasena"):
+            values.append(validated[key])
+    if password:
         fields.append("contrasena_hash=%s")
-        values.append(generate_password_hash(item["contrasena"]))
+        values.append(generate_password_hash(password))
     if not fields:
         return fail("No hay cambios para actualizar.")
     values.append(user_id)
@@ -499,10 +518,14 @@ def consult_report():
         return fail("Folio no encontrado.", 404)
     report = report_json(item)
     owner = tracking_owner(item)
-    fields = ("folio", "fecha_registro", "estado", "nivel_riesgo")
+    fields = ("folio", "fecha_registro", "estado")
+    if owner:
+        fields += ("nivel_riesgo",)
     response = {key: report[key] for key in fields}
+    response["requiere_sesion"] = not bool(owner)
     response["respuesta_institucion"] = report["respuesta_institucion"] if owner else None
-    response["ocurrio_en_escuela"] = report["ocurrio_en_escuela"]
+    if owner:
+        response["ocurrio_en_escuela"] = report["ocurrio_en_escuela"]
     response["historial"] = many(
         "SELECT e.nombre AS estado,s.fecha_actualizacion,CASE WHEN s.publica AND %s THEN s.observaciones END AS observaciones FROM seguimiento_reportes s "
         "JOIN estados_reporte e USING (id_estado) WHERE id_reporte=%s ORDER BY id_seguimiento",
@@ -522,7 +545,7 @@ def consult_report():
             "SELECT 1 FROM canalizaciones WHERE id_reporte=%s AND evaluacion->>'informacion_suficiente'='false'",
             (item["id_reporte"],),
         ))
-    if item["rol_reportante"]:
+    if owner and item["rol_reportante"]:
         response["rol_reportante"] = report["rol_reportante"]
         response["tipos"] = many(
             "SELECT t.nombre,t.descripcion AS orientacion,i.nombre AS institucion,i.sitio_web,i.telefono "
@@ -725,47 +748,101 @@ def authority_login():
 
 @app.post("/api/auth/autoridades/registro")
 def authority_registration():
-    item = data()
+    item = request.form
     institution = input_text(item, "institucion", 150)
     position = input_text(item, "cargo", 150)
     role = item.get("tipo_autoridad")
-    violence_type = item.get("id_tipo_violencia")
+    violence_type = item.get("id_tipo_violencia", type=int)
     if role == "orientador":
         violence_type = None
-    elif role != "especialista" or type(violence_type) is not int or not one(
+    elif role != "especialista" or violence_type is None or not one(
         "SELECT 1 FROM tipos_violencia WHERE activo=1 AND id_tipo_violencia=%s", (violence_type,)
     ):
         return fail("Selecciona el tipo de autoridad y, si corresponde, el tipo de violencia.")
     credentials = staff_credentials(item)
+    proof = request.files.get("comprobante")
     if not credentials or not institution or not position:
         return fail("Completa los datos y usa una contraseña de 12 a 128 caracteres.")
-    run("INSERT INTO autoridades (nombre,correo,contrasena_hash,institucion,cargo,"
-        "tipo_autoridad,id_tipo_violencia) VALUES (%s,%s,%s,%s,%s,%s,%s)",
-        (*credentials, institution, position, role, violence_type))
+    if not proof or not proof.filename or len(proof.filename) > 255 or not proof.filename.lower().endswith(".pdf"):
+        return fail("Adjunta un nombramiento o carta oficial en PDF.")
+    content = proof.read(5 * 1024 * 1024 + 1)
+    if len(content) > 5 * 1024 * 1024:
+        return fail("El comprobante admite hasta 5 MB.", 413)
+    if not content.startswith(b"%PDF-") or b"%%EOF" not in content[-1024:]:
+        return fail("El comprobante debe estar en formato PDF.")
+    filename = secure_filename(proof.filename)
+    if not filename.lower().endswith(".pdf"):
+        filename = "comprobante.pdf"
+    name, email, password_hash = credentials
+    existing = one(
+        "SELECT a.id_autoridad,a.activo,a.contrasena_hash "
+        "FROM autoridades a "
+        "WHERE a.correo=%s FOR UPDATE OF a", (email,),
+    )
+    if existing:
+        if existing["activo"] == 1 or not check_password_hash(existing["contrasena_hash"], item["contrasena"]):
+            return fail("Ya existe una cuenta de autoridad con ese correo.", 409)
+        authority_id = existing["id_autoridad"]
+        run("UPDATE autoridades SET nombre=%s,institucion=%s,cargo=%s,tipo_autoridad=%s,"
+            "id_tipo_violencia=%s,activo=0 WHERE id_autoridad=%s",
+            (name, institution, position, role, violence_type, authority_id))
+        run("DELETE FROM sesiones WHERE id_autoridad=%s", (authority_id,))
+    else:
+        authority_id = one(
+            "INSERT INTO autoridades (nombre,correo,contrasena_hash,institucion,cargo,"
+            "tipo_autoridad,id_tipo_violencia) VALUES (%s,%s,%s,%s,%s,%s,%s) RETURNING id_autoridad",
+            (name, email, password_hash, institution, position, role, violence_type),
+        )["id_autoridad"]
+    run("INSERT INTO comprobantes_autoridad (id_autoridad,nombre,contenido) VALUES (%s,%s,%s) "
+        "ON CONFLICT (id_autoridad) DO UPDATE SET nombre=EXCLUDED.nombre,contenido=EXCLUDED.contenido,"
+        "fecha=CURRENT_TIMESTAMP,revisado_por=NULL,fecha_revision=NULL,observaciones=NULL",
+        (authority_id, filename, content))
     g.db.commit()
-    return jsonify({"mensaje": "Solicitud enviada. Un administrador debe revisar tu acceso."}), 201
+    return jsonify({"mensaje": "Solicitud en revisión. Podrás iniciar sesión cuando un administrador valide tu comprobante."}), 201
 
 
 @app.get("/api/canalizacion/autoridades")
 @admin_required
 def review_authorities():
     return jsonify({"autoridades": many(
-        "SELECT a.id_autoridad,a.nombre,a.correo,a.institucion,a.cargo,a.tipo_autoridad,t.nombre AS violencia "
+        "SELECT a.id_autoridad,a.nombre,a.correo,a.institucion,a.cargo,a.tipo_autoridad,t.nombre AS violencia,"
+        "p.nombre AS comprobante,p.fecha::text AS fecha_comprobante "
         "FROM autoridades a LEFT JOIN tipos_violencia t USING (id_tipo_violencia) "
-        "WHERE a.activo=0 ORDER BY a.id_autoridad"
+        "LEFT JOIN comprobantes_autoridad p USING (id_autoridad) WHERE a.activo=0 ORDER BY a.id_autoridad"
     )})
+
+
+@app.get("/api/canalizacion/autoridades/<int:authority_id>/comprobante")
+@admin_required
+def download_authority_proof(authority_id):
+    proof = one("SELECT nombre,contenido FROM comprobantes_autoridad WHERE id_autoridad=%s", (authority_id,))
+    if not proof:
+        return fail("No hay comprobante para esta solicitud.", 404)
+    response = send_file(io.BytesIO(proof["contenido"]), mimetype="application/octet-stream",
+                         as_attachment=True, download_name=proof["nombre"])
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
 
 
 @app.patch("/api/canalizacion/autoridades/<int:authority_id>")
 @admin_required
 def decide_authority(authority_id):
-    approve = data().get("aprobar")
+    item = data()
+    approve = item.get("aprobar")
     if type(approve) is not bool:
         return fail("Indica si apruebas el acceso.")
-    updated = one("UPDATE autoridades SET activo=%s WHERE id_autoridad=%s AND activo=0 RETURNING id_autoridad",
-                  (1 if approve else -1, authority_id))
-    if not updated:
+    pending = one("SELECT id_autoridad FROM autoridades WHERE id_autoridad=%s AND activo=0 FOR UPDATE", (authority_id,))
+    if not pending:
         return fail("La solicitud ya fue revisada o no existe.", 409)
+    if approve and not (item.get("comprobante_validado") is True and one(
+        "SELECT 1 FROM comprobantes_autoridad WHERE id_autoridad=%s AND fecha::text=%s",
+        (authority_id, input_text(item, "version_comprobante", 80)),
+    )):
+        return fail("Verifica el comprobante antes de aprobar el acceso.", 409)
+    reason = input_text(item, "observaciones", 2000)
+    run("UPDATE autoridades SET activo=%s WHERE id_autoridad=%s", (1 if approve else -1, authority_id))
+    run("UPDATE comprobantes_autoridad SET revisado_por=%s,fecha_revision=CURRENT_TIMESTAMP,observaciones=%s "
+        "WHERE id_autoridad=%s", (g.admin_id, reason or None, authority_id))
     g.db.commit()
     return jsonify({"ok": True})
 
@@ -781,6 +858,42 @@ def add_administrator():
         (*credentials, token_hash(folio)))
     g.db.commit()
     return jsonify({"folio": folio}), 201
+
+
+@app.get("/api/canalizacion/administradores")
+@admin_required
+def list_administrators():
+    return jsonify({"administradores": many(
+        "SELECT id_administrador,nombre,correo,activo,id_administrador=%s AS cuenta_actual "
+        "FROM administradores ORDER BY nombre", (g.admin_id,)
+    )})
+
+
+@app.patch("/api/canalizacion/administradores/<int:admin_id>")
+@admin_required
+def manage_administrator(admin_id):
+    action = data().get("accion")
+    if action not in ("desactivar", "renovar_folio"):
+        return fail("Selecciona una acción válida.")
+    if admin_id == g.admin_id:
+        return fail("Otro administrador debe realizar este cambio.", 409)
+    # Serialize revocations and recheck the actor after waiting for an in-flight change.
+    one("SELECT pg_advisory_xact_lock(892174321)")
+    if not current_admin():
+        return fail("Se requiere una sesión administrativa activa.", 401)
+    target = one("SELECT activo FROM administradores WHERE id_administrador=%s FOR UPDATE", (admin_id,))
+    if not target or target["activo"] != 1:
+        return fail("La cuenta administrativa no está activa.", 404)
+    result = {"ok": True}
+    if action == "desactivar":
+        run("UPDATE administradores SET activo=0 WHERE id_administrador=%s", (admin_id,))
+    else:
+        folio = "ADM-" + secrets.token_hex(16).upper()
+        run("UPDATE administradores SET folio_hash=%s WHERE id_administrador=%s", (token_hash(folio), admin_id))
+        result["folio"] = folio
+    run("DELETE FROM sesiones WHERE id_administrador=%s", (admin_id,))
+    g.db.commit()
+    return jsonify(result)
 
 
 def authority_required(function):
@@ -967,10 +1080,16 @@ def referrals():
     )})
 
 
+def mail_configured():
+    return bool(os.getenv("CENTINELA_SMTP_FROM") and (
+        os.getenv("CENTINELA_RESEND_API_KEY") or os.getenv("CENTINELA_SMTP_HOST")
+    ))
+
+
 def send_referral_email(report_id, delivery):
     host, sender = os.getenv("CENTINELA_SMTP_HOST"), os.getenv("CENTINELA_SMTP_FROM")
-    if not host or not sender:
-        raise ValueError("Falta la configuración SMTP")
+    if not mail_configured():
+        raise ValueError("Falta la configuración del correo")
     message = EmailMessage()
     message["From"], message["To"] = sender, delivery["correo"]
     message["Subject"] = f"Solicitud de orientación institucional CD-{report_id}"
@@ -983,6 +1102,18 @@ def send_referral_email(report_id, delivery):
 
 
 def deliver_email(host, message):
+    api_key = os.getenv("CENTINELA_RESEND_API_KEY")
+    if api_key:
+        payload = {"from": str(message["From"]), "to": [str(message["To"])],
+                   "subject": str(message["Subject"]), "text": message.get_content()}
+        outgoing = Request(
+            "https://api.resend.com/emails", data=json.dumps(payload).encode("utf-8"), method="POST",
+            headers={"Authorization": "Bearer " + api_key, "Content-Type": "application/json",
+                     "User-Agent": "CentinelaDigital/1"},
+        )
+        with urlopen(outgoing, timeout=8) as response:
+            response.read()
+        return
     with smtplib.SMTP(host, int(os.getenv("CENTINELA_SMTP_PORT", "587")), timeout=8) as smtp:
         smtp.starttls(context=ssl.create_default_context())
         if os.getenv("CENTINELA_SMTP_USER"):
@@ -1014,8 +1145,8 @@ def decide_referral(report_id):
         g.db.commit()
         return jsonify({"ok": True})
 
-    if not os.getenv("CENTINELA_SMTP_HOST") or not os.getenv("CENTINELA_SMTP_FROM"):
-        return fail("Configura el correo SMTP antes de aprobar la canalización.", 503)
+    if not mail_configured():
+        return fail("Configura el correo antes de aprobar la canalización.", 503)
     if case["id_administrador"] is None:
         destinations = many(
             "SELECT DISTINCT i.id_institucion,i.correo FROM reporte_tipo_violencia t "
@@ -1064,7 +1195,7 @@ def dispatch_referral(report_id, risk):
         g.db.commit()
     report = one("SELECT id_estado FROM reportes WHERE id_reporte=%s FOR UPDATE", (report_id,))
     if one("SELECT 1 FROM envios_correo WHERE id_reporte=%s AND vigente AND estado<>'enviado'", (report_id,)):
-        return fail("Quedan correos sin enviar. Corrige SMTP y reintenta desde el panel.", 502)
+        return fail("Quedan correos sin enviar. Revisa la configuración de correo y reintenta desde el panel.", 502)
     if report["id_estado"] == REFERRAL_REVIEW:
         run("UPDATE reportes SET nivel_riesgo=%s WHERE id_reporte=%s", (risk, report_id))
         move_report(report_id, REFERRED)
@@ -1114,10 +1245,10 @@ def notify_reporter(report_id, message):
 def send_queued_notices():
     """Entrega un lote de avisos de seguimiento a reportantes registrados."""
     host, sender = os.getenv("CENTINELA_SMTP_HOST"), os.getenv("CENTINELA_SMTP_FROM")
-    if not host or not sender:
-        raise RuntimeError("Configura CENTINELA_SMTP_HOST y CENTINELA_SMTP_FROM.")
+    if not mail_configured():
+        raise RuntimeError("Configura el remitente y un proveedor de correo.")
     with db_connection() as db:
-        while True:
+        for _ in range(50):
             row = db.execute(
                 "SELECT a.id_aviso,a.mensaje,u.correo,r.folio FROM avisos a JOIN usuarios u USING (id_usuario) "
                 "JOIN reportes r USING (id_reporte) WHERE u.activo=1 AND a.correo_estado IN ('pendiente','fallido') "
@@ -1548,8 +1679,8 @@ def reassign_institution(report_id):
     reason = input_text(item, "motivo", 2000)
     if type(institution) is not int or type(previous) is not int or previous == institution or not reason:
         return fail("Selecciona las instituciones y escribe el motivo de reasignación.")
-    if not os.getenv("CENTINELA_SMTP_HOST") or not os.getenv("CENTINELA_SMTP_FROM"):
-        return fail("Configura SMTP antes de reasignar.", 503)
+    if not mail_configured():
+        return fail("Configura el correo antes de reasignar.", 503)
     case = lock_case(report_id)
     if not case or case["id_estado"] not in (REFERRED, REPLY):
         return fail("La solicitud debe estar canalizada y abierta.", 409)

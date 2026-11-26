@@ -40,12 +40,16 @@
                 <select name="tipo_autoridad" required>
                     <option value="">Selecciona un tipo</option>
                     <option value="orientador">Orientador escolar</option>
-                    <option value="especialista">Especialista por tipo de violencia</option>
+                    <option value="especialista">Representante institucional por tipo de violencia</option>
                 </select>
             </label>
             <label id="campo-tipo-violencia" hidden>Tipo de violencia
                 <select name="id_tipo_violencia"><option value="">Selecciona un tipo</option></select>
             </label>
+            <label>Nombramiento o carta oficial de la escuela o institución (PDF, hasta 5 MB)
+                <input type="file" name="comprobante" accept=".pdf,application/pdf" required>
+            </label>
+            <p>Adjunta un documento que acredite tu cargo o autorización para representar a la institución. El acceso queda en revisión hasta que se valide.</p>
             <button>Enviar solicitud</button>
             <a href="acceso_autoridad.html">Ir al inicio de sesión</a>
         </form>

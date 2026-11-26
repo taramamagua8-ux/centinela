@@ -41,13 +41,14 @@ Crea el primer administrador con DATABASE_URL configurada. El comando solicita l
 
 Para generar un folio para una cuenta previa, ejecuta el mismo comando con la opción --renovar-folio. La renovación cierra las sesiones previas.
 
-Desde el inicio, abre **Acceso de administrador** en el menú. En **Canalización** puedes aprobar cuentas de autoridad, crear administradores, registrar instituciones, revisar evaluaciones y publicar respuestas. En **Expedientes** puedes asignar responsables, registrar atenciones y evidencias, gestionar actividades, cerrar casos y consultar informes.
+Desde el inicio, abre **Acceso de administrador** en el menú. En **Canalización** puedes aprobar cuentas de autoridad, crear administradores, revocar el acceso de otra cuenta administrativa, renovar su folio, registrar instituciones, revisar evaluaciones y publicar respuestas. En **Expedientes** puedes asignar responsables, registrar atenciones y evidencias, gestionar actividades, cerrar casos y consultar informes.
 
-Las solicitudes de autoridad se crean en **Registrarse como autoridad** desde la página principal. Un administrador verifica y aprueba la solicitud. El orientador recibe casos marcados como escolares. Los especialistas reciben casos del tipo de violencia asignado. Los reportes antiguos sin respuesta escolar quedan con el dato desconocido.
+Las solicitudes de autoridad se crean en **Registrarse como autoridad** desde la página principal. Se requiere un nombramiento o carta oficial en PDF de hasta 5 MB. Solo los administradores acceden al archivo. La solicitud queda en revisión hasta que un administrador confirme el comprobante. Las solicitudes pendientes anteriores pueden adjuntar el PDF desde el mismo formulario con su correo y contraseña. Las cuentas que ya estaban activas conservan su acceso. El orientador recibe casos marcados como escolares. Los especialistas reciben casos del tipo de violencia asignado. Los reportes antiguos sin respuesta escolar quedan con el dato desconocido.
 
 Registra los destinos con sus correos oficiales desde Canalización. Puedes seleccionarlos al aprobar cada solicitud. También puedes configurar destinos predeterminados por tipo en las tablas centinela.canalizacion_tipos y centinela.instituciones.
 
-- CENTINELA_SMTP_HOST y CENTINELA_SMTP_PORT (587 por defecto, con STARTTLS).
+- CENTINELA_RESEND_API_KEY habilita el envío por HTTPS. Usa un remitente verificado y configura CENTINELA_SMTP_FROM también en el servicio web.
+- Como alternativa, CENTINELA_SMTP_HOST y CENTINELA_SMTP_PORT (587 por defecto, con STARTTLS).
 - CENTINELA_SMTP_FROM como dirección de remitente y respuesta.
 - CENTINELA_SMTP_USER y CENTINELA_SMTP_PASSWORD si el proveedor exige autenticación.
 
@@ -56,6 +57,8 @@ El correo a instituciones se intenta al aprobar o reasignar. Si falla, el panel 
 ~~~powershell
 .\.venv\Scripts\python.exe -m flask --app backend.main enviar-avisos
 ~~~
+
+Para Render, el Blueprint opcional [render.avisos.yaml](render.avisos.yaml) programa la entrega cada diez minutos, separado del servicio web. Requiere la misma base de datos y el proveedor de correo por HTTPS. Activar este Blueprint crea un servicio cron facturable. Render bloquea los puertos SMTP habituales en el plan web gratuito.
 
 La [matriz funcional](docs/revision-funcional.md) cubre las 120 pruebas del plan técnico.
 
