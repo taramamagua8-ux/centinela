@@ -52,9 +52,9 @@
                 <a class="boton-cuenta" href="formulario_reporte.html">Crear reporte</a>
                 <form id="form-editar-cuenta" class="form-cuenta form-editar-cuenta">
                     <h2>Editar mis datos</h2>
-                    <input name="nombre" type="text" placeholder="Nuevo nombre">
-                    <input name="correo" type="email" placeholder="Nuevo correo">
-                    <input name="contrasena" type="password" placeholder="Nueva contraseña" minlength="6">
+                    <input name="nombre" maxlength="150" type="text" placeholder="Nuevo nombre">
+                    <input name="correo" maxlength="150" type="email" placeholder="Nuevo correo">
+                    <input name="contrasena" type="password" placeholder="Nueva contraseña" minlength="8" maxlength="128">
                     <div id="aviso-cuenta" class="aviso-cuenta" role="alert"></div>
                     <button class="boton-cuenta" type="submit">Guardar cambios</button>
                 </form>

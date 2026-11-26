@@ -58,7 +58,17 @@ class IntegrationTests(unittest.TestCase):
         extra_admin = post("/canalizacion/administradores", {
             "nombre": "Admin alterno", "correo": "admin2@example.invalid", "contrasena": password,
         }, admin, 201)
-        auth("admin", "admin2@example.invalid", folio=extra_admin["folio"])
+        second_admin = auth("admin", "admin2@example.invalid", folio=extra_admin["folio"])
+        admins = get("/canalizacion/administradores", admin)["administradores"]
+        second_id = next(item["id_administrador"] for item in admins if item["correo"] == "admin2@example.invalid")
+        second_path = "/api/canalizacion/administradores/" + str(second_id)
+        self.assertEqual(c.patch(second_path, headers=second_admin, json={"accion": "desactivar"}).status_code, 409)
+        rotated = c.patch(second_path, headers=admin, json={"accion": "renovar_folio"})
+        self.assertEqual(rotated.status_code, 200)
+        self.assertEqual(c.get("/api/canalizacion", headers=second_admin).status_code, 401)
+        second_admin = auth("admin", "admin2@example.invalid", folio=rotated.json["folio"])
+        self.assertEqual(c.patch(second_path, headers=admin, json={"accion": "desactivar"}).status_code, 200)
+        self.assertEqual(c.get("/api/canalizacion", headers=second_admin).status_code, 401)
         institution_data = {"nombre": "Institución C", "correo": "c@example.invalid"}
         post("/canalizacion/instituciones", institution_data, status=401)
         post("/canalizacion/instituciones", institution_data, admin, 201)
@@ -66,13 +76,23 @@ class IntegrationTests(unittest.TestCase):
         staff = {}
         for role in ("orientador", "especialista"):
             email = role + "@example.invalid"
-            post("/auth/autoridades/registro", {"nombre": role, "correo": email, "contrasena": password,
-                "institucion": "Prueba", "cargo": role, "tipo_autoridad": role, "id_tipo_violencia": 2}, status=201)
+            fields = {"nombre": role, "correo": email, "contrasena": password,
+                      "institucion": "Prueba", "cargo": role, "tipo_autoridad": role, "id_tipo_violencia": "2"}
+            signup = "/api/auth/autoridades/registro"
+            self.assertEqual(c.post(signup, data=fields).status_code, 400)
+            proof = b"%PDF-1.4\n%%EOF\n"
+            uploaded = c.post(signup, data={**fields, "comprobante": (io.BytesIO(proof), "nombramiento.pdf")})
+            self.assertEqual(uploaded.status_code, 201, uploaded.get_data(as_text=True))
             post("/auth/autoridad", {"correo": email, "contrasena": password}, status=401)
             request = get("/canalizacion/autoridades", admin)["autoridades"][0]
             staff[role] = request["id_autoridad"]
-            self.assertEqual(c.patch("/api/canalizacion/autoridades/" + str(staff[role]),
-                                     headers=admin, json={"aprobar": True}).status_code, 200)
+            decision = "/api/canalizacion/autoridades/" + str(staff[role])
+            self.assertEqual(c.get(decision + "/comprobante").status_code, 401)
+            self.assertEqual(c.get(decision + "/comprobante", headers=admin).data, proof)
+            self.assertEqual(c.patch(decision, headers=admin, json={"aprobar": True}).status_code, 409)
+            self.assertEqual(c.patch(decision, headers=admin,
+                                     json={"aprobar": True, "comprobante_validado": True,
+                                           "version_comprobante": request["fecha_comprobante"]}).status_code, 200)
         orientation = auth("autoridad", "orientador@example.invalid")
         specialist = auth("autoridad", "especialista@example.invalid")
 
@@ -177,6 +197,33 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(c.get('/api/auth/sesion', headers=headers).status_code, 200)
         self.assertEqual(c.patch('/api/usuarios/me', headers={'X-Usuario-ID': '1'}, json={'nombre': 'Ataque'}).status_code, 401)
         self.assertEqual(c.patch('/api/usuarios/me', headers=headers, json={'nombre': 'Nombre actualizado'}).status_code, 200)
+        self.assertEqual(c.patch('/api/usuarios/me', headers=headers, json={"contrasena": 123}).status_code, 400)
+        self.assertEqual(c.post('/api/auth/registro', json={**user, "correo": "inválido"}).status_code, 400)
+        registered = c.post('/api/reportes', headers=headers, json={
+            "rol": "victima", "es_anonimo": False, "terminos": True, "tipo_violencia": 2,
+            "ocurrio_en_escuela": True, "detalle": {"fecha": "2026-11-10", "lugar": "Prueba",
+            "haOcurrido": "NO", "descripcion": "Descripción reservada"},
+        })
+        self.assertEqual(registered.status_code, 201)
+        query = {"folio": registered.json["reporte"]["folio"]}
+        private = c.post('/api/reportes/consulta', json=query).json["reporte"]
+        self.assertFalse({"tipos", "ocurrio_en_escuela", "nivel_riesgo", "detalle", "rol_reportante"} & private.keys())
+        own = c.post('/api/reportes/consulta', json=query, headers=headers).json["reporte"]
+        self.assertTrue(own["ocurrio_en_escuela"])
+        self.assertEqual(own["detalle"]["descripcion"], "Descripción reservada")
+        with connect() as db:
+            db.execute("INSERT INTO avisos (id_reporte,id_usuario,mensaje,correo_estado) "
+                       "SELECT id_reporte,id_usuario,'Aviso de prueba','pendiente' FROM reportes WHERE folio=%s",
+                       (query["folio"],))
+        with patch.dict(os.environ, {"CENTINELA_RESEND_API_KEY": "simulada",
+                                     "CENTINELA_SMTP_FROM": "avisos@example.invalid"}):
+            with patch("backend.main.urlopen") as send:
+                job = app.test_cli_runner().invoke(args=["enviar-avisos"])
+                self.assertEqual(job.exit_code, 0, job.output)
+                send.assert_called_once()
+                self.assertEqual(send.call_args.args[0].full_url, "https://api.resend.com/emails")
+                self.assertEqual(app.test_cli_runner().invoke(args=["enviar-avisos"]).exit_code, 0)
+                send.assert_called_once()
         report = c.post('/api/reportes', json={'detalle': {'descripcion': 'Prueba sin datos reales'}, 'tipos_violencia': [1], 'fecha_hecho': '2026-11-10'})
         self.assertEqual(report.status_code, 201)
         report = report.json['reporte']

@@ -42,7 +42,13 @@ function normalizar(texto) {
         .replace(/[\u0300-\u036f]/g, "");
 }
 
-busqueda.addEventListener("input", function() {
+let catalogo = [];
+catalogoInstituciones.listar().then(items => {
+    catalogo = items;
+    if (document.activeElement === busqueda) mostrarSugerencias();
+}).catch(() => { /* Las instituciones de referencia siguen disponibles sin la API. */ });
+
+function mostrarSugerencias() {
 
     const texto = normalizar(busqueda.value.trim());
 
@@ -53,9 +59,12 @@ busqueda.addEventListener("input", function() {
         return;
     }
 
-    const coincidencias = instituciones.filter(function(institucion) {
-        return normalizar(institucion).includes(texto);
-    });
+    const catalogNames = new Set(catalogo.map(item => normalizar(item.nombre)));
+    const referencias = instituciones.filter(name => !catalogNames.has(normalizar(name)));
+    const coincidencias = [
+        ...catalogo.filter(item => normalizar(item.nombre + ' ' + item.ubicacion).includes(texto)).map(item => item.nombre),
+        ...referencias.filter(name => normalizar(name).includes(texto)),
+    ];
 
     coincidencias.slice(0, 8).forEach(function(institucion) {
 
@@ -75,7 +84,8 @@ busqueda.addEventListener("input", function() {
     });
 
     sugerencias.hidden = coincidencias.length === 0;
-});
+}
+busqueda.addEventListener("input", mostrarSugerencias);
 
 document.querySelectorAll(".tarjeta-categoria").forEach(function(categoria) {
 

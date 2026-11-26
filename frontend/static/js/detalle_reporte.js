@@ -75,7 +75,15 @@ async function consultar() {
     mostrarDato('Descripción', reporte.detalle?.descripcion, true);
     document.getElementById('panel-detalle-reporte').hidden = !resumen.childElementCount;
 
-    mostrarOrientacion(reporte);
+    if (reporte.requiere_sesion) {
+        riesgo.parentElement.hidden = true;
+        const link = document.createElement('a');
+        link.href = 'cuenta.html';
+        link.textContent = 'Inicia sesión con la cuenta que registró el reporte para ver sus detalles.';
+        respuestaInstitucion.append(link);
+    } else {
+        mostrarOrientacion(reporte);
+    }
     for (const item of reporte.instituciones_canalizadas || []) {
         respuestaInstitucion.append(parrafo(
             [item.nombre, item.telefono].filter(Boolean).join(' · '),
