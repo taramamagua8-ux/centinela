@@ -4,31 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Acceso de autoridad | Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
     <link rel="stylesheet" href="../css/institucional.css">
     <script src="../js/institucional.js" defer></script>
 </head>
-<body class="pagina-institucional" data-pagina="acceso_autoridad">
-    <header class="barra-superior">
-        <input type="checkbox" id="menu-institucional" class="toggle-menu" aria-label="Menú principal">
-        <label for="menu-institucional" class="btn-hamburguesa"><span></span><span></span><span></span></label>
-        <nav class="menu-lateral" aria-label="Navegación principal">
-            <a href="principal.html">Inicio</a>
-            <a href="descubre_mas.html">Descubre más</a>
-            <a href="videos.html">Videos</a>
-            <a href="directorio.html">Directorio</a>
-            <a href="sobre_nosotros.html">Sobre nosotros</a>
-            <a href="acceso_autoridad.html">Acceso de autoridad</a>
-            <a href="acceso_admin.html">Acceso de administrador</a>
-        </nav>
-        <div class="logo-centro"><img src="../img/logoB.png" alt=""><span>CENTINELA DIGITAL</span></div>
-        <div class="iconos-derecha accesos-navbar">
-            <a href="formulario.html">Consultar folio</a>
-            <a href="cuenta.html">Mi cuenta</a>
-        </div>
-    </header>
+<body class="pagina-institucional pagina-acceso" data-pagina="acceso_autoridad">
+
+    <div class="barra-volver">
+        <a href="principal.html" class="btn-volver">← Volver</a>
+    </div>
+
     <main class="institucional">
+        <img class="logo-acceso" src="../img/centinela_Completo.png" alt="Centinela Digital">
         <h1>Acceso de autoridad</h1>
+        <p class="subtitulo-acceso">Ingresa con tu correo y contraseña institucionales.</p>
         <p id="aviso-institucional" role="status" aria-live="polite"></p>
         <form id="acceso" class="panel-institucional formulario-institucional">
             <label>Correo electrónico <input type="email" name="correo" maxlength="150" autocomplete="username" required></label>
