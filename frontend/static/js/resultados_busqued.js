@@ -313,7 +313,9 @@ function renderizarResultados(catalogo) {
 
     });
 
-    cantidad.textContent = encontrados.length + " instituciones encontradas";
+    cantidad.textContent = encontrados.length === 1
+        ? "1 institución encontrada"
+        : encontrados.length + " instituciones encontradas";
 
     if (encontrados.length === 0) {
 

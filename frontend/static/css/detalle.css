@@ -1,0 +1,18 @@
+/* DETALLE DE INSTITUCIÓN */
+body.pagina-app .hero-detalle { display: flex; align-items: center; gap: clamp(20px, 4vw, 40px); text-align: left; }
+.hero-detalle > div:last-child { flex: 1; min-width: 0; }
+body.pagina-app .hero-detalle h1, body.pagina-app .hero-detalle p { text-align: left; margin-left: 0; }
+.imagen-detalle { display: flex; flex: 0 0 110px; height: 110px; align-items: center; justify-content: center; overflow: hidden; border-radius: 18px; background: #fff; }
+.imagen-detalle img { width: 100%; height: 100%; object-fit: contain; }
+.bloque-detalle { overflow-wrap: anywhere; }
+.bloque-detalle p { margin: 10px 0 0; line-height: 1.7; }
+.bloque-detalle h2 + p { margin-top: 0; }
+.bloque-detalle ul { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.bloque-detalle li { padding: 8px 16px; border-radius: 999px; background: #f4c5ee; color: #702283; font-size: .9rem; font-weight: 700; }
+.pagina-app .volver { justify-self: center; }
+@media (max-width: 600px) {
+  body.pagina-app .hero-detalle { flex-direction: column; text-align: center; }
+  .hero-detalle > div:last-child { flex: none; width: 100%; }
+  body.pagina-app .hero-detalle h1, body.pagina-app .hero-detalle p { text-align: center; margin-left: auto; }
+  .imagen-detalle { flex-basis: auto; width: 100px; height: 100px; }
+}
