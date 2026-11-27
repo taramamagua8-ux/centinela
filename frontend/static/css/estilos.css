@@ -5291,3 +5291,661 @@ body.pagina-terminos #volver-terminos {
         animation: none;
     }
 }
+
+
+/* ==========================================================================
+   VIOLENTÓMETRO: mismo estilo que el resto del flujo de reporte
+   (el termómetro conserva sus estilos de reporte.css)
+   ========================================================================== */
+
+/* Fondo y estructura (a prueba de lo que defina reporte.css en el body) */
+body.pagina-folio.pagina-violentometro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100svh;
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+    color: #3b1d4a;
+}
+
+/* Más ancho que la consulta de folio: el termómetro necesita espacio */
+body.pagina-folio.pagina-violentometro:not(.pagina-detalle-reporte) .pagina-seguimiento {
+    width: min(94%, 900px);
+}
+body.pagina-violentometro .tarjeta-seguimiento {
+    max-width: none;
+    margin: 0;
+    text-align: left;
+}
+
+/* Elementos ocultos por el JS siguen ocultos aunque tengan display propio */
+body.pagina-violentometro [hidden] { display: none !important; }
+
+/* ---------- Textos de arriba ---------- */
+body.pagina-violentometro .texto-violentometro {
+    margin: 0 auto 22px;
+    max-width: 60ch;
+    color: #6e5a70;
+    font-size: 1rem;
+    line-height: 1.65;
+    text-align: center;
+}
+
+body.pagina-violentometro .selector-violentometro {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+body.pagina-violentometro .selector-violentometro legend {
+    display: block;
+    width: 100%;
+    margin: 0 0 18px;
+    padding: 0;
+    color: #602270;
+    font-size: clamp(1.15rem, 3vw, 1.45rem);
+    font-weight: 800;
+    text-align: center;
+}
+
+/* ---------- Termómetro dentro de un panel blanco ---------- */
+/* ==========================================================================
+   VIOLENTÓMETRO: correcciones sobre reporte.css
+   ========================================================================== */
+
+/* Misma tipografía que el resto del sitio (reporte.css la pisa con Segoe UI) */
+body.pagina-violentometro,
+body.pagina-violentometro * {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Botón volver alineado con el título (reporte.css le pone margin-bottom) */
+body.pagina-violentometro .btn-volver { margin: 0; }
+
+/* Termómetro en panel blanco, conservando el espacio del bulbo */
+body.pagina-violentometro .termometro {
+    --pad: clamp(14px, 3vw, 24px);
+    padding: var(--pad);
+    padding-inline-start: calc(var(--pad) + var(--tamano-bulbo) - .55rem);
+    border: 1px solid #efb3e5;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(146, 59, 97, .12);
+}
+body.pagina-violentometro .bulbo-violentometro { left: var(--pad); }
+
+/* Tubo un poco más alto y opciones más legibles */
+body.pagina-violentometro .riel-violentometro { height: clamp(3.8rem, 9vw, 4.8rem); }
+body.pagina-violentometro .opcion-violentometro {
+    font-size: clamp(.68rem, 1.6vw, .9rem);
+    line-height: 1.15;
+}
+/* La primera opción deja libre la zona que cubre el bulbo */
+body.pagina-violentometro .opcion-violentometro:first-child { padding-left: .9rem; }
+
+/* Textos del detalle alineados a la izquierda */
+body.pagina-violentometro .detalle-violentometro,
+body.pagina-violentometro .detalle-violentometro * { text-align: left; }
+
+/* Conserva el color de cada categoría */
+body.pagina-violentometro .ejemplo-violentometro {
+    border-left-color: var(--color-violentometro, #923b61);
+}
+body.pagina-violentometro .seleccion-violentometro {
+    color: color-mix(in srgb, var(--color-violentometro, #923b61) 55%, #32162a);
+}
+/* ---------- Panel de detalle ---------- */
+body.pagina-violentometro .detalle-violentometro {
+    display: grid;
+    gap: 16px;
+    margin-top: 22px;
+}
+
+body.pagina-violentometro .seleccion-violentometro {
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e9a6dd;
+    color: #923b61;
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    font-weight: 800;
+}
+
+body.pagina-violentometro #descripcion-violentometro {
+    margin: 0;
+    color: #4e3f50;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+body.pagina-violentometro .identificacion-violentometro,
+body.pagina-violentometro .ejemplo-violentometro {
+    padding: 18px 22px;
+    border: 1px solid #efb3e5;
+    border-radius: 14px;
+    background: #fdf3fb;
+}
+body.pagina-violentometro .ejemplo-violentometro {
+    border-left: 5px solid #923b61;
+    background: #fff;
+}
+
+body.pagina-violentometro .identificacion-violentometro h3,
+body.pagina-violentometro .ejemplo-violentometro h3 {
+    margin: 0 0 10px;
+    padding-left: 10px;
+    border-left: 4px solid #c56ed3;
+    color: #702283;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+body.pagina-violentometro .identificacion-violentometro ul {
+    margin: 0;
+    padding-left: 22px;
+}
+body.pagina-violentometro .identificacion-violentometro li {
+    margin-bottom: 6px;
+    color: #4e3f50;
+    line-height: 1.6;
+}
+body.pagina-violentometro .ejemplo-violentometro p {
+    margin: 0;
+    color: #4e3f50;
+    font-style: italic;
+    line-height: 1.7;
+}
+
+/* ---------- Aviso de estado ---------- */
+body.pagina-violentometro .aviso-violentometro {
+    margin: 18px 0 0;
+    color: #6e5a70;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+body.pagina-violentometro .aviso-violentometro:empty { display: none; }
+
+/* ---------- Botón Continuar ---------- */
+body.pagina-violentometro .botones-seguimiento { margin-top: 24px; }
+body.pagina-violentometro .btn-principal { max-width: 340px; }
+
+body.pagina-violentometro .btn-principal:disabled,
+body.pagina-violentometro .btn-principal:disabled:hover {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    background: linear-gradient(135deg, #702283, #923b61);
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 520px) {
+    body.pagina-violentometro .identificacion-violentometro,
+    body.pagina-violentometro .ejemplo-violentometro { padding: 14px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-folio.pagina-violentometro { animation: none; }
+}
+
+
+
+/* ==========================================================================
+   FORMULARIOS DE REPORTE (víctima / testigo): mismo estilo que el sitio
+   Requiere en el HTML:  reporte.css  y después  estilos.css
+   ========================================================================== */
+
+/* ---------- Fondo y base ---------- */
+body.pagina-captura-reporte {
+    display: block;               /* estilos.css centra el body con flex; aquí no */
+    margin: 0;
+    min-height: 100svh;
+    padding: clamp(1rem, 4vw, 3rem) clamp(.8rem, 4vw, 2rem) 3rem;
+    background: radial-gradient(circle at center, #DC91F6 0%, #923B61);
+    background-size: 200% 200%;
+    animation: luzMovil 20s ease-in-out infinite;
+    color: #3b1d4a;
+}
+
+/* Misma tipografía que el sitio (reporte.css la pisa con Segoe UI) */
+body.pagina-captura-reporte,
+body.pagina-captura-reporte * {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ---------- Botón volver (arriba a la izquierda) ---------- */
+body.pagina-captura-reporte .barra-captura a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border: 1px solid rgba(255, 255, 255, .4);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .15);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .3s, transform .2s;
+}
+body.pagina-captura-reporte .barra-captura a:hover {
+    background: rgba(255, 255, 255, .3);
+    transform: translateX(-2px);
+}
+
+/* ---------- Encabezado ---------- */
+body.pagina-captura-reporte .header h1 {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    text-shadow: 0 2px 12px rgba(59, 13, 66, .35);
+}
+body.pagina-captura-reporte .header .subtitle { color: #f9e9fb; }
+
+/* ---------- Tarjeta ---------- */
+body.pagina-captura-reporte .captura-reporte {
+    border: 1px solid #efb3e5;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #f7d0f1, #ffffff);
+    color: #3b1d4a;
+    box-shadow: 0 12px 28px rgba(146, 59, 97, .35);
+}
+
+/* ---------- Pasos ---------- */
+body.pagina-captura-reporte .pasos-captura li {
+    border: 1px solid #efb3e5;
+    border-radius: 12px;
+    background: #fff;
+    color: #923b61;
+}
+body.pagina-captura-reporte .pasos-captura li[aria-current="step"] {
+    border-color: transparent;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(112, 34, 131, .35);
+}
+body.pagina-captura-reporte .captura-reporte .disclaimer { color: #6e5a70; }
+
+/* ---------- Tipo de violencia elegido ---------- */
+body.pagina-captura-reporte .tipo-elegido {
+    border: 1px solid #efb3e5;
+    border-radius: 14px;
+    background: #fdf3fb;
+    color: #602270;
+}
+body.pagina-captura-reporte .tipo-elegido strong { color: #923b61; }
+
+/* ---------- Campos ---------- */
+body.pagina-captura-reporte .campos-captura .form-group {
+    border: 1px solid #efb3e5;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(146, 59, 97, .08);
+}
+body.pagina-captura-reporte .campos-captura .form-group:focus-within {
+    border-color: #923b61;
+    box-shadow: 0 0 0 3px rgba(146, 59, 97, .18);
+}
+body.pagina-captura-reporte .campos-captura .form-label {
+    color: #602270;
+    font-size: .95rem;
+    font-weight: 800;
+}
+
+/* Inputs, selects y textarea (incluye el select de "escuela", que no tiene clase) */
+body.pagina-captura-reporte .campos-captura :is(select, textarea, input:not([type="radio"])) {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #d5b6dd;
+    border-radius: 9px;
+    background: #fff;
+    color: #24132e;
+    caret-color: currentColor;
+    color-scheme: light;
+    font-size: .95rem;
+}
+body.pagina-captura-reporte .campos-captura textarea { min-height: 7rem; }
+body.pagina-captura-reporte .campos-captura ::placeholder { color: #695571; opacity: 1; }
+body.pagina-captura-reporte .campos-captura :is(select, textarea, input:not([type="radio"])):focus {
+    outline: 2px solid #923b61;
+    outline-offset: 2px;
+    border-color: #923b61;
+    background: #fff;
+    box-shadow: none;
+}
+body.pagina-captura-reporte .campos-captura input[readonly] { background: #fdf3fb; }
+
+/* Botón de "Elegir archivo" */
+body.pagina-captura-reporte .campos-captura input::file-selector-button {
+    margin-right: .7rem;
+    padding: .45rem .85rem;
+    border: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ---------- Sí / No ---------- */
+body.pagina-captura-reporte .campos-captura .custom-radio {
+    border: 2px solid #d9c3e3;
+    border-radius: 12px;
+    background: #fff;
+    transition: border-color .25s, background .25s, box-shadow .25s;
+}
+body.pagina-captura-reporte .campos-captura .custom-radio:hover {
+    border-color: #c56ed3;
+    box-shadow: 0 6px 14px rgba(146, 59, 97, .15);
+}
+body.pagina-captura-reporte .campos-captura .custom-radio:has(input:checked) {
+    border-color: #923b61;
+    background: #fdf3fb;
+}
+body.pagina-captura-reporte .campos-captura .radio-box {
+    border: 2px solid #923b61;
+    border-radius: 50%;
+    background: #fff;
+}
+body.pagina-captura-reporte .campos-captura .custom-radio input:checked + .radio-box {
+    border-color: #702283;
+    background: #702283;
+}
+body.pagina-captura-reporte .campos-captura .custom-radio input:focus-visible + .radio-box {
+    outline: 2px solid #923b61;
+    outline-offset: 3px;
+}
+body.pagina-captura-reporte .radio-text strong { color: #602270; }
+body.pagina-captura-reporte .radio-text span   { color: #6e5a70; }
+
+/* ---------- Botones (Revisar reporte / Enviar reporte) ---------- */
+body.pagina-captura-reporte :is(#reportForm, #revision-reporte) .btn-formulario {
+    min-height: 48px;
+    padding: .8rem 1.6rem;
+    border: 0;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(112, 34, 131, .4);
+    transition: transform .3s, box-shadow .3s, background .3s;
+}
+body.pagina-captura-reporte :is(#reportForm, #revision-reporte) .btn-formulario:hover:not(:disabled),
+body.pagina-captura-reporte :is(#reportForm, #revision-reporte) .btn-formulario:focus-visible {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(216, 27, 96, .5);
+}
+body.pagina-captura-reporte :is(#reportForm, #revision-reporte) .btn-formulario:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ---------- Revisión y envío ---------- */
+body.pagina-captura-reporte #revision-reporte h2 {
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e9a6dd;
+    color: #923b61;
+    font-weight: 800;
+}
+body.pagina-captura-reporte .captura-reporte .fila-revision {
+    border: 1px solid #efb3e5;
+    border-radius: 12px;
+    background: #fff;
+    color: #4e3f50;
+}
+body.pagina-captura-reporte .captura-reporte .fila-revision strong { color: #602270; }
+body.pagina-captura-reporte .captura-reporte .fila-revision button {
+    border: 2px solid #923b61;
+    border-radius: 8px;
+    background: #fff;
+    color: #923b61;
+    font-weight: 700;
+    transition: background .25s;
+}
+body.pagina-captura-reporte .captura-reporte .fila-revision button:hover { background: #f9eaf2; }
+
+/* ---------- Aviso de mensajes ---------- */
+body.pagina-captura-reporte #aviso-reporte:not(:empty) {
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-left: 4px solid #923b61;
+    border-radius: 8px;
+    background: #fdf3fb;
+    color: #602270;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ---------- Foco con teclado ---------- */
+body.pagina-captura-reporte .captura-reporte :focus-visible,
+body.pagina-captura-reporte .barra-captura :focus-visible {
+    outline: 2px solid #923b61;
+    outline-offset: 3px;
+}
+body.pagina-captura-reporte .barra-captura :focus-visible { outline-color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+    body.pagina-captura-reporte { animation: none; }
+}
+
+
+/* ==========================================================================
+   MI CUENTA: iconos blancos y todo centrado
+   ========================================================================== */
+
+body.pagina-cuenta {
+    min-height: 100svh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+/* Botón volver arriba a la izquierda */
+.pagina-cuenta .barra-volver-cuenta { padding: 18px clamp(16px, 4vw, 32px) 0; }
+.pagina-cuenta .btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+.pagina-cuenta .btn-volver:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* Contenedor: ocupa el resto de la pantalla y centra el panel */
+.pagina-cuenta .cuenta-contenedor {
+    box-sizing: border-box;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px 40px;
+}
+.pagina-cuenta .cuenta-panel {
+    box-sizing: border-box;
+    width: min(100%, 560px);
+    margin: 0 auto;
+    text-align: center;
+}
+.pagina-cuenta .cuenta-panel h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 5vw, 2.1rem); }
+.pagina-cuenta .cuenta-panel > div > p { max-width: 42ch; margin: 0 auto; }
+
+/* ---------- Iconos blancos ---------- */
+.pagina-cuenta .icono-opcion-cuenta {
+    width: 52px;
+    height: 52px;
+    color: #ffffff;
+    margin: 0 auto;
+}
+.pagina-cuenta .icono-opcion-cuenta svg {
+    display: block;
+    width: 26px;
+    height: 26px;
+}
+
+/* ---------- Tarjetas de opciones centradas ---------- */
+.pagina-cuenta .tarjeta-opcion-cuenta {
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+}
+.pagina-cuenta .tarjeta-opcion-cuenta p { max-width: 34ch; margin: 0 auto; }
+.pagina-cuenta .tarjeta-opcion-cuenta .boton-cuenta {
+    width: min(100%, 220px);
+    margin: auto 0 0;
+    padding-block: 12px;
+}
+
+/* ---------- Botones (también los <button>) ---------- */
+.pagina-cuenta .boton-cuenta {
+    width: min(100%, 320px);
+    box-sizing: border-box;
+    text-align: center;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .3s, box-shadow .3s, background .3s;
+}
+.pagina-cuenta button.boton-cuenta:not(.boton-cuenta-claro) { border: 0; }
+.pagina-cuenta .boton-cuenta:not(.boton-cuenta-claro):hover,
+.pagina-cuenta .boton-cuenta:not(.boton-cuenta-claro):focus-visible {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(216, 27, 96, .45);
+}
+.pagina-cuenta .boton-cuenta-claro:hover { background: #f9eaf2; }
+
+.pagina-cuenta .boton-peligro {
+    display: block;
+    width: min(100%, 320px);
+    margin: 10px auto 0;
+    transition: background .25s;
+}
+.pagina-cuenta .boton-peligro:hover { background: #fff0f5; }
+
+/* ---------- Panel de usuario ---------- */
+.pagina-cuenta #panel-cuenta-usuario section { margin-top: 22px; }
+.pagina-cuenta #panel-cuenta-usuario section h2 {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 3px solid #e9a6dd;
+    font-size: 1.25rem;
+}
+
+.pagina-cuenta .lista-datos-cuenta {
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: center;
+}
+.pagina-cuenta .lista-datos-cuenta > div {
+    padding: 12px 14px;
+    border: 1px solid #efb3e5;
+    border-radius: 12px;
+    background: #fff;
+}
+.pagina-cuenta .lista-datos-cuenta dt {
+    color: #923b61;
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+.pagina-cuenta .lista-datos-cuenta dd { margin: 4px 0 0; color: #3b1d4a; font-weight: 600; }
+
+.pagina-cuenta #mis-reportes,
+.pagina-cuenta #avisos-mis-reportes ul {
+    margin: .75rem 0 1rem;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+/* Formulario de edición centrado */
+.pagina-cuenta .form-editar-cuenta {
+    max-width: 360px;
+    margin: 26px auto 0;
+    text-align: center;
+}
+.pagina-cuenta .form-editar-cuenta h2 { text-align: center; }
+.pagina-cuenta .form-cuenta input { text-align: center; }
+.pagina-cuenta .form-cuenta .boton-cuenta { width: 100%; margin: 6px 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+    .pagina-cuenta .boton-cuenta,
+    .pagina-cuenta .boton-peligro { transition: none; }
+}
+
+
+
+/* ==========================================================================
+   TÉRMINOS Y CONDICIONES (documento largo sobre la base de pagina-folio)
+   ========================================================================== */
+
+/* Más ancho que la consulta de folio: es un texto para leer */
+body.pagina-documento .pagina-seguimiento { width: min(92%, 820px); }
+
+/* Tarjeta: texto a la izquierda y buen espacio de lectura */
+body.pagina-documento .tarjeta-seguimiento.texto-documento {
+    padding: clamp(1.5rem, 5vw, 3rem);
+    text-align: left;
+}
+body.pagina-documento .texto-documento .marca-folio { margin-bottom: 22px; }
+
+/* Párrafos */
+body.pagina-documento .texto-documento p {
+    margin: 0 0 14px;
+    color: #4e3f50;
+    font-size: 1rem;
+    line-height: 1.8;
+    white-space: normal;
+}
+
+/* Introducción destacada */
+body.pagina-documento .texto-documento .marca-folio + p {
+    padding: 16px 20px;
+    border: 1px solid #efb3e5;
+    border-left: 5px solid #923b61;
+    border-radius: 12px;
+    background: #fdf3fb;
+    color: #3b1d4a;
+    font-weight: 600;
+}
+
+/* Títulos de cada sección */
+body.pagina-documento .texto-documento h2 {
+    margin: 30px 0 12px;
+    padding: 4px 0 4px 12px;
+    border-left: 4px solid #c56ed3;
+    color: #923b61;
+    font-size: clamp(1.1rem, 2.6vw, 1.3rem);
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+/* Enlaces dentro del texto */
+body.pagina-documento .texto-documento a:not(.btn-volver) {
+    color: #923b61;
+    font-weight: 700;
+    text-underline-offset: .2em;
+}
+body.pagina-documento .texto-documento a:not(.btn-volver):hover { color: #702283; }
+
+/* Celular */
+@media (max-width: 520px) {
+    body.pagina-documento .texto-documento p { font-size: .95rem; line-height: 1.7; }
+    body.pagina-documento .texto-documento .marca-folio + p { padding: 14px 16px; }
+}
