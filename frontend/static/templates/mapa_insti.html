@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de instituciones | Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="../css/paginas.css">
+    <link rel="stylesheet" href="../css/mapa_insti.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+    <script src="../js/mapa_insti.js" defer></script>
+</head>
+
+<body class="pagina-mapa pagina-app">
+
+    <header class="barra-superior">
+        <input type="checkbox" id="menu-toggle" class="toggle-menu" aria-label="Menú principal">
+        <label for="menu-toggle" class="btn-hamburguesa"><span></span><span></span><span></span></label>
+        <nav class="menu-lateral" aria-label="Navegación principal">
+            <a href="principal.html">Inicio</a>
+            <a href="descubre_mas.html">Descubre más</a>
+            <a href="videos.html">Videos</a>
+            <a href="directorio.html">Directorio</a>
+            <a href="sobre_nosotros.html">Sobre nosotros</a>
+        </nav>
+        <a class="logo-centro" href="principal.html">
+            <img src="../img/centinela_digital.png" alt="Logo Centinela Digital">
+            <span>CENTINELA DIGITAL</span>
+        </a>
+        <div class="iconos-derecha accesos-navbar">
+            <a href="formulario.html">Consultar folio</a>
+            <a href="cuenta.html">Mi cuenta</a>
+        </div>
+    </header>
+
+    <main class="contenido-pagina">
+
+        <p class="ruta"><a href="principal.html">Inicio</a> › <a href="directorio.html">Directorio</a> › Mapa</p>
+
+        <section class="hero">
+            <h1>Mapa de instituciones</h1>
+            <p>Elige un municipio para ver las instituciones del directorio que se encuentran ahí.</p>
+        </section>
+
+        <form class="tarjeta buscador-tarjeta filtros-mapa" id="filtrosMapa" role="search">
+            <div>
+                <label for="buscarMapa">Buscar institución</label>
+                <input type="search" id="buscarMapa" placeholder="Ej. CODHEM o justicia" autocomplete="off">
+            </div>
+            <div>
+                <label for="municipioMapa">Municipio</label>
+                <select id="municipioMapa">
+                    <option value="">Todos los municipios</option>
+                </select>
+            </div>
+            <button class="boton" type="reset">Ver todo</button>
+        </form>
+
+        <p class="aviso-mapa">Los pines señalan el municipio de forma <strong>aproximada</strong>, no el domicilio exacto. Confirma la dirección en los medios oficiales antes de acudir. En una emergencia en México, llama al <a href="tel:911">911</a>.</p>
+
+        <div class="zona-mapa">
+            <section class="tarjeta panel-mapa" aria-label="Mapa">
+                <div id="mapa"></div>
+            </section>
+            <section class="tarjeta panel-lista" aria-labelledby="tituloLista">
+                <h2 id="tituloLista">Instituciones</h2>
+                <p id="conteoMapa" aria-live="polite"></p>
+                <ul id="listaMapa" tabindex="0"></ul>
+            </section>
+        </div>
+
+        <section class="tarjeta">
+            <h2>Sin un punto fijo en este mapa</h2>
+            <p class="nota-sin-punto">Son líneas de atención o instituciones sin un domicilio específico en los datos del proyecto.</p>
+            <ul id="sinPunto"></ul>
+        </section>
+
+        <a class="boton volver-directorio" href="directorio.html">Volver al directorio</a>
+    </main>
+
+</body>
+</html>

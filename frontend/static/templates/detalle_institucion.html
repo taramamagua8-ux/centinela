@@ -8,37 +8,11 @@
     <link rel="stylesheet" href="../css/estilos.css">
     <script src="../js/catalogo_instituciones.js" defer></script>
     <script src="../js/detalle_institucion.js" defer></script>
-    <style>
-        .ruta { margin: 0; color: #923b61; font-size: 13px; font-weight: 600; }
-        .bloque-detalle { width: 100%; padding: 26px 30px; box-sizing: border-box; text-align: left; overflow-wrap: anywhere; }
-        .hero-detalle > div:last-child { min-width: 0; overflow-wrap: anywhere; }
-        .bloque-detalle h2 { margin: 0 0 10px; color: #923b61; font-size: 18px; }
-        .bloque-detalle p, .bloque-detalle li { margin: 6px 0; color: #665d67; line-height: 1.6; }
-        .bloque-detalle ul { margin: 0; padding-left: 20px; }
-        .volver { width: max-content; margin: 0; }
-        .hero-detalle { justify-content: flex-start; }
-        .imagen-detalle { display: flex; flex: 0 0 auto; width: 160px; height: 160px; align-items: center; justify-content: center; overflow: hidden; border-radius: 16px; background: rgba(255, 255, 255, 0.92); }
-        .imagen-detalle img { width: 100%; height: 100%; object-fit: contain; }
-        @media (max-width: 850px) {
-            .contenido-inicio { width: 100%; padding: 32px 20px; gap: 28px; }
-            .hero-detalle { gap: 24px; }
-        }
-        @media (max-width: 600px) {
-            .contenido-inicio { padding: 24px 14px; gap: 22px; }
-            .hero-detalle { flex-direction: column; align-items: flex-start; padding: 22px 20px; }
-            .imagen-detalle { width: 100%; height: 170px; }
-            .titulo-inicio { font-size: 24px; }
-            .descripcion-inicio { font-size: 15px; }
-            .bloque-detalle { padding: 20px 18px; }
-            .volver { width: 100%; box-sizing: border-box; text-align: center; }
-        }
-        @media (max-width: 420px) {
-            .logo-centro span { display: none; }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/paginas.css">
+    <link rel="stylesheet" href="../css/detalle.css">
 </head>
 
-<body class="pagina-inicio">
+<body class="pagina-detalle pagina-app">
 
     <header class="barra-superior">
         <input type="checkbox" id="menu-toggle" class="toggle-menu" aria-label="Menú principal">
@@ -67,32 +41,32 @@
         </div>
     </header>
 
-    <main class="contenido-inicio">
+    <main class="contenido-pagina">
 
-        <p class="ruta">Inicio › Directorio › Información de institución</p>
+        <p class="ruta"><a href="principal.html">Inicio</a> › <a href="directorio.html">Directorio</a> › Información de institución</p>
 
-        <section class="bloque-cta hero-detalle">
+        <section class="hero hero-detalle">
             <div class="imagen-detalle">
                 <img id="imagenInstitucion" alt="Imagen de la institución">
             </div>
             <div>
-                <h1 class="titulo-inicio" id="nombreInstitucion">Nombre de la institución</h1>
-                <p class="descripcion-inicio" id="resumenInstitucion"></p>
-                <p class="descripcion-inicio" id="ubicacionInstitucion"></p>
+                <h1 id="nombreInstitucion">Nombre de la institución</h1>
+                <p id="resumenInstitucion"></p>
+                <p id="ubicacionInstitucion"></p>
             </div>
         </section>
 
-        <section class="cuenta-panel bloque-detalle">
+        <section class="tarjeta bloque-detalle">
             <h2>Descripción</h2>
             <p id="descripcionInstitucion"></p>
         </section>
 
-        <section class="cuenta-panel bloque-detalle">
+        <section class="tarjeta bloque-detalle">
             <h2>Servicios y áreas de atención</h2>
             <ul id="serviciosInstitucion"></ul>
         </section>
 
-        <section class="cuenta-panel bloque-detalle">
+        <section class="tarjeta bloque-detalle">
             <h2>Contacto</h2>
             <p><strong>Teléfono:</strong> <span id="telefonoInstitucion"></span></p>
             <p><strong>Horario:</strong> <span id="horarioInstitucion"></span></p>
@@ -101,7 +75,7 @@
             <p id="filaCorreo" hidden><strong>Correo:</strong> <span id="correoInstitucion"></span></p>
         </section>
 
-        <a href="resultados_busqued.html" class="boton-cuenta volver">Volver al directorio</a>
+        <a href="directorio.html" class="boton volver">Volver al directorio</a>
 
     </main>
 

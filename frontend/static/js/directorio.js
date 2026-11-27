@@ -13,7 +13,7 @@ const instituciones = [
     "Centro de Justicia para las Mujeres de Cuautitlán Izcalli",
     "Centro de Justicia para las Mujeres de Amecameca",
     "Línea de la Vida",
-    "Procuraduría de Protección de Niñas, Niños y Adolescentes del Estado de México",
+    "Procuraduría de Protección de Niñas, Niños y Adolescentes",
     "DIF Estado de México",
     "Secretaría de las Mujeres del Estado de México",
     "Comisión de Derechos Humanos del Estado de México",

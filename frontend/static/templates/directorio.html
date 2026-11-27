@@ -8,48 +8,53 @@
     <link rel="stylesheet" href="../css/estilos.css">
     <script src="../js/catalogo_instituciones.js" defer></script>
     <script src="../js/directorio.js" defer></script>
+    <link rel="stylesheet" href="../css/paginas.css">
     <link rel="stylesheet" href="../css/directorio.css">
 </head>
 
-<body class="pagina-directorio">
-
-    <body class="...tu clase...">
+<body class="pagina-directorio pagina-app">
     <script src="../js/navbar.js"></script>
-
     <script src="../js/auth.js"></script>
-</body>
 
-    <main class="contenido-directorio">
+    <main class="contenido-pagina">
 
-        <section class="cabecera-directorio" aria-labelledby="titulo-directorio">
-            <div class="introduccion-directorio">
-                <h1 id="titulo-directorio">Directorio de apoyo</h1>
-                <p>Encuentra instituciones por ubicación o por el tipo de atención que necesitas.</p>
-            </div>
-            <form id="formularioBusqueda" class="buscador-directorio" action="resultados_busqued.html" method="get" role="search">
+        <section class="hero" aria-labelledby="titulo-directorio">
+            <h1 id="titulo-directorio">Directorio de apoyo</h1>
+            <p>Encuentra instituciones y servicios de apoyo relacionados con situaciones de violencia.</p>
+        </section>
+
+        <form id="formularioBusqueda" class="tarjeta buscador-tarjeta" action="resultados_busqued.html" method="get" role="search">
                 <label for="busqueda">Buscar institución o servicio</label>
                 <div class="campo-busqueda">
                     <input type="search" id="busqueda" name="q"
                            placeholder="Ej. Chimalhuacán o atención psicológica" autocomplete="off" required>
-                    <button class="boton-directorio" type="submit">Buscar <span aria-hidden="true">→</span></button>
+                    <button class="boton" type="submit">Buscar <span aria-hidden="true">→</span></button>
                 </div>
                 <ul class="sugerencias-directorio" id="sugerenciasBusqueda" hidden></ul>
             </form>
+
+        <section class="tarjeta mapa-directorio" aria-labelledby="titulo-mapa">
+            <span class="icono-mapa" aria-hidden="true"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+            <div class="texto-mapa">
+                <h2 id="titulo-mapa">Mapa de instituciones</h2>
+                <p>Consulta en un mapa la ubicación de las instituciones del directorio.</p>
+            </div>
+            <a class="boton" href="mapa_insti.html">Abrir mapa <span aria-hidden="true">→</span></a>
         </section>
 
-        <section class="seccion-directorio" aria-labelledby="categorias-directorio">
+        <section class="tarjeta" aria-labelledby="categorias-directorio">
             <h2 id="categorias-directorio">Categorías de atención</h2>
 
             <div class="categorias-directorio">
-                <button type="button" class="tarjeta-categoria" data-busqueda="psicologica"><svg style="flex-shrink:0" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5C19 15.6 12 20 12 20z"/><path d="M12 3v2M8 4l1 1.6M16 4l-1 1.6"/></svg><span>Atención psicológica</span><span aria-hidden="true">↗</span></button>
-                <button type="button" class="tarjeta-categoria" data-busqueda="juridica"><svg style="flex-shrink:0" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M5 21h14M6 7h12"/><path d="M6 7l-3 7a3 3 0 0 0 6 0L6 7zM18 7l-3 7a3 3 0 0 0 6 0l-3-7z"/></svg><span>Asesoría jurídica</span><span aria-hidden="true">↗</span></button>
-                <button type="button" class="tarjeta-categoria" data-busqueda="medica"><svg style="flex-shrink:0" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M12 12v5M9.5 14.5h5"/></svg><span>Servicios médicos</span><span aria-hidden="true">↗</span></button>
-                <button type="button" class="tarjeta-categoria" data-busqueda="proteccion"><svg style="flex-shrink:0" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg><span>Protección y seguridad</span><span aria-hidden="true">↗</span></button>
-                <button type="button" class="tarjeta-categoria" data-busqueda="social"><svg style="flex-shrink:0" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c2.8 0 5 2.2 5 5"/></svg><span>Apoyo comunitario</span><span aria-hidden="true">↗</span></button>
+                <button type="button" class="tarjeta-categoria" data-busqueda="psicologica"><span class="icono"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.5A4 4 0 0 1 12 8a4 4 0 0 1 7 2.5C19 15.6 12 20 12 20z"/><path d="M12 3v2M8 4l1 1.6M16 4l-1 1.6"/></svg></span><span class="nombre">Atención psicológica</span><span aria-hidden="true">↗</span></button>
+                <button type="button" class="tarjeta-categoria" data-busqueda="juridica"><span class="icono"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M5 21h14M6 7h12"/><path d="M6 7l-3 7a3 3 0 0 0 6 0L6 7zM18 7l-3 7a3 3 0 0 0 6 0l-3-7z"/></svg></span><span class="nombre">Asesoría jurídica</span><span aria-hidden="true">↗</span></button>
+                <button type="button" class="tarjeta-categoria" data-busqueda="medica"><span class="icono"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M12 12v5M9.5 14.5h5"/></svg></span><span class="nombre">Servicios médicos</span><span aria-hidden="true">↗</span></button>
+                <button type="button" class="tarjeta-categoria" data-busqueda="proteccion"><span class="icono"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="nombre">Protección y seguridad</span><span aria-hidden="true">↗</span></button>
+                <button type="button" class="tarjeta-categoria" data-busqueda="social"><span class="icono"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c2.8 0 5 2.2 5 5"/></svg></span><span class="nombre">Apoyo comunitario</span><span aria-hidden="true">↗</span></button>
             </div>
         </section>
 
-        <section class="seccion-directorio" aria-labelledby="instituciones-directorio">
+        <section class="tarjeta" aria-labelledby="instituciones-directorio">
             <h2 id="instituciones-directorio">Instituciones destacadas</h2>
 
             <div class="instituciones-directorio">
