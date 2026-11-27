@@ -120,7 +120,7 @@ if (panelCuenta) {
             document.getElementById('correo-cuenta').textContent = usuario.correo;
             const aviso = document.getElementById('aviso-mis-reportes');
             try {
-                const {reportes} = await apiAuth('/usuarios/me/reportes');
+                const {reportes, avisos = []} = await apiAuth('/usuarios/me/reportes');
                 aviso.textContent = reportes.length ? '' : 'Todavía no has enviado reportes registrados.';
                 const lista = document.getElementById('mis-reportes');
                 for (const reporte of reportes) {
@@ -130,6 +130,19 @@ if (panelCuenta) {
                     enlace.textContent = [reporte.folio, reporte.estado].filter(Boolean).join(' · ');
                     item.append(enlace);
                     lista.append(item);
+                }
+                const section = document.getElementById('avisos-mis-reportes');
+                if (section && avisos.length) {
+                    const items = avisos.map(({folio, mensaje}) => {
+                        const item = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = 'seguimiento.html#' + encodeURIComponent(folio);
+                        link.textContent = mensaje + ' · ' + folio;
+                        item.append(link);
+                        return item;
+                    });
+                    section.querySelector('ul').replaceChildren(...items);
+                    section.hidden = false;
                 }
             } catch (error) {
                 aviso.textContent = error.message;

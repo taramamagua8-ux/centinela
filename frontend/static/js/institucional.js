@@ -45,6 +45,7 @@ function handle(control, event, action) {
             await action();
         } catch (error) {
             notice.textContent = error.message;
+            notice.scrollIntoView({block: 'nearest'});
         } finally {
             if (button) button.disabled = false;
         }
@@ -167,7 +168,9 @@ function operationForm(container, title, build, callback) {
     const form = node('form');
     form.className = 'formulario-institucional';
     build(form);
-    form.append(node('button', title));
+    const submit = node('button', title);
+    submit.type = 'submit';
+    form.append(submit);
     handle(form, 'submit', () => callback(values(form), form));
     details.append(form);
     container.append(details);
@@ -195,7 +198,7 @@ if (page === 'casos_autoridad' && sessionStorage.getItem(sessionKey)) {
             return action(label, () => openCase(item.id_reporte));
         }, 'No hay casos disponibles para tu perfil.');
     }
-    async function openCase(id) {
+    async function openCase(id, showHistory = false) {
         const {caso} = await api('/autoridad/casos/' + id + '/abrir', 'POST');
         selected = id;
         byId('folio-caso').textContent = caso.folio;
@@ -220,10 +223,17 @@ if (page === 'casos_autoridad' && sessionStorage.getItem(sessionKey)) {
         showEvidence(information, caso.evidencias, '/autoridad/casos/' + id + '/evidencias');
         const activities = byId('actividades-autoridad');
         activities.replaceChildren();
+        const history = node('details');
+        history.open = showHistory;
+        history.append(node('summary', 'Historial de mis atenciones'));
+        for (const item of caso.atenciones) appendField(history, item.fecha, item.detalle);
+        if (!caso.atenciones.length) history.append(node('p', 'Todavía no has registrado atenciones para este caso.'));
+        activities.append(history);
         if (caso.responsable) {
             operationForm(activities, 'Registrar atención', f => textField(f, 'detalle', 'Acciones realizadas'), async item => {
                 await api('/expedientes/' + id + '/acciones', 'POST', {...item, clase: 'atencion'});
-                await openCase(id);
+                await openCase(id, true);
+                notice.textContent = 'Atención registrada.';
             });
             operationForm(activities, 'Programar próxima atención', f => {
                 textField(f, 'descripcion', 'Motivo de la cita');
@@ -231,6 +241,7 @@ if (page === 'casos_autoridad' && sessionStorage.getItem(sessionKey)) {
             }, async item => {
                 await api('/expedientes/' + id + '/actividad', 'POST', {...item, accion: 'crear'});
                 await openCase(id);
+                notice.textContent = 'Próxima atención programada.';
             });
         }
         for (const task of caso.actividades) {
@@ -242,11 +253,13 @@ if (page === 'casos_autoridad' && sessionStorage.getItem(sessionKey)) {
             } else {
                 appendField(activities, task.vence, task.descripcion + ' · ' + task.estado);
             }
-            if (task.estado === 'pendiente') operationForm(activities, 'Completar actividad', f => {
+            appendField(activities, 'Resultado', task.resultado);
+            if (caso.abierta && task.estado === 'pendiente') operationForm(activities, 'Completar actividad', f => {
                 textField(f, 'resultado', 'Resultado de la intervención');
             }, async item => {
                 await api('/expedientes/' + id + '/actividad', 'POST', {...item, id_actividad: task.id_actividad, accion: 'completar'});
                 await openCase(id);
+                notice.textContent = 'Actividad completada.';
             });
         }
         for (const input of form.elements) {
