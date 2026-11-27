@@ -7,36 +7,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
-<body class="pagina-informativa">
+<body class="pagina-informativa pagina-cuenta">
+
+    <div class="barra-volver-cuenta">
+        <a class="btn-volver" href="principal.html">← Volver</a>
+    </div>
+
     <main class="cuenta-contenedor">
         <section class="cuenta-panel">
+
             <div id="cuenta-acceso">
                 <h1>Mi cuenta</h1>
                 <p>Inicia sesión o crea una cuenta para consultar tus reportes registrados.</p>
                 <div class="tarjetas-opciones-cuenta">
+
                     <article class="tarjeta-opcion-cuenta">
-                        <div class="icono-opcion-cuenta">👤</div>
+                        <div class="icono-opcion-cuenta" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
                         <h2>Iniciar sesión</h2>
                         <p>Accede a tu cuenta para administrar tus datos.</p>
                         <a class="boton-cuenta" href="login.html">Entrar</a>
                     </article>
+
                     <article class="tarjeta-opcion-cuenta">
-                        <div class="icono-opcion-cuenta">👤 +</div>
+                        <div class="icono-opcion-cuenta" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="8.5" cy="7" r="4"/>
+                                <line x1="20" y1="8" x2="20" y2="14"/>
+                                <line x1="23" y1="11" x2="17" y2="11"/>
+                            </svg>
+                        </div>
                         <h2>Crear una cuenta</h2>
                         <p>Regístrate para guardar y consultar tu información.</p>
                         <a class="boton-cuenta" href="registro.html">Registrarme</a>
                     </article>
-                    <article class="tarjeta-opcion-cuenta" id="acceso-anonimo-cuenta">
-                        <div class="icono-opcion-cuenta" aria-hidden="true">⌕</div>
+
+                    <article class="tarjeta-opcion-cuenta tarjeta-opcion-ancha" id="acceso-anonimo-cuenta">
+                        <div class="icono-opcion-cuenta" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                        </div>
                         <h2>Acceso con folio</h2>
                         <p>Si reportaste de forma anónima, ingresa tu folio para ver los datos y el seguimiento de tu reporte.</p>
                         <a class="boton-cuenta" href="formulario.html">Ingresar folio</a>
                     </article>
+
                 </div>
             </div>
 
             <div id="panel-cuenta-usuario" hidden>
                 <h1>Mi cuenta</h1>
+
                 <section aria-labelledby="titulo-datos-cuenta">
                     <h2 id="titulo-datos-cuenta">Mis datos</h2>
                     <dl class="datos-cuenta lista-datos-cuenta">
@@ -44,16 +72,20 @@
                         <div><dt>Correo electrónico</dt><dd id="correo-cuenta"></dd></div>
                     </dl>
                 </section>
+
                 <section>
                     <h2>Mis reportes</h2>
                     <p id="aviso-mis-reportes" role="status"></p>
                     <ul id="mis-reportes"></ul>
                 </section>
+
                 <section id="avisos-mis-reportes" hidden>
                     <h2>Avisos de seguimiento</h2>
                     <ul></ul>
                 </section>
+
                 <a class="boton-cuenta" href="formulario_reporte.html">Crear reporte</a>
+
                 <form id="form-editar-cuenta" class="form-cuenta form-editar-cuenta">
                     <h2>Editar mis datos</h2>
                     <input name="nombre" maxlength="150" type="text" placeholder="Nuevo nombre">
@@ -62,12 +94,14 @@
                     <div id="aviso-cuenta" class="aviso-cuenta" role="alert"></div>
                     <button class="boton-cuenta" type="submit">Guardar cambios</button>
                 </form>
+
                 <button id="btn-cerrar-sesion" class="boton-cuenta boton-cuenta-claro" type="button">Cerrar sesión</button>
                 <button id="btn-desactivar-cuenta" class="boton-peligro" type="button">Desactivar cuenta</button>
             </div>
-            <a class="enlace-volver-cuenta" href="principal.html">Volver al inicio</a>
+
         </section>
     </main>
+
+    <script src="../js/auth.js"></script>
 </body>
-<script src="../js/auth.js"></script>
 </html>

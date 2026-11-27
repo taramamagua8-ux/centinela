@@ -1101,3 +1101,5 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   .escala-violentometro { animation: entrada-captura .28s ease-out both; }
 }
+
+
