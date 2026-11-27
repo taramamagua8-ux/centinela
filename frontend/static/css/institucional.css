@@ -237,3 +237,89 @@ body.pagina-institucional.pagina-acceso {
     .pagina-acceso .logo-acceso { animation: none; }
     .pagina-acceso .institucional button { transition: none; }
 }
+
+
+/* ==========================================================================
+   ACCESO / REGISTRO DE AUTORIDAD: selects, archivo, enlaces y aviso del form
+   (complementa el bloque  pagina-acceso)
+   ========================================================================== */
+
+/* Registro: tarjeta más ancha */
+body.pagina-registro-institucional .institucional {
+    width: min(100% - 32px, 560px);
+    margin-bottom: 24px;
+}
+
+/* Selects con el mismo aspecto que los inputs */
+.pagina-acceso .formulario-institucional select {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    padding: 13px 14px;
+    border: 1px solid #d5b6dd;
+    border-radius: 9px;
+    background: #fff;
+    color: #24132e;
+    color-scheme: light;
+    font: inherit;
+}
+.pagina-acceso .formulario-institucional select:focus {
+    outline: 2px solid #923b61;
+    outline-offset: 2px;
+    border-color: #923b61;
+}
+
+/* Campo de archivo con botón del sitio */
+.pagina-acceso .formulario-institucional input[type="file"] {
+    padding: 10px 12px;
+    font-size: .9rem;
+}
+.pagina-acceso .formulario-institucional input[type="file"]::file-selector-button {
+    margin-right: .7rem;
+    padding: .45rem .85rem;
+    border: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Texto informativo dentro del formulario */
+.pagina-acceso .formulario-institucional p {
+    margin: 0;
+    padding: 12px 14px;
+    border-left: 4px solid #923b61;
+    border-radius: 8px;
+    background: #fdf3fb;
+    color: #5e3b69;
+    font-size: .85rem;
+    line-height: 1.55;
+    white-space: normal;
+}
+
+/* Enlaces secundarios del formulario (solicitar cuenta / ir a iniciar sesión) */
+.pagina-acceso .formulario-institucional a {
+    justify-self: center;
+    margin-top: 4px;
+    padding: 8px 18px;
+    border: 2px solid #923b61;
+    border-radius: 999px;
+    color: #923b61;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: background .25s, color .25s, transform .25s;
+}
+.pagina-acceso .formulario-institucional a:hover,
+.pagina-acceso .formulario-institucional a:focus-visible {
+    background: #923b61;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pagina-acceso .formulario-institucional a { transition: none; }
+}
