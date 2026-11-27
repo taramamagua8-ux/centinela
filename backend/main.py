@@ -384,6 +384,10 @@ def my_reports():
         "SELECT r.folio,r.fecha_registro,e.nombre AS estado FROM reportes r "
         "LEFT JOIN estados_reporte e USING (id_estado) WHERE r.id_usuario=%s ORDER BY r.id_reporte DESC",
         (g.user_id,),
+    ), "avisos": many(
+        "SELECT r.folio,a.mensaje,a.fecha FROM avisos a JOIN reportes r USING (id_reporte) "
+        "WHERE a.id_usuario=%s AND r.id_usuario=%s AND r.es_anonimo=0 ORDER BY a.id_aviso DESC LIMIT 30",
+        (g.user_id, g.user_id),
     )})
 
 def create_legacy_report():
@@ -922,14 +926,14 @@ def authority_scope():
     )
 
 
-def move_report(report_id, state, public_note=None):
+def move_report(report_id, state, public_note=None, notice_message=None):
     run("UPDATE reportes SET id_estado=%s WHERE id_reporte=%s", (state, report_id))
     run("INSERT INTO seguimiento_reportes (id_reporte,id_estado,id_administrador,id_autoridad,observaciones,publica) "
         "VALUES (%s,%s,%s,%s,%s,TRUE)",
         (report_id, state, g.get("admin_id"), g.get("authority", {}).get("id_autoridad"), public_note))
     if state != RECEIVED:
         name = one("SELECT nombre FROM estados_reporte WHERE id_estado=%s", (state,))["nombre"]
-        notify_reporter(report_id, "Estado del reporte · " + name)
+        notify_reporter(report_id, notice_message or "Estado del reporte · " + name)
 
 
 def case_violence(report_id):
@@ -982,6 +986,10 @@ def open_authority_case(report_id):
                   ampliaciones=many("SELECT detalle,fecha FROM bitacora_casos WHERE id_reporte=%s "
                                     "AND clase='ampliacion' ORDER BY id_evento", (report_id,)),
                   actividades=case_tasks(report_id, authority_id),
+                  abierta=state not in (CLOSED, ATTENDED),
+                  atenciones=many("SELECT detalle,fecha FROM bitacora_casos WHERE id_reporte=%s "
+                                  "AND clase='atencion' AND id_autoridad=%s ORDER BY fecha,id_evento",
+                                  (report_id, authority_id)),
                   responsable=case["responsable_id"] == authority_id and state not in (CLOSED, ATTENDED),
                   ocurrio_en_escuela=case["ocurrio_en_escuela"], evaluacion=review,
                   estado=one("SELECT nombre FROM estados_reporte WHERE id_estado=%s", (state,)),
@@ -1330,8 +1338,8 @@ def active_authority_for_case(report_id, authority_id):
     return one(
         "SELECT a.id_autoridad,a.nombre FROM autoridades a CROSS JOIN reportes r WHERE a.activo=1 "
         "AND r.id_reporte=%s AND a.id_autoridad=%s AND ((a.tipo_autoridad='orientador' AND r.ocurrio_en_escuela IS TRUE) "
-        "OR EXISTS (SELECT 1 FROM reporte_tipo_violencia t WHERE t.id_reporte=r.id_reporte "
-        "AND t.id_tipo_violencia=a.id_tipo_violencia))", (report_id, authority_id),
+        "OR (a.tipo_autoridad='especialista' AND EXISTS (SELECT 1 FROM reporte_tipo_violencia t "
+        "WHERE t.id_reporte=r.id_reporte AND t.id_tipo_violencia=a.id_tipo_violencia)))", (report_id, authority_id),
     )
 
 
@@ -1341,6 +1349,7 @@ def list_case_files():
     return jsonify({
         "casos": many(
             "SELECT r.id_reporte,r.folio,r.folio_expediente,r.id_estado,e.nombre AS estado,r.fecha_registro,"
+            "((r.fecha_registro AT TIME ZONE current_setting('TimeZone')) AT TIME ZONE 'America/Mexico_City')::date::text AS dia_registro,"
             "r.cierre,r.ocurrio_en_escuela,r.responsable_id,a.nombre AS responsable,c.folio AS folio_canalizacion,"
             "c.prioridad,c.vence,sv.calificacion,ARRAY(SELECT t.id_tipo_violencia FROM reporte_tipo_violencia t "
             "WHERE t.id_reporte=r.id_reporte) AS tipos FROM reportes r LEFT JOIN estados_reporte e USING (id_estado) "
@@ -1358,6 +1367,13 @@ def list_case_files():
         "evaluaciones": many(
             "SELECT r.folio,r.cierre,s.calificacion,s.comentario,s.sugerencia,s.categoria,s.fecha "
             "FROM evaluaciones_servicio s JOIN reportes r USING (id_reporte) ORDER BY s.fecha DESC"
+        ),
+        "cierres": many(
+            "SELECT r.folio,c.fecha,e.nombre AS estado,s.calificacion FROM comprobantes_cierre c "
+            "JOIN reportes r USING (id_reporte) JOIN estados_reporte e ON e.id_estado=c.id_estado "
+            "LEFT JOIN evaluaciones_servicio s ON s.id_reporte=r.id_reporte AND s.fecha>=c.fecha "
+            "AND NOT EXISTS (SELECT 1 FROM comprobantes_cierre siguiente WHERE siguiente.id_reporte=c.id_reporte "
+            "AND siguiente.fecha>c.fecha AND siguiente.fecha<=s.fecha) ORDER BY c.fecha DESC"
         ),
     })
 
@@ -1612,7 +1628,9 @@ def close_case(report_id, target):
         "SELECT %s,id_reporte,%s,cierre FROM reportes WHERE id_reporte=%s",
         (secrets.token_hex(24), target, report_id))
     record_event(report_id, "cierre", reason + " · " + result)
-    move_report(report_id, target)
+    move_report(report_id, target, notice_message=(
+        "El caso concluyó. Consulta el comprobante y evalúa la atención desde el seguimiento."
+    ))
     g.db.commit()
     return jsonify({"ok": True})
 

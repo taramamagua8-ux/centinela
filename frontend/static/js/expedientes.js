@@ -10,7 +10,24 @@ if (sessionStorage.getItem(sessionKey)) {
     }
 
     function calendarDate(value) {
-        return value ? new Date(value).toLocaleDateString('en-CA', {timeZone: 'America/Mexico_City'}) : '';
+        if (!value) return '';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        const parts = new Intl.DateTimeFormat('es-MX', {
+            timeZone: 'America/Mexico_City', year: 'numeric', month: '2-digit', day: '2-digit'
+        }).formatToParts(date);
+        const {year, month, day} = Object.fromEntries(parts.map(({type, value}) => [type, value]));
+        return [year, month, day].join('-');
+    }
+
+    function groupRows(items, key) {
+        const groups = new Map();
+        for (const item of items) {
+            const name = key(item);
+            if (!groups.has(name)) groups.set(name, []);
+            groups.get(name).push(item);
+        }
+        return groups;
     }
 
     function refreshLists() {
@@ -21,10 +38,10 @@ if (sessionStorage.getItem(sessionKey)) {
             (!estado || item.id_estado === Number(estado)) &&
             (!tipo || item.tipos.includes(Number(tipo))) &&
             (!responsable || item.responsable_id === Number(responsable)) &&
-            matchesPeriod(calendarDate(periodo === 'cierre' ? item.cierre : item.fecha_registro), desde, hasta)
+            matchesPeriod(periodo === 'cierre' ? calendarDate(item.cierre) : item.dia_registro, desde, hasta)
         );
         replaceList(byId('registro-expedientes'), selected, item => action(
-            [item.folio_expediente || item.folio, item.estado || 'Sin estado', item.responsable].filter(Boolean).join(' · '),
+            [item.folio_expediente, item.folio, item.estado || 'Sin estado', item.responsable].filter(Boolean).join(' · '),
             () => openCase(item.id_reporte)
         ), 'No hay reportes para los filtros elegidos.');
 
@@ -62,7 +79,7 @@ if (sessionStorage.getItem(sessionKey)) {
         appendField(area, 'Reportes', String(items.length));
         appendField(area, 'Solicitudes de canalización', String(items.filter(x => x.folio_canalizacion).length));
         appendField(area, 'Expedientes cerrados', String(closed.length));
-        const byStatus = Map.groupBy(items, entry => entry.estado || 'Sin estado');
+        const byStatus = groupRows(items, entry => entry.estado || 'Sin estado');
         for (const [name, rows] of byStatus) appendField(area, name, String(rows.length));
         area.append(action('Descargar informe de casos (CSV)', () => downloadReport(items)));
         area.append(action('Descargar informe de cierres (CSV)', () => downloadReport(closed)));
@@ -73,8 +90,10 @@ if (sessionStorage.getItem(sessionKey)) {
         area.append(workload);
         const history = node('details');
         history.append(node('summary', 'Historial de cierres y evaluaciones'));
-        for (const item of closed) appendField(history, item.folio,
-            calendarDate(item.cierre) + ' · ' + (item.calificacion ? item.calificacion + '/5' : 'Sin evaluación'));
+        const closures = records.cierres.filter(event => folios.has(event.folio));
+        for (const event of closures) appendField(history, event.folio,
+            [calendarDate(event.fecha), event.estado, event.calificacion ? event.calificacion + '/5' : 'Sin evaluación'].join(' · '));
+        if (!closures.length) history.append(node('p', 'No hay cierres para los filtros elegidos.'));
         area.append(history);
         area.append(node('h3', 'Satisfacción y oportunidades de mejora'));
         if (!surveys.length) {
@@ -92,7 +111,7 @@ if (sessionStorage.getItem(sessionKey)) {
             row.append(bar);
             area.append(row);
         }
-        const categories = Map.groupBy(surveys, item => item.categoria);
+        const categories = groupRows(surveys, item => item.categoria || 'Otro');
         const prioritized = Array.from(categories).sort((a, b) =>
             b[1].filter(x => x.calificacion < 4).length - a[1].filter(x => x.calificacion < 4).length);
         area.append(action('Generar reporte de oportunidades de mejora', () => {
@@ -123,7 +142,7 @@ if (sessionStorage.getItem(sessionKey)) {
             : caseItem.tipos.includes(worker.id_tipo_violencia)).map(worker => [worker.id_autoridad, worker.nombre]);
     }
 
-    async function openCase(id) {
+    async function openCase(id, showEvidenceAfterSave = false) {
         const info = await api('/expedientes/' + id);
         const item = info.caso;
         const summary = records.casos.find(x => x.id_reporte === id);
@@ -147,7 +166,7 @@ if (sessionStorage.getItem(sessionKey)) {
             appendField(panel, 'Folio de canalización', evaluation.folio);
             appendField(panel, 'Valoración', evaluation.valoracion);
             appendField(panel, 'Propuesta', evaluation.propuesta);
-            appendField(panel, 'Factores de riesgo', evaluation.evaluacion.factores);
+            appendField(panel, 'Factores de riesgo', evaluation.evaluacion?.factores);
         }
         const history = node('details');
         history.append(node('summary', 'Historial de estados'));
@@ -159,6 +178,7 @@ if (sessionStorage.getItem(sessionKey)) {
         for (const entry of info.bitacora) appendField(notes, [entry.fecha, entry.autor, entry.clase].filter(Boolean).join(' · '), entry.detalle);
         panel.append(notes);
         const files = node('details');
+        files.open = showEvidenceAfterSave;
         files.append(node('summary', 'Evidencias'));
         showEvidence(files, info.evidencias, '/reportes/' + id + '/evidencias');
         panel.append(files);
@@ -166,7 +186,7 @@ if (sessionStorage.getItem(sessionKey)) {
         const update = async (suffix, data) => {
             await api(path + suffix, 'POST', data);
             await reloadRecords();
-            await openCase(id);
+            await openCase(id, suffix === '/evidencias');
             notice.textContent = 'Cambio guardado.';
         };
 
@@ -234,13 +254,14 @@ if (sessionStorage.getItem(sessionKey)) {
 
             if (staff.length) operationForm(panel, 'Programar actividad o próxima atención', form => activityFields(form),
                 data => saveActivity(data, {accion: 'crear'}));
+            else panel.append(node('p', 'Para programar una actividad, primero habilita una autoridad compatible con el caso.'));
             for (const task of info.actividades) {
                 const row = node('details');
                 row.append(node('summary', task.vence + ' · ' + task.descripcion + (task.vencida ? ' · Vencida' : '')));
                 appendField(row, task.responsable, task.estado);
                 appendField(row, 'Resultado', task.resultado);
                 if (task.estado === 'pendiente') {
-                    operationForm(row, 'Editar actividad', form => activityFields(form, task),
+                    if (staff.length) operationForm(row, 'Editar actividad', form => activityFields(form, task),
                         data => saveActivity(data, {accion: 'editar', id_actividad: task.id_actividad}));
                     operationForm(row, 'Completar actividad', form => textField(form, 'resultado', 'Resultado'),
                         data => update('/actividad', {...data, accion: 'completar', id_actividad: task.id_actividad}));

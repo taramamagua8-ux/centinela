@@ -72,6 +72,9 @@ class IntegrationTests(unittest.TestCase):
         institution_data = {"nombre": "Institución C", "correo": "c@example.invalid"}
         post("/canalizacion/instituciones", institution_data, status=401)
         post("/canalizacion/instituciones", institution_data, admin, 201)
+        with connect() as db:
+            replacement = db.execute("SELECT id_institucion FROM instituciones WHERE correo=%s",
+                                     (institution_data["correo"],)).fetchone()["id_institucion"]
         post("/canalizacion/instituciones", institution_data, admin, 409)
         staff = {}
         for role in ("orientador", "especialista"):
@@ -105,6 +108,7 @@ class IntegrationTests(unittest.TestCase):
 
         school = create(True, 1)
         external = create(False, 2)
+        self.assertIn(school["folio"], [item["folio"] for item in get("/expedientes", admin)["avisos"]])
         external_path = f"/expedientes/{external['id_reporte']}"
         post(external_path + "/actividad", {"accion": "crear", "descripcion": "Calendario preventivo",
              "responsable_id": staff["especialista"], "vence": "2026-12-01", "recurrencia_dias": 30,
@@ -132,6 +136,8 @@ class IntegrationTests(unittest.TestCase):
         post(review + "/enviar", payload, orientation)
         referrals = get("/canalizacion", admin)["casos"]
         self.assertTrue(referrals[0]["folio_canalizacion"].startswith("CAN-"))
+        self.assertEqual(referrals[0]["prioridad"], "Alta")
+        self.assertTrue(referrals[0]["fecha_evaluacion"])
         post(intake + "/decision", {"accion": "devolver", "observaciones": "Revisar datos"}, admin)
         self.assertEqual(post(review + "/abrir", headers=orientation)["caso"]["evaluacion"]["observaciones"], "Revisar datos")
         self.assertNotIn("Revisar datos", str(post("/reportes/consulta", folio)))
@@ -151,8 +157,19 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(published["respuesta_institucion"], "Respuesta pública")
         self.assertEqual([item["nombre"] for item in published["instituciones_canalizadas"]],
                          ["Institución A", "Institución B"])
+        with patch.dict(os.environ, {"CENTINELA_SMTP_HOST": "example.invalid", "CENTINELA_SMTP_FROM": "alert@example.invalid"}):
+            with patch("backend.main.deliver_email") as mail:
+                post(intake + "/reasignar", {"id_institucion": replacement, "anterior": destinations[1],
+                                           "motivo": "Cambio de destino"}, admin)
+                mail.assert_called_once()
+        deliveries = get("/canalizacion", admin)["casos"][0]["envios"]
+        self.assertFalse(next(item for item in deliveries if item["id_institucion"] == destinations[1])["vigente"])
+        post(intake + "/respuestas", {"id_institucion": replacement, "mensaje": "Respuesta del nuevo destino",
+             "resumen_publico": "Respuesta pública"}, admin, 201)
         post(case + "/asignar", {"responsable_id": staff["orientador"]}, admin)
+        self.assertIn(school["folio"], [item["folio"] for item in get("/autoridad/avisos", orientation)["avisos"]])
         event = post(case + "/acciones", {"clase": "atencion", "detalle": "Atención de prueba"}, orientation, 201)
+        self.assertEqual(post(review + "/abrir", headers=orientation)["caso"]["atenciones"][0]["detalle"], "Atención de prueba")
         attachment = c.post("/api" + case + "/evidencias", headers=admin,
                             data={"archivo": (io.BytesIO(b"prueba"), "prueba.txt"), "uso": "atencion",
                                   "id_evento": event["id_evento"]})
@@ -164,6 +181,16 @@ class IntegrationTests(unittest.TestCase):
         post(case + "/actividad", {"accion": "crear", "descripcion": "Seguimiento", "vence": "2025-11-25"}, orientation)
         activity = get(case, admin)["actividades"][0]
         self.assertTrue(activity["vencida"])
+        post(case + "/actividad", {"accion": "editar", "id_actividad": activity["id_actividad"],
+                                  "descripcion": "Seguimiento editado", "vence": "2025-11-26",
+                                  "responsable_id": staff["orientador"]}, admin)
+        pending = get("/expedientes", admin)["actividades"]
+        self.assertTrue(any(task["descripcion"] == "Seguimiento editado" and task["vencida"] for task in pending))
+        post(case + "/actividad", {"accion": "crear", "descripcion": "Cancelar prueba",
+                                  "vence": "2025-11-27", "responsable_id": staff["orientador"]}, admin)
+        cancelled = next(task for task in get(case, admin)["actividades"] if task["descripcion"] == "Cancelar prueba")
+        post(case + "/actividad", {"accion": "eliminar", "id_actividad": cancelled["id_actividad"]}, admin)
+        self.assertFalse(any(task["id_actividad"] == cancelled["id_actividad"] for task in get(case, admin)["actividades"]))
         close = {"confirmar": True, "motivo": "Concluido", "resultado": "Atención completada"}
         post(intake + "/atendido", close, admin, 409)
         post(case + "/actividad", {"accion": "completar", "id_actividad": activity["id_actividad"], "resultado": "Listo"}, orientation)
@@ -182,6 +209,8 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(get("/expedientes", admin)["evaluaciones"][0]["calificacion"], 5)
         post(case + "/estado", {"id_estado": 9, "motivo": "Revisión posterior"}, admin)
         self.assertEqual(post("/reportes/consulta", folio)["reporte"]["estado"], "Abierto en seguimiento")
+        history = get("/expedientes", admin)["cierres"]
+        self.assertTrue(any(row["folio"] == school["folio"] and row["calificacion"] == 5 for row in history))
 
     def test_workflows(self):
         c = self.client
@@ -215,6 +244,9 @@ class IntegrationTests(unittest.TestCase):
             db.execute("INSERT INTO avisos (id_reporte,id_usuario,mensaje,correo_estado) "
                        "SELECT id_reporte,id_usuario,'Aviso de prueba','pendiente' FROM reportes WHERE folio=%s",
                        (query["folio"],))
+        notices = c.get('/api/usuarios/me/reportes', headers=headers).json["avisos"]
+        self.assertEqual([(notice["folio"], notice["mensaje"]) for notice in notices],
+                         [(query["folio"], "Aviso de prueba")])
         with patch.dict(os.environ, {"CENTINELA_RESEND_API_KEY": "simulada",
                                      "CENTINELA_SMTP_FROM": "avisos@example.invalid"}):
             with patch("backend.main.urlopen") as send:
