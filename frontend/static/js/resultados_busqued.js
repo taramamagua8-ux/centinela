@@ -9,11 +9,11 @@ const instituciones = [
     },
     {
         id: "unidas",
-        nombre: "UNIDAS - Secretaría de las Mujeres del Estado de México",
-        descripcion: "Referencia de servicios de atención y orientación para mujeres.",
-        ubicacion: "Estado de México",
+        nombre: "UNIDAS Chimalhuacán (UEPAVIG)",
+        descripcion: "Atención y orientación para mujeres.",
+        ubicacion: "Chimalhuacán, Estado de México",
         servicios: ["Mujeres", "Orientación", "Atención"],
-        palabras: "violencia apoyo psicológico jurídico"
+        palabras: "violencia genero mujeres apoyo uepavig chimalhuacan"
     },
     {
         id: "direccion-mujeres",
@@ -25,15 +25,15 @@ const instituciones = [
     },
     {
         id: "ceavem",
-        nombre: "CEAVEM - Comisión Ejecutiva de Atención a Víctimas",
+        nombre: "Comisión Ejecutiva de Atención a Víctimas",
         descripcion: "Institución estatal de atención a víctimas.",
-        ubicacion: "Estado de México",
+        ubicacion: "Metepec, Estado de México",
         servicios: ["Víctimas", "Jurídico", "Psicológico"],
-        palabras: "delitos violencia asesoría apoyo"
+        palabras: "delitos violencia asesoría apoyo ceavem"
     },
     {
         id: "ceavem-oriente",
-        nombre: "CEAVEM - Subdirección Regional Oriente y Coordinación Regional Oriente I",
+        nombre: "CEAVEM - Subdirección Regional Oriente y Coordinación Regional Oriente I - CROSA",
         descripcion: "Unidad regional de la Comisión Ejecutiva de Atención a Víctimas del Estado de México.",
         ubicacion: "Nezahualcóyotl, Estado de México",
         servicios: ["Atención a víctimas", "Orientación", "Canalización"],
@@ -81,17 +81,17 @@ const instituciones = [
     },
     {
         id: "procuraduria-nna",
-        nombre: "Procuraduría de Protección de Niñas, Niños y Adolescentes",
-        descripcion: "Institución relacionada con la protección de los derechos de niñas, niños y adolescentes.",
-        ubicacion: "Estado de México",
+        nombre: "Procuraduría Municipal de Protección de Niñas, Niños y Adolescentes (Nezahualcóyotl)",
+        descripcion: "Protección de los derechos de niñas, niños y adolescentes.",
+        ubicacion: "Nezahualcóyotl, Estado de México",
         servicios: ["Protección", "Infancia", "Adolescencia"],
         palabras: "menores familia derechos violencia protección"
     },
     {
         id: "dif-edomex",
-        nombre: "DIF Estado de México",
-        descripcion: "Sistema estatal para el desarrollo integral de las familias.",
-        ubicacion: "Estado de México",
+        nombre: "Sistema Municipal DIF Chimalhuacán",
+        descripcion: "Asistencia social y atención a las familias del municipio.",
+        ubicacion: "Chimalhuacán, Estado de México",
         servicios: ["Asistencia social", "Familias", "Protección"],
         palabras: "niños adolescentes familia apoyo social"
     },
@@ -105,15 +105,15 @@ const instituciones = [
     },
     {
         id: "codhem",
-        nombre: "Comisión de Derechos Humanos del Estado de México",
+        nombre: "Comisión de Derechos Humanos del Estado de México (CODHEM)",
         descripcion: "Organismo público relacionado con la protección de los derechos humanos.",
-        ubicacion: "Estado de México",
+        ubicacion: "Toluca, Estado de México",
         servicios: ["Derechos humanos", "Orientación", "Quejas"],
         palabras: "discriminación abuso derechos denuncia"
     },
     {
         id: "fgjem",
-        nombre: "Fiscalía General de Justicia del Estado de México",
+        nombre: "Fiscalía General de Justicia",
         descripcion: "Institución encargada de la procuración de justicia en el Estado de México.",
         ubicacion: "Estado de México",
         servicios: ["Justicia", "Denuncias", "Delitos"],
@@ -121,9 +121,9 @@ const instituciones = [
     },
     {
         id: "dif-nacional",
-        nombre: "Sistema Nacional para el Desarrollo Integral de la Familia",
+        nombre: "Sistema Nacional DIF",
         descripcion: "Sistema nacional relacionado con la asistencia y protección familiar.",
-        ubicacion: "México",
+        ubicacion: "Ciudad de México",
         servicios: ["Asistencia social", "Familias", "Protección"],
         palabras: "niños adolescentes familia apoyo"
     },
@@ -137,11 +137,11 @@ const instituciones = [
     }
     ,{
         id: "cacem",
-        nombre: "Centro de Atención para la Convivencia Escolar Mexiquense (CACEM)",
-        descripcion: "Recibe y canaliza reportes de violencia escolar.",
+        nombre: "CONVIVE. Consejo para la Convivencia Escolar",
+        descripcion: "Convivencia escolar y atención ante la violencia en las escuelas.",
         ubicacion: "Toluca, Estado de México",
-        servicios: ["Violencia escolar", "Orientación", "Canalización"],
-        palabras: "escuela escolar estudiantes alumnos bullying acoso convivencia reportes conebi toluca"
+        servicios: ["Violencia escolar", "Mediación", "Orientación"],
+        palabras: "escuela escolar estudiantes alumnos bullying acoso convivencia convive cacem toluca"
     }
     ,{
         id: "sipinna-edomex",
@@ -177,7 +177,7 @@ const instituciones = [
     }
     ,{
         id: "profedet-toluca",
-        nombre: "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Toluca",
+        nombre: "PROFEDET, sede Toluca",
         descripcion: "Asesoría jurídica y representación legal gratuita en asuntos laborales federales.",
         ubicacion: "Toluca, Estado de México",
         servicios: ["Jurídico", "Laboral", "Gratuito"],
@@ -185,11 +185,11 @@ const instituciones = [
     }
     ,{
         id: "profedet-naucalpan",
-        nombre: "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Naucalpan",
-        descripcion: "Asesoría jurídica y representación legal gratuita en asuntos laborales federales.",
-        ubicacion: "Naucalpan de Juárez, Estado de México",
-        servicios: ["Jurídico", "Laboral", "Gratuito"],
-        palabras: "trabajo laboral trabajadores asesoria juridica defensa gratuita profedet naucalpan federal"
+        nombre: "Centro Federal de Conciliación y Registro Laboral (CFCRL) - PROFEDET",
+        descripcion: "Referencia para asuntos laborales de competencia federal.",
+        ubicacion: "Ciudad de México",
+        servicios: ["Laboral", "Conciliación", "Orientación"],
+        palabras: "trabajo laboral trabajadores conflicto conciliacion cfcrl profedet federal"
     }
     ,{
         id: "uaemex-igualdad",
