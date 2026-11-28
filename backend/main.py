@@ -219,16 +219,25 @@ def authenticate(table, id_column):
     if isinstance(password, str):
         password = password.strip()  # Elimina espacios accidentales al pegar
 
-    if not user or not password or not check_password_hash(user["contrasena_hash"], password):
+    if not user or not isinstance(password, str) or not password or not check_password_hash(user["contrasena_hash"], password):
         return fail("Correo o contraseña incorrectos.", 401)
 
     if table == "administradores":
         folio = item.get("folio")
         if isinstance(folio, str):
             folio = folio.strip().upper()  # Limpia espacios y asegura mayúsculas
-        if (not folio or not user["folio_hash"]
+        if (not isinstance(folio, str) or not folio or not user["folio_hash"]
                 or not secrets.compare_digest(user["folio_hash"], token_hash(folio))):
             return fail("Folio de administrador incorrecto.", 401)
+
+    token = secrets.token_urlsafe(32)
+    run(f"INSERT INTO sesiones (token_hash,{id_column},expira) VALUES (%s,%s,CURRENT_TIMESTAMP + interval '12 hours')",
+        (token_hash(token), user[id_column]))
+    g.db.commit()
+    return jsonify({
+        "token": token,
+        "usuario": {"id": user[id_column], "nombre": user["nombre"], "correo": user["correo"]},
+    })
 
 
 @app.post("/api/auth/logout")
