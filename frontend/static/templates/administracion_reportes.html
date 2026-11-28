@@ -4,49 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Canalización | Centinela Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/estilos.css">
     <link rel="stylesheet" href="../css/institucional.css">
     <script src="../js/institucional.js" defer></script>
 </head>
-<body class="pagina-institucional" data-pagina="administracion_reportes">
-    <header class="barra-superior">
-        <input type="checkbox" id="menu-institucional" class="toggle-menu" aria-label="Menú principal">
-        <label for="menu-institucional" class="btn-hamburguesa"><span></span><span></span><span></span></label>
-        <nav class="menu-lateral" aria-label="Navegación principal">
-            <a href="principal.html">Inicio</a>
-            <a href="descubre_mas.html">Descubre más</a>
-            <a href="videos.html">Videos</a>
-            <a href="directorio.html">Directorio</a>
-            <a href="sobre_nosotros.html">Sobre nosotros</a>
-            <a href="acceso_autoridad.html">Acceso de autoridad</a>
-            <a href="acceso_admin.html">Acceso de administrador</a>
-        </nav>
-        <div class="logo-centro"><img src="../img/logoB.png" alt=""><span>CENTINELA DIGITAL</span></div>
-        <div class="iconos-derecha accesos-navbar">
-            <a href="formulario.html">Consultar folio</a>
-            <a href="cuenta.html">Mi cuenta</a>
-        </div>
-    </header>
+<body class="pagina-institucional pagina-panel" data-pagina="administracion_reportes">
+    <script src="../js/navbar.js"></script>
+
     <main class="institucional">
         <h1>Canalización</h1>
         <p id="aviso-institucional" role="status" aria-live="polite"></p>
-        <p><a href="expedientes.html">Gestionar expedientes, actividades e informes</a></p>
-        <button id="cerrar-sesion" class="boton-secundario">Cerrar sesión</button>
+
+        <div class="acciones-panel">
+            <a class="boton-panel" href="expedientes.html">Gestionar expedientes, actividades e informes</a>
+            <button id="cerrar-sesion" class="boton-secundario" type="button">Cerrar sesión</button>
+        </div>
+
         <details class="panel-institucional">
             <summary>Administradores</summary>
             <form id="nuevo-admin" class="formulario-institucional">
-            <label>Nombre completo <input name="nombre" maxlength="150" autocomplete="name" required></label>
-            <label>Correo electrónico <input type="email" name="correo" maxlength="150" autocomplete="username" required></label>
-            <label>Contraseña <input type="password" name="contrasena" minlength="12" maxlength="128" autocomplete="new-password" required></label>
+                <label>Nombre completo <input name="nombre" maxlength="150" autocomplete="name" required></label>
+                <label>Correo electrónico <input type="email" name="correo" maxlength="150" autocomplete="username" required></label>
+                <label>Contraseña <input type="password" name="contrasena" minlength="12" maxlength="128" autocomplete="new-password" required></label>
                 <button>Crear administrador</button>
                 <output id="folio-admin"></output>
             </form>
             <div id="lista-administradores" class="lista-institucional"></div>
         </details>
+
         <details class="panel-institucional" open>
             <summary>Solicitudes de acceso de autoridades</summary>
             <div id="solicitudes-autoridad" class="lista-institucional"></div>
         </details>
+
         <details class="panel-institucional">
             <summary>Instituciones para canalización</summary>
             <div id="instituciones-canalizacion"></div>
@@ -58,6 +49,7 @@
                 <button>Registrar institución</button>
             </form>
         </details>
+
         <section class="panel-institucional">
             <h2>Reportes de autoridades</h2>
             <label>Buscar por folio de reporte o canalización <input type="search" id="filtro-canalizacion"></label>

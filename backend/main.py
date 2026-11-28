@@ -207,30 +207,29 @@ def login():
 @app.post("/api/auth/admin")
 def admin_login():
     return authenticate("administradores", "id_administrador")
-
 def authenticate(table, id_column):
     item = data()
     email = item.get("correo")
     if not isinstance(email, str):
         return fail("Escribe un correo válido.")
-    email = email.strip().lower() if table != "usuarios" else email
+    email = email.strip().lower()
     user = one(f"SELECT * FROM {table} WHERE correo=%s AND activo=1", (email,))
+    
     password = item.get("contrasena")
-    if not user or not isinstance(password, str) or not check_password_hash(user["contrasena_hash"], password):
+    if isinstance(password, str):
+        password = password.strip()  # Elimina espacios accidentales al pegar
+
+    if not user or not password or not check_password_hash(user["contrasena_hash"], password):
         return fail("Correo o contraseña incorrectos.", 401)
+
     if table == "administradores":
         folio = item.get("folio")
-        if (not isinstance(folio, str) or not user["folio_hash"]
-                or not secrets.compare_digest(user["folio_hash"], token_hash(folio.strip().upper()))):
-            return fail("Credenciales administrativas incorrectas.", 401)
-    token = secrets.token_urlsafe(32)
-    run(f"INSERT INTO sesiones (token_hash,{id_column},expira) VALUES (%s,%s,CURRENT_TIMESTAMP + interval '12 hours')",
-        (token_hash(token), user[id_column]))
-    g.db.commit()
-    return jsonify({
-        "token": token,
-        "usuario": {"id": user[id_column], "nombre": user["nombre"], "correo": user["correo"]},
-    })
+        if isinstance(folio, str):
+            folio = folio.strip().upper()  # Limpia espacios y asegura mayúsculas
+        if (not folio or not user["folio_hash"]
+                or not secrets.compare_digest(user["folio_hash"], token_hash(folio))):
+            return fail("Folio de administrador incorrecto.", 401)
+
 
 @app.post("/api/auth/logout")
 def logout():

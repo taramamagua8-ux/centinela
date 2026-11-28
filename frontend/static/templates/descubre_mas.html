@@ -10,15 +10,9 @@
 
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
-
 <body class="pagina-descubre-mas">
-
-    <!-- ENCABEZADO -->
-
-
-   <body class="...tu clase...">
     <script src="../js/navbar.js"></script>
-    <script src="../js/auth.js"></script>
+        <script src="../js/auth.js"></script>
 </body>
 
 
@@ -44,6 +38,13 @@
                 Conocer los tipos de violencia es un primer paso para
                 reconocerlos, prevenirlos y buscar apoyo.
             </p>
+            <nav class="indice-violencias" aria-label="Tipos de violencia">
+    <a href="#psicologica">Psicológica</a>
+    <a href="#fisica">Física</a>
+    <a href="#sexual">Sexual</a>
+    <a href="#economica">Económica</a>
+    <a href="#patrimonial">Patrimonial</a>
+</nav>
 
         </section>
 
@@ -55,7 +56,7 @@
 
             <!-- 1. VIOLENCIA PSICOLÓGICA O EMOCIONAL -->
 
-            <article class="bloque-violencia">
+            <article class="bloque-violencia" id="psicologica">
 
                 <div class="texto-violencia">
 
@@ -133,7 +134,7 @@
 
             <!-- 2. VIOLENCIA FÍSICA -->
 
-            <article class="bloque-violencia invertido">
+            <article class="bloque-violencia invertido" id="fisica">
 
                 <div class="texto-violencia">
 
@@ -211,7 +212,7 @@
 
             <!-- 3. VIOLENCIA SEXUAL -->
 
-            <article class="bloque-violencia">
+            <article class="bloque-violencia" id="sexual">
 
                 <div class="texto-violencia">
 
@@ -298,7 +299,7 @@
 
             <!-- 4. VIOLENCIA ECONÓMICA -->
 
-            <article class="bloque-violencia invertido">
+            <article class="bloque-violencia invertido" id="economica">
 
                 <div class="texto-violencia">
 
@@ -383,7 +384,7 @@
 
             <!-- 5. VIOLENCIA PATRIMONIAL -->
 
-            <article class="bloque-violencia">
+            <article class="bloque-violencia" id="patrimonial">
 
                 <div class="texto-violencia">
 
@@ -523,37 +524,27 @@
 
 
             <!-- VENTANA EMERGENTE DE LA INFOGRAFÍA -->
+<!-- VISOR DE LA INFOGRAFÍA (fuera del <main> para que cubra toda la pantalla) -->
+<div id="visor-infografia" class="visor-infografia" role="dialog"
+     aria-modal="true" aria-label="Infografía ampliada" aria-hidden="true">
 
-            <div
-                id="visor-infografia"
-                class="visor-infografia"
-                role="dialog"
-                aria-modal="true"
-                aria-label="Infografía ampliada"
-                aria-hidden="true"
-                onclick="if(event.target === this) cerrarInfografia()"
-            >
+    <div class="visor-barra">
+        <button type="button" class="visor-btn" id="zoom-menos" aria-label="Alejar">−</button>
+        <span class="visor-nivel" id="zoom-nivel" aria-live="polite">100%</span>
+        <button type="button" class="visor-btn" id="zoom-mas" aria-label="Acercar">+</button>
+        <button type="button" class="visor-btn visor-btn-texto" id="zoom-reset">Restablecer</button>
+        <button type="button" class="cerrar-infografia" id="cerrar-visor"
+                onclick="cerrarInfografia()" aria-label="Cerrar infografía">&times;</button>
+    </div>
 
-                <!-- BOTÓN PARA CERRAR -->
+    <div class="visor-lienzo" id="visor-lienzo">
+        <img id="infografia-ampliada" class="infografia-ampliada"
+             src="/static/img/materia_energia.png"
+             alt="Infografía sobre Materia y Energía ampliada" draggable="false">
+    </div>
 
-                <button
-                    type="button"
-                    class="cerrar-infografia"
-                    onclick="cerrarInfografia()"
-                    aria-label="Cerrar infografía"
-                >
-                    &times;
-                </button>
-
-                <!-- IMAGEN AMPLIADA -->
-
-                <img
-                    src="/static/img/materia_energia.png"
-                    alt="Infografía sobre Materia y Energía ampliada"
-                    class="infografia-ampliada"
-                >
-
-            </div>
+    <p class="visor-ayuda">Rueda o pellizca para acercar · arrastra para mover · doble clic para alternar</p>
+</div>
 
 
             <!-- INVESTIGACIÓN PDF -->
@@ -572,69 +563,175 @@
             </div>
 
         </section>
+        <!-- ===== BLOQUE: ¿NECESITAS AYUDA AHORA? ===== -->
+<section class="ayuda-ahora" aria-labelledby="titulo-ayuda-ahora">
+    <div class="ayuda-ahora-texto">
+        <span class="ayuda-ahora-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
+        </span>
+        <h2 id="titulo-ayuda-ahora">¿Necesitas ayuda ahora?</h2>
+        <p>Si estás en peligro inmediato, llama al <strong>911</strong>. Centinela Digital no sustituye a los servicios de emergencia ni a las autoridades.</p>
+        <ul class="ayuda-ahora-lista">
+            <li>Habla con una persona de confianza.</li>
+            <li>Guarda mensajes, fotos u otras evidencias en un lugar seguro.</li>
+            <li>Consulta el directorio para encontrar instituciones de apoyo.</li>
+        </ul>
+    </div>
+    <div class="ayuda-ahora-botones">
+        <a class="ayuda-ahora-btn" href="formulario_reporte.html">Realizar un reporte</a>
+        <a class="ayuda-ahora-btn ayuda-ahora-btn-sec" href="directorio.html">Ver el directorio</a>
+    </div>
+</section>
+<!-- ===== FIN DEL BLOQUE ===== -->
 
         <!-- FIN DEL MATERIAL COMPLEMENTARIO -->
+
+
+        
 
     </main>
 
 
     <!-- JAVASCRIPT PARA AMPLIAR Y CERRAR LA INFOGRAFÍA -->
 
-    <script>
+<script>
+    // ---- Columna con carril y estela para cada imagen (igual que antes) ----
+    document.querySelectorAll(".bloque-violencia > .imagen-violencia").forEach(img => {
+        const columna = document.createElement("div");
+        columna.className = "columna-imagen";
+        const pegajosa = document.createElement("div");
+        pegajosa.className = "imagen-pegajosa";
+        img.replaceWith(columna);
+        columna.appendChild(pegajosa);
+        pegajosa.appendChild(img);
+    });
 
+    // ---- Visor de infografía con zoom ----
+    const visor   = document.getElementById("visor-infografia");
+    const lienzo  = document.getElementById("visor-lienzo");
+    const imagen  = document.getElementById("infografia-ampliada");
+    const nivel   = document.getElementById("zoom-nivel");
+    const MIN = 1, MAX = 5;
+    let escala = 1, x = 0, y = 0, ultimoFoco = null;
 
-        // Envuelve cada imagen en una columna con carril y estela
-document.querySelectorAll(".bloque-violencia > .imagen-violencia").forEach(img => {
-    const columna = document.createElement("div");
-    columna.className = "columna-imagen";
+    function limitar() {
+        const r = lienzo.getBoundingClientRect();
+        const maxX = Math.max(0, (imagen.offsetWidth  * escala - r.width)  / 2);
+        const maxY = Math.max(0, (imagen.offsetHeight * escala - r.height) / 2);
+        x = Math.min(maxX, Math.max(-maxX, x));
+        y = Math.min(maxY, Math.max(-maxY, y));
+    }
 
-    const pegajosa = document.createElement("div");
-    pegajosa.className = "imagen-pegajosa";
+    function aplicar() {
+        imagen.style.transform = `translate(${x}px, ${y}px) scale(${escala})`;
+        nivel.textContent = Math.round(escala * 100) + "%";
+        lienzo.classList.toggle("con-zoom", escala > 1);
+    }
 
-    img.replaceWith(columna);
-    columna.appendChild(pegajosa);
-    pegajosa.appendChild(img);
-});
+    // Zoom hacia un punto (por defecto, el centro)
+    function zoomEn(nueva, cx, cy) {
+        nueva = Math.min(MAX, Math.max(MIN, nueva));
+        const r = lienzo.getBoundingClientRect();
+        const centroX = r.left + r.width / 2, centroY = r.top + r.height / 2;
+        const px = (cx ?? centroX) - centroX, py = (cy ?? centroY) - centroY;
+        const k = nueva / escala;
+        x = px - (px - x) * k;
+        y = py - (py - y) * k;
+        escala = nueva;
+        if (escala === 1) { x = 0; y = 0; }
+        limitar();
+        aplicar();
+    }
 
-        function abrirInfografia() {
+    function restablecer() { escala = 1; x = 0; y = 0; aplicar(); }
 
-            const visor = document.getElementById("visor-infografia");
+    function abrirInfografia() {
+        ultimoFoco = document.activeElement;
+        visor.style.display = "flex";
+        visor.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        restablecer();
+        document.getElementById("cerrar-visor").focus();
+    }
 
-            visor.style.display = "flex";
+    function cerrarInfografia() {
+        visor.style.display = "none";
+        visor.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        if (ultimoFoco) { ultimoFoco.focus(); ultimoFoco = null; }
+    }
 
-            visor.setAttribute("aria-hidden", "false");
+    // Botones
+    document.getElementById("zoom-mas").addEventListener("click",   () => zoomEn(escala * 1.4));
+    document.getElementById("zoom-menos").addEventListener("click", () => zoomEn(escala / 1.4));
+    document.getElementById("zoom-reset").addEventListener("click", restablecer);
 
-            document.body.style.overflow = "hidden";
+    // Rueda del mouse (o pellizco en trackpad)
+    lienzo.addEventListener("wheel", e => {
+        e.preventDefault();
+        zoomEn(escala * Math.exp(-e.deltaY * 0.0015), e.clientX, e.clientY);
+    }, { passive: false });
 
+    // Doble clic: alterna entre 100% y 250%
+    lienzo.addEventListener("dblclick", e => {
+        escala > 1 ? restablecer() : zoomEn(2.5, e.clientX, e.clientY);
+    });
+
+    // Arrastrar para mover y pellizcar en pantallas táctiles
+    const punteros = new Map();
+    let arrastre = null, distInicial = 0, escalaInicial = 1;
+
+    lienzo.addEventListener("pointerdown", e => {
+        lienzo.setPointerCapture(e.pointerId);
+        punteros.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        lienzo.classList.add("moviendo");
+        if (punteros.size === 2) {
+            const [a, b] = [...punteros.values()];
+            distInicial = Math.hypot(a.x - b.x, a.y - b.y);
+            escalaInicial = escala;
+            arrastre = null;
+        } else if (escala > 1) {
+            arrastre = { x0: e.clientX, y0: e.clientY, xi: x, yi: y };
         }
+    });
 
-
-        function cerrarInfografia() {
-
-            const visor = document.getElementById("visor-infografia");
-
-            visor.style.display = "none";
-
-            visor.setAttribute("aria-hidden", "true");
-
-            document.body.style.overflow = "";
-
+    lienzo.addEventListener("pointermove", e => {
+        if (!punteros.has(e.pointerId)) return;
+        punteros.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (punteros.size === 2) {
+            const [a, b] = [...punteros.values()];
+            const d = Math.hypot(a.x - b.x, a.y - b.y);
+            zoomEn(escalaInicial * d / distInicial, (a.x + b.x) / 2, (a.y + b.y) / 2);
+        } else if (arrastre) {
+            x = arrastre.xi + e.clientX - arrastre.x0;
+            y = arrastre.yi + e.clientY - arrastre.y0;
+            limitar();
+            aplicar();
         }
+    });
 
+    const soltar = e => {
+        punteros.delete(e.pointerId);
+        arrastre = null;
+        if (!punteros.size) lienzo.classList.remove("moviendo");
+    };
+    lienzo.addEventListener("pointerup", soltar);
+    lienzo.addEventListener("pointercancel", soltar);
 
-        // Cerrar la infografía al presionar Escape
+    window.addEventListener("resize", () => { limitar(); aplicar(); });
 
-        document.addEventListener("keydown", function(event) {
+    // Teclado: Esc cierra, + / − acercan o alejan, 0 restablece
+    document.addEventListener("keydown", e => {
+        if (visor.style.display !== "flex") return;
+        if (e.key === "Escape") cerrarInfografia();
+        else if (e.key === "+" || e.key === "=") zoomEn(escala * 1.4);
+        else if (e.key === "-") zoomEn(escala / 1.4);
+        else if (e.key === "0") restablecer();
+    });
 
-            if (event.key === "Escape") {
-
-                cerrarInfografia();
-
-            }
-
-        });
-
-    </script>
+    // La miniatura también abre el visor
+    document.querySelector(".infografia-miniatura")?.addEventListener("click", abrirInfografia);
+</script>
 
 </body>
 </html>
