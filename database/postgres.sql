@@ -1,4 +1,3 @@
--- This schema is isolated from any existing application's public tables.
 CREATE SCHEMA IF NOT EXISTS centinela;
 SET LOCAL search_path = centinela, public;
 

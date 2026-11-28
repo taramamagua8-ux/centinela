@@ -23,7 +23,7 @@
 
         <section class="hero">
             <h1>Mapa de instituciones</h1>
-            <p>Elige un municipio para ver las instituciones del directorio que se encuentran ahí.</p>
+            <p>Elige una zona o toca un pin para conocer las instituciones del directorio.</p>
         </section>
 
         <form class="tarjeta buscador-tarjeta filtros-mapa" id="filtrosMapa" role="search">
@@ -32,15 +32,15 @@
                 <input type="search" id="buscarMapa" placeholder="Ej. CODHEM o justicia" autocomplete="off">
             </div>
             <div>
-                <label for="municipioMapa">Municipio</label>
+                <label for="municipioMapa">Municipio o zona</label>
                 <select id="municipioMapa">
-                    <option value="">Todos los municipios</option>
+                    <option value="">Todas las zonas</option>
                 </select>
             </div>
             <button class="boton" type="reset">Ver todo</button>
         </form>
 
-        <p class="aviso-mapa">Los pines señalan el municipio de forma <strong>aproximada</strong>, no el domicilio exacto. Confirma la dirección en los medios oficiales antes de acudir. En una emergencia en México, llama al <a href="tel:911">911</a>.</p>
+        <p class="aviso-mapa">Las coordenadas fueron proporcionadas por el equipo del proyecto. Confirma la dirección y la atención en los medios oficiales antes de acudir. En una emergencia en México, llama al <a href="tel:911">911</a>.</p>
 
         <div class="zona-mapa">
             <section class="tarjeta panel-mapa" aria-label="Mapa">
@@ -55,7 +55,7 @@
 
         <section class="tarjeta">
             <h2>Sin un punto fijo en este mapa</h2>
-            <p class="nota-sin-punto">Son líneas de atención o instituciones sin un domicilio específico en los datos del proyecto.</p>
+            <p class="nota-sin-punto">Estas líneas, dependencias y organizaciones no tienen coordenadas registradas en el proyecto.</p>
             <ul id="sinPunto"></ul>
         </section>
 

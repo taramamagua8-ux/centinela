@@ -12,14 +12,14 @@ const instituciones = {
     },
 
     "unidas": {
-        nombre: "UNIDAS - Secretaría de las Mujeres del Estado de México",
-        resumen: "Servicios de atención y orientación para mujeres.",
-        ubicacion: "Estado de México",
-        descripcion: "Referencia de servicios relacionados con la atención y orientación para mujeres. Se recomienda consultar la información oficial para identificar las sedes y servicios disponibles.",
+        nombre: "UNIDAS Chimalhuacán (UEPAVIG)",
+        resumen: "Atención y orientación para mujeres.",
+        ubicacion: "Chimalhuacán, Estado de México",
+        descripcion: "Referencia de atención y orientación para mujeres en Chimalhuacán. Confirma los servicios vigentes en medios oficiales.",
         servicios: ["Orientación", "Atención a mujeres", "Canalización"],
         telefono: "Consultar medios oficiales.",
         horario: "Consultar disponibilidad.",
-        sitio: "Secretaría de las Mujeres del Estado de México."
+        sitio: "Consultar medios oficiales."
     },
 
     "direccion-mujeres": {
@@ -34,68 +34,68 @@ const instituciones = {
     },
 
     "ceavem": {
-        nombre: "CEAVEM - Comisión Ejecutiva de Atención a Víctimas",
+        nombre: "Comisión Ejecutiva de Atención a Víctimas",
         resumen: "Institución estatal de atención a víctimas.",
-        ubicacion: "Estado de México",
+        ubicacion: "Paseo de los Cisnes núm. 49, col. La Asunción, C.P. 52172, Metepec, Estado de México",
         descripcion: "Organismo estatal encargado de brindar atención a víctimas de delitos y de violaciones a derechos humanos, conforme a sus atribuciones.",
         servicios: ["Atención a víctimas", "Orientación jurídica", "Atención psicológica", "Canalización"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad.",
-        sitio: "Comisión Ejecutiva de Atención a Víctimas del Estado de México."
+        telefono: "722 275 8664",
+        horario: "Lunes a viernes, de 9:00 a 18:00 h.",
+        sitio: "ceavem.edomex.gob.mx"
     },
 
     "ceavem-oriente": {
-        nombre: "CEAVEM - Subdirección Regional Oriente y Coordinación Regional Oriente I",
+        nombre: "CEAVEM - Subdirección Regional Oriente y Coordinación Regional Oriente I - CROSA",
         resumen: "Unidad regional de atención a víctimas.",
-        ubicacion: "Nezahualcóyotl, Estado de México",
+        ubicacion: "CROSA \"Josefa Ortiz de Domínguez\", planta baja, interior I, Av. Sor Juana Inés de la Cruz núm. 100, esq. Indio Triste, col. Metropolitana, C.P. 57740, Nezahualcóyotl, Estado de México",
         descripcion: "Unidad regional de la Comisión Ejecutiva de Atención a Víctimas del Estado de México. Se recomienda confirmar su dirección y disponibilidad antes de acudir.",
         servicios: ["Orientación jurídica", "Atención psicológica", "Atención a víctimas", "Canalización"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad.",
+        telefono: "722 167 0203",
+        horario: "Lunes a viernes, de 9:00 a 18:00 h.",
         sitio: "Comisión Ejecutiva de Atención a Víctimas del Estado de México."
     },
 
     "cjm-ecatepec": {
         nombre: "Centro de Justicia para las Mujeres de Ecatepec",
         resumen: "Centro especializado en atención para mujeres.",
-        ubicacion: "Ecatepec, Estado de México",
+        ubicacion: "Calle Noche Buena, col. Chula Vista, C.P. 55030, Ecatepec, Estado de México",
         descripcion: "Centro relacionado con la atención y orientación especializada para mujeres. Consulta sus canales oficiales para conocer los servicios disponibles.",
         servicios: ["Orientación jurídica", "Atención psicológica", "Orientación institucional"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad.",
+        telefono: "722 955 6370, ext. 77206 y 77204",
+        horario: "Lunes a viernes, de 9:00 a 18:00 h, con guardia de 24 horas para recepción.",
         sitio: "Fiscalía General de Justicia del Estado de México."
     },
 
     "cjm-toluca": {
         nombre: "Centro de Justicia para las Mujeres de Toluca",
         resumen: "Centro especializado en atención para mujeres.",
-        ubicacion: "Toluca, Estado de México",
+        ubicacion: "Paseo Matlatzincas núm. 1100, col. La Teresona, C.P. 50040, Toluca, Estado de México",
         descripcion: "Centro de atención especializada para mujeres. Se recomienda verificar los servicios y horarios vigentes antes de acudir.",
         servicios: ["Orientación jurídica", "Atención psicológica", "Orientación institucional"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad.",
+        telefono: "722 955 7681 · 722 955 6370, ext. 73660",
+        horario: "Lunes a viernes, de 9:00 a 18:00 h, con guardia de 24 horas para recepción.",
         sitio: "Fiscalía General de Justicia del Estado de México."
     },
 
     "cjm-cuautitlan": {
         nombre: "Centro de Justicia para las Mujeres de Cuautitlán Izcalli",
         resumen: "Centro de atención y orientación para mujeres.",
-        ubicacion: "Cuautitlán Izcalli, Estado de México",
+        ubicacion: "Andador Rotterdam núm. 9, col. Centro Urbano, C.P. 54700, Cuautitlán Izcalli, Estado de México",
         descripcion: "Centro relacionado con la atención especializada para mujeres. Los datos de atención deben confirmarse mediante sus canales oficiales.",
         servicios: ["Orientación jurídica", "Atención psicológica", "Orientación institucional"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad.",
+        telefono: "722 955 6370, ext. 71008 y 77370",
+        horario: "Lunes a viernes, de 9:00 a 18:00 h, con guardia de 24 horas para recepción.",
         sitio: "Fiscalía General de Justicia del Estado de México."
     },
 
     "cjm-amecameca": {
         nombre: "Centro de Justicia para las Mujeres de Amecameca",
         resumen: "Centro de atención especializada para mujeres.",
-        ubicacion: "Amecameca, Estado de México",
+        ubicacion: "Carretera federal México–Cuautla, km 58.5, San Miguel Panoaya, C.P. 56000, Amecameca, Estado de México",
         descripcion: "Referencia de un centro de atención para mujeres. Se recomienda verificar su ubicación y disponibilidad actual.",
         servicios: ["Orientación jurídica", "Atención psicológica", "Orientación institucional"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad.",
+        telefono: "722 955 6370, ext. 74008 · 597 978 4985",
+        horario: "Lunes a viernes, de 9:00 a 18:00 h, con guardia de 24 horas para recepción.",
         sitio: "Fiscalía General de Justicia del Estado de México."
     },
 
@@ -111,25 +111,25 @@ const instituciones = {
     },
 
     "procuraduria-nna": {
-        nombre: "Procuraduría de Protección de Niñas, Niños y Adolescentes",
+        nombre: "Procuraduría Municipal de Protección de Niñas, Niños y Adolescentes (Nezahualcóyotl)",
         resumen: "Protección de los derechos de niñas, niños y adolescentes.",
-        ubicacion: "Estado de México",
-        descripcion: "Institución relacionada con la protección y restitución de los derechos de niñas, niños y adolescentes.",
-        servicios: ["Protección de derechos", "Orientación", "Atención a menores", "Canalización"],
-        telefono: "Consultar medios oficiales.",
-        horario: "Consultar disponibilidad.",
-        sitio: "DIF Estado de México."
+        ubicacion: "Calle Aviación Civil s/n, col. Vicente Villada, C.P. 57710, Nezahualcóyotl, Estado de México (confirmar antes de acudir)",
+        descripcion: "Instancia municipal relacionada con la protección de los derechos de niñas, niños y adolescentes.",
+        servicios: ["Protección de derechos", "Orientación", "Atención a menores"],
+        telefono: "55 9338 6161 (Procuraduría del DIF Neza; confirmar que atienda el caso)",
+        horario: "Lunes a viernes, de 9:00 a 18:00 h.",
+        sitio: "dif.neza.gob.mx"
     },
 
     "dif-edomex": {
-        nombre: "DIF Estado de México",
-        resumen: "Sistema estatal para el desarrollo integral de las familias.",
-        ubicacion: "Estado de México",
-        descripcion: "Organismo relacionado con programas de asistencia social y atención a familias y grupos que requieren apoyo.",
+        nombre: "Sistema Municipal DIF Chimalhuacán",
+        resumen: "Asistencia social y atención a las familias del municipio.",
+        ubicacion: "Chimalhuacán, Estado de México",
+        descripcion: "Sistema municipal relacionado con la asistencia social y la atención a las familias.",
         servicios: ["Asistencia social", "Atención familiar", "Protección de menores"],
         telefono: "Consultar medios oficiales.",
         horario: "Consultar disponibilidad.",
-        sitio: "DIF Estado de México."
+        sitio: "Consultar medios oficiales."
     },
 
     "secretaria-mujeres": {
@@ -144,7 +144,7 @@ const instituciones = {
     },
 
     "codhem": {
-        nombre: "Comisión de Derechos Humanos del Estado de México",
+        nombre: "Comisión de Derechos Humanos del Estado de México (CODHEM)",
         resumen: "Organismo público de protección de los derechos humanos.",
         ubicacion: "Av. Nicolás San Juan núm. 113, col. Ex Rancho Cuauhtémoc, C.P. 50010, Toluca, Estado de México",
         descripcion: "Organismo público autónomo que promueve, protege y estudia los derechos humanos en el Estado de México. Recibe quejas por presuntas violaciones a derechos humanos cometidas por autoridades o servidores públicos estatales o municipales. No investiga delitos penales ni sustituye a la Fiscalía.",
@@ -156,7 +156,7 @@ const instituciones = {
     },
 
     "fgjem": {
-        nombre: "Fiscalía General de Justicia del Estado de México",
+        nombre: "Fiscalía General de Justicia",
         resumen: "Institución encargada de la procuración de justicia.",
         ubicacion: "Estado de México",
         descripcion: "Institución encargada de investigar y perseguir delitos dentro de sus atribuciones legales.",
@@ -167,9 +167,9 @@ const instituciones = {
     },
 
     "dif-nacional": {
-        nombre: "Sistema Nacional para el Desarrollo Integral de la Familia",
+        nombre: "Sistema Nacional DIF",
         resumen: "Sistema nacional de asistencia social y atención familiar.",
-        ubicacion: "México",
+        ubicacion: "Ciudad de México",
         descripcion: "Organismo relacionado con la asistencia social y la atención de familias, niñas, niños y adolescentes.",
         servicios: ["Asistencia social", "Atención familiar", "Protección de menores"],
         telefono: "Consultar medios oficiales.",
@@ -189,14 +189,15 @@ const instituciones = {
     }
 
     ,"cacem": {
-        nombre: "Centro de Atención para la Convivencia Escolar Mexiquense (CACEM)",
-        resumen: "Recepción de reportes, orientación y canalización por violencia escolar.",
+        nombre: "CONVIVE. Consejo para la Convivencia Escolar",
+        resumen: "Convivencia escolar y atención ante la violencia en las escuelas.",
         ubicacion: "Pedro Ascencio núm. 207, col. La Merced, Toluca, Estado de México",
-        descripcion: "Depende del Consejo Escolar para el Bienestar (CONEBI) de la SECTI Estado de México. Recibe, registra y canaliza reportes relacionados con violencia escolar y promueve la convivencia pacífica en escuelas. Atiende a estudiantes, madres, padres, tutores y personal educativo.",
-        servicios: ["Recepción de reportes", "Orientación", "Canalización"],
-        telefono: "722 167 2202 · 800 016 4667 · Conmutador CONEBI: 722 226 4360",
+        descripcion: "Órgano desconcentrado de la Secretaría de Educación del Estado de México. Promueve la convivencia pacífica y la cultura de paz, y busca disminuir la violencia escolar, incluido el bullying.",
+        servicios: ["Convivencia escolar", "Mediación y conciliación", "Atención especializada"],
+        telefono: "800 016 4667 (línea gratuita) · 722 214 3913",
+        correo: "direcciongeneralconvive@gmail.com",
         horario: "Consultar el horario en el portal oficial.",
-        sitio: "CONEBI / CACEM (conebi.edomex.gob.mx)"
+        sitio: "convive.edomex.gob.mx"
     }
 
     ,"sipinna-edomex": {
@@ -245,7 +246,7 @@ const instituciones = {
     }
 
     ,"profedet-toluca": {
-        nombre: "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Toluca",
+        nombre: "PROFEDET, sede Toluca",
         resumen: "Asesoría jurídica y representación legal gratuita para personas trabajadoras.",
         ubicacion: "Vía Alfredo del Mazo núm. 1028, col. Santa Cruz Atzcapotzaltongo, C.P. 50030, Toluca, Estado de México",
         descripcion: "Depende de la Secretaría del Trabajo y Previsión Social (Gobierno Federal). Orienta y defiende gratuitamente los derechos de personas trabajadoras en conflictos laborales de competencia federal.",
@@ -257,15 +258,14 @@ const instituciones = {
     }
 
     ,"profedet-naucalpan": {
-        nombre: "PROFEDET - Procuraduría Federal de la Defensa del Trabajo, sede Naucalpan",
-        resumen: "Asesoría jurídica y representación legal gratuita para personas trabajadoras.",
-        ubicacion: "San Andrés Atoto núm. 1, col. San Esteban, C.P. 53550, Naucalpan de Juárez, Estado de México",
-        descripcion: "Depende de la Secretaría del Trabajo y Previsión Social (Gobierno Federal). Orienta y representa legalmente, sin costo, a personas trabajadoras en asuntos laborales de competencia federal.",
-        servicios: ["Asesoría jurídica", "Representación legal", "Orientación laboral"],
-        telefono: "55 9156 9970 y 55 9156 9971 (confirmar ext. 20490 / 20491) · Línea nacional: 800 717 2942",
-        correo: "orientacionprofedet@stps.gob.mx",
-        horario: "Lunes a viernes, de 9:00 a 18:00 h (confirmar el horario local).",
-        sitio: "gob.mx/profedet"
+        nombre: "Centro Federal de Conciliación y Registro Laboral (CFCRL) - PROFEDET",
+        resumen: "Referencia para asuntos laborales de competencia federal.",
+        ubicacion: "Dr. José María Vértiz núm. 211, col. Doctores, C.P. 06720, Cuauhtémoc, Ciudad de México",
+        descripcion: "Referencia relacionada con la conciliación y la orientación laboral en el ámbito federal. El CFCRL y la PROFEDET tienen funciones distintas: confirma en sus medios oficiales a cuál acudir.",
+        servicios: ["Orientación laboral", "Conciliación"],
+        telefono: "Conmutador PROFEDET: 55 5998 2000 · CFCRL: consultar medios oficiales.",
+        horario: "Consultar disponibilidad.",
+        sitio: "centrolaboral.gob.mx · gob.mx/profedet"
     }
 
     ,"uaemex-igualdad": {
