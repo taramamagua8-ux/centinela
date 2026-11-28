@@ -1,7 +1,4 @@
-/* ==========================================================================
-   ESTILO COMPARTIDO: Directorio, Videos, Resultados y Detalle
-   Cargar SIEMPRE al final, después de los demás CSS.
-   ========================================================================== */
+
 html:has(body.pagina-app) { scroll-snap-type: none !important; scroll-padding-top: 0; }
 
 body.pagina-app {
@@ -24,7 +21,6 @@ body.pagina-app {
 .pagina-app *, .pagina-app *::before, .pagina-app *::after { box-sizing: border-box; }
 .pagina-app [hidden] { display: none !important; }
 
-/* ---------- Navbar (lila claro, como en la vista de VS Code) ---------- */
 body.pagina-app .barra-superior {
   margin: 0;
   background: radial-gradient(ellipse at 35% 0%, #dc91f6 0%, #c776c9 48%, #a9558c 100%);
@@ -39,7 +35,6 @@ body.pagina-app .accesos-navbar a:not(.btn-nav):focus-visible { background: #542
   body.pagina-app .accesos-navbar a:not(.btn-nav) { padding: .35rem .55rem; font-size: .7rem; white-space: normal; text-align: center; max-width: 82px; }
 }
 
-/* ---------- Contenedor: mismos márgenes en todas las páginas ---------- */
 body.pagina-app .contenido-pagina {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -50,7 +45,6 @@ body.pagina-app .contenido-pagina {
 }
 .contenido-pagina > * { margin: 0; }
 
-/* ---------- Encabezado principal ---------- */
 body.pagina-app .hero {
   padding: clamp(18px, 2.4vw, 26px) clamp(18px, 4vw, 48px);
   border-radius: 22px;
@@ -79,7 +73,6 @@ body.pagina-app .hero p {
   text-shadow: 0 1px 6px rgba(81, 19, 97, .35);
 }
 
-/* ---------- Tarjetas ---------- */
 .pagina-app .tarjeta {
   padding: var(--relleno);
   border: 1px solid var(--borde);
@@ -92,7 +85,6 @@ body.pagina-app .hero p {
 .pagina-app .ruta { color: var(--guinda); font-size: .85rem; font-weight: 600; line-height: 1.5; }
 .pagina-app .ruta a { color: inherit; }
 
-/* ---------- Buscador ---------- */
 .pagina-app .buscador-tarjeta { position: relative; background: linear-gradient(135deg, #fff7fd, #fbe9f8); }
 .pagina-app .buscador-tarjeta label { display: block; margin-bottom: 12px; color: #5e3b69; font-weight: 800; }
 .pagina-app .campo-busqueda { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; margin: 0; }

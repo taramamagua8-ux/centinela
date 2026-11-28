@@ -1,4 +1,3 @@
-/* DIRECTORIO (se carga después de estilos.css y paginas.css) */
 
 .sugerencias-directorio {
   position: absolute;
@@ -17,7 +16,6 @@
 .sugerencias-directorio button { width: 100%; padding: 10px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--texto); font: inherit; text-align: left; cursor: pointer; }
 .sugerencias-directorio button:hover { background: var(--suave); }
 
-/* Categorías: flex para que la última fila quede centrada */
 .categorias-directorio { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
 .tarjeta-categoria {
   display: flex;
@@ -41,7 +39,6 @@
 .tarjeta-categoria .icono { display: grid; flex: 0 0 44px; height: 44px; place-items: center; border-radius: 50%; background: linear-gradient(135deg, #d98aef, #923b61); color: #fff; }
 .tarjeta-categoria .nombre { flex: 1; }
 
-/* Mapa */
 .mapa-directorio {
   display: flex;
   flex-wrap: wrap;
@@ -54,7 +51,6 @@
 .pagina-app .mapa-directorio h2 { margin-bottom: 6px; }
 .mapa-directorio p { margin: 0; line-height: 1.6; }
 
-/* Instituciones destacadas */
 .instituciones-directorio { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; }
 .tarjeta-institucion-directorio {
   display: flex;

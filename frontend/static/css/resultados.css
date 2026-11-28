@@ -1,4 +1,4 @@
-/* RESULTADOS DE BÚSQUEDA */
+
 .cantidad { color: var(--guinda); font-weight: 800; }
 .lista-resultados { display: grid; gap: 18px; }
 .tarjeta-resultado { display: flex; align-items: center; gap: 22px; padding: 22px; border: 1px solid var(--borde); border-radius: 18px; background: #fff; box-shadow: var(--sombra); }

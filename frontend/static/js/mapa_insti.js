@@ -1,4 +1,4 @@
-// Coordenadas proporcionadas por el equipo de Centinela Digital [latitud, longitud].
+
 const coords = {
     "cjm-toluca": [19.30035192857146, -99.6694425474893],
     "cacem": [19.291764383587783, -99.65990147649161],
@@ -28,7 +28,7 @@ const coords = {
 
 const codhemDir = "Av. Nicolás San Juan núm. 113, col. Ex Rancho Cuauhtémoc, C.P. 50010";
 
-// [id (el mismo de detalle_institucion.js), nombre, zona, dirección ("" si no se tiene), coordenada o null]
+
 const sedes = [
     ["cjm-toluca", "Centro de Justicia para las Mujeres de Toluca", "Toluca", "Paseo Matlatzincas núm. 1100, col. La Teresona, C.P. 50040", coords["cjm-toluca"]],
     ["cacem", "CONVIVE. Consejo para la Convivencia Escolar", "Toluca", "Pedro Ascencio núm. 207, col. La Merced", coords["cacem"]],
@@ -110,7 +110,6 @@ sinPuntoFijo.forEach(function ([id, nombre]) {
     document.getElementById("sinPunto").appendChild(elemento);
 });
 
-// Si Leaflet no carga (por ejemplo, sin internet), la lista sigue funcionando.
 let mapa = null;
 let capaPines = null;
 
@@ -170,7 +169,6 @@ function dibujarLista(visibles) {
     lista.scrollTop = 0;
 }
 
-// Un pin por coordenada: las áreas que comparten edificio se agrupan.
 function dibujarPines(visibles) {
     if (!mapa) return;
     capaPines.clearLayers();
