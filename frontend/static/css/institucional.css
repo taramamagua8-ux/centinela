@@ -323,3 +323,263 @@ body.pagina-registro-institucional .institucional {
 @media (prefers-reduced-motion: reduce) {
     .pagina-acceso .formulario-institucional a { transition: none; }
 }
+
+/* ==========================================================================
+   PANELES INSTITUCIONALES (con navbar): estilo de "Descubre más"
+   Se activa con la clase  pagina-panel  en el <body>
+   ========================================================================== */
+
+body.pagina-institucional.pagina-panel {
+    display: block;
+    min-height: 100svh;
+    background: #fefcff;
+    animation: none;
+    color: #4e444f;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.pagina-panel .institucional {
+    width: min(100% - 40px, 1100px);
+    margin: 30px auto 60px;
+}
+
+/* ---------- Títulos ---------- */
+.pagina-panel .institucional h1 {
+    display: inline-block;
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e9a6dd;
+    color: #923b61;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+}
+.pagina-panel .panel-institucional h2 {
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e9a6dd;
+    color: #923b61;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+.pagina-panel .panel-institucional h3 {
+    margin: 18px 0 8px;
+    padding-left: 10px;
+    border-left: 4px solid #c56ed3;
+    color: #702283;
+    font-size: 1.05rem;
+}
+
+/* ---------- Aviso de mensajes ---------- */
+.pagina-panel #aviso-institucional:not(:empty) {
+    margin: 0 0 18px;
+    padding: 12px 16px;
+    border-left: 4px solid #923b61;
+    border-radius: 10px;
+    background: #fdf3fb;
+    color: #602270;
+    font-size: .95rem;
+    font-weight: 600;
+    white-space: normal;
+}
+
+/* ---------- Fila de acciones ---------- */
+.pagina-panel .acciones-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.pagina-panel .boton-panel {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: .7rem 1.3rem;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(112, 34, 131, .35);
+    transition: transform .3s, box-shadow .3s, background .3s;
+}
+.pagina-panel .boton-panel:hover,
+.pagina-panel .boton-panel:focus-visible {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(216, 27, 96, .45);
+}
+
+/* ---------- Tarjetas (secciones y desplegables) ---------- */
+.pagina-panel .panel-institucional {
+    margin: 0 0 22px;
+    padding: clamp(18px, 3vw, 28px);
+    border: 1px solid #efb3e5;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 10px 28px rgba(146, 59, 97, .14);
+}
+
+/* Desplegables con + / − */
+.pagina-panel .panel-institucional > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    list-style: none;
+    color: #923b61;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+.pagina-panel .panel-institucional > summary::-webkit-details-marker { display: none; }
+.pagina-panel .panel-institucional > summary::after {
+    content: "+";
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d98aef, #923b61);
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1;
+}
+.pagina-panel .panel-institucional[open] > summary::after { content: "−"; }
+.pagina-panel .panel-institucional[open] > summary {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e9a6dd;
+}
+
+/* ---------- Formularios ---------- */
+.pagina-panel .formulario-institucional {
+    max-width: 44rem;
+    margin: 0 0 8px;
+    gap: 14px;
+}
+.pagina-panel .formulario-institucional label,
+.pagina-panel .panel-institucional > label {
+    display: grid;
+    gap: 8px;
+    color: #5e3b69;
+    font-size: 14px;
+    font-weight: 700;
+}
+.pagina-panel .institucional :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #d5b6dd;
+    border-radius: 9px;
+    background: #fff;
+    color: #24132e;
+    caret-color: currentColor;
+    color-scheme: light;
+    font: inherit;
+}
+.pagina-panel .institucional textarea { min-height: 6rem; }
+.pagina-panel .institucional :is(input, select, textarea):focus {
+    outline: 2px solid #923b61;
+    outline-offset: 2px;
+    border-color: #923b61;
+}
+.pagina-panel .institucional input[type="file"]::file-selector-button {
+    margin-right: .7rem;
+    padding: .45rem .85rem;
+    border: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.pagina-panel .formulario-institucional input[type="checkbox"] { accent-color: #702283; }
+
+/* Folio / mensaje de resultado al crear administrador */
+.pagina-panel output:not(:empty) {
+    display: block;
+    padding: 10px 14px;
+    border-left: 4px solid #923b61;
+    border-radius: 8px;
+    background: #fdf3fb;
+    color: #602270;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Botones ---------- */
+.pagina-panel .institucional button {
+    min-height: 44px;
+    padding: .65rem 1.3rem;
+    border: 0;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #702283, #923b61);
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(112, 34, 131, .35);
+    transition: transform .3s, box-shadow .3s, background .3s;
+}
+.pagina-panel .institucional button:hover:not(:disabled),
+.pagina-panel .institucional button:focus-visible {
+    background: linear-gradient(135deg, #d81b60, #ad1457);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(216, 27, 96, .45);
+}
+.pagina-panel .institucional button.boton-secundario {
+    border: 2px solid #923b61;
+    background: #fff;
+    color: #923b61;
+    box-shadow: none;
+}
+.pagina-panel .institucional button.boton-secundario:hover:not(:disabled) {
+    background: #f9eaf2;
+    box-shadow: none;
+}
+.pagina-panel .institucional button:disabled { opacity: .55; cursor: wait; transform: none; }
+
+/* ---------- Listas que llena el JS ---------- */
+.pagina-panel .lista-institucional { gap: 12px; margin-block: 14px 4px; }
+.pagina-panel .lista-institucional > article,
+.pagina-panel .lista-institucional > details {
+    padding: 16px 18px;
+    border: 1px solid #efb3e5;
+    border-radius: 14px;
+    background: #fdf3fb;
+    color: #4e444f;
+    transition: box-shadow .25s ease, transform .25s ease;
+}
+.pagina-panel .lista-institucional > article:hover,
+.pagina-panel .lista-institucional > details:hover {
+    box-shadow: 0 8px 20px rgba(146, 59, 97, .16);
+    transform: translateY(-2px);
+}
+.pagina-panel .lista-institucional summary { color: #923b61; }
+
+/* ---------- Foco con teclado ---------- */
+.pagina-panel .institucional :is(a, summary, button):focus-visible {
+    outline: 2px solid #923b61;
+    outline-offset: 3px;
+}
+
+/* ---------- Animación de entrada ---------- */
+@media (prefers-reduced-motion: no-preference) {
+    .pagina-panel .panel-institucional { animation: acceso-entrada .4s ease-out both; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .pagina-panel .boton-panel,
+    .pagina-panel .institucional button,
+    .pagina-panel .lista-institucional > article,
+    .pagina-panel .lista-institucional > details { transition: none; }
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 520px) {
+    .pagina-panel .acciones-panel > * { width: 100%; justify-content: center; text-align: center; }
+    .pagina-panel .panel-institucional { padding: 16px 14px; }
+}
